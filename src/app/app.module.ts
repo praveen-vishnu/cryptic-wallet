@@ -8,6 +8,7 @@ import {MyApp} from './app.component';
 import {HomePage} from '../pages/home/home';
 import {DemoService} from "./demo.service";
 import {HttpClientModule} from "@angular/common/http";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -28,7 +29,8 @@ import {HttpClientModule} from "@angular/common/http";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DemoService
+    DemoService,
+    InAppBrowser
   ]
 })
 export class AppModule {

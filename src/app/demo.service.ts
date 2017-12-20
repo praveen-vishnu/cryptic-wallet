@@ -12,7 +12,7 @@ export class DemoService {
   constructor(private http:HttpClient) {}
 
   // Uses http.get() to load data from a single API endpoint
-  getFoods() {
-    return this.http.get('https://api.coinmarketcap.com/v1/ticker/?convert=EUR&limit=10');
+  getCoinList() {
+    return this.http.get('https://min-api.cryptocompare.com/data/all/coinlist');
   }
 }

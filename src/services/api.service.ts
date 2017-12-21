@@ -58,9 +58,9 @@ export class ApiService {
         if (BATCHSIZE) {
           listOfCoinProperties.length = BATCHSIZE;
         }
-        this.iterateThroughCoins(listOfCoinProperties, 60);
+        // this.iterateThroughCoins(listOfCoinProperties, 60);
 
-        Promise.all(this.promises).then(() => {
+        // Promise.all(this.promises).then(() => {
           this.coinList = listOfCoinProperties.filter(item => {
             const coinObject = coinListJson[item];
             const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
@@ -71,17 +71,18 @@ export class ApiService {
                 && !!this.priceObject[item]['BTC']
                 && !!this.priceObject[item]['EUR']);
 
-            return !(!hasName || !hasUrl || !hasImage || !hasPrice);
+            // return !(!hasName || !hasUrl || !hasImage || !hasPrice);
+            return !(!hasName || !hasImage);
           }).map(item => {
             const coinObject = coinListJson[item];
             return {
               name: coinObject['CoinName'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
-              price: this.getPriceInCurrency(item, 'EUR')
+              // price: this.getPriceInCurrency(item, 'EUR')
             };
           }).sort(ApiService.comparePricesEuro);
           this.isLoading = false;
-        }, err => console.error(err));
+        // }, err => console.error(err));
       },
       err => console.error(err),
       () => console.log('done loading coins')

@@ -58,20 +58,12 @@ export class ApiService {
         if (BATCHSIZE) {
           listOfCoinProperties.length = BATCHSIZE;
         }
-        // this.iterateThroughCoins(listOfCoinProperties, 60);
 
-        // Promise.all(this.promises).then(() => {
-          this.coinList = listOfCoinProperties.filter(item => {
+        this.coinList = listOfCoinProperties.filter(item => {
             const coinObject = coinListJson[item];
             const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
-            const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
             const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
-            const hasPrice = this.priceObject[item]
-              && (!!this.priceObject[item]['USD']
-                && !!this.priceObject[item]['BTC']
-                && !!this.priceObject[item]['EUR']);
 
-            // return !(!hasName || !hasUrl || !hasImage || !hasPrice);
             return !(!hasName || !hasImage);
           }).map(item => {
             const coinObject = coinListJson[item];
@@ -82,37 +74,10 @@ export class ApiService {
             };
           }).sort(ApiService.comparePricesEuro);
           this.isLoading = false;
-        // }, err => console.error(err));
       },
       err => console.error(err),
       () => console.log('done loading coins')
     );
   }
 
-  getPriceInCurrency(item, currency): string {
-    if (this.priceObject[item] && this.priceObject[item][currency]) {
-      return this.priceObject[item][currency];
-    }
-    return 'NOTHING';
-  }
-
-  iterateThroughCoins(listOfCoinProperties, batchSize) {
-    const range = this.indexStart + batchSize;
-    const array = listOfCoinProperties.slice(this.indexStart, range);
-    const priceList = this.callPriceList(array.join()).toPromise();
-
-    this.promises.push(new Promise((resolve, reject) => {
-      priceList.then(
-        data => { // Success
-          Object.assign(this.priceObject, data);
-          resolve();
-        }
-      );
-    }));
-
-    this.indexStart += batchSize + 1;
-    if (range < listOfCoinProperties.length) {
-      this.iterateThroughCoins(listOfCoinProperties, batchSize);
-    }
-  }
 }

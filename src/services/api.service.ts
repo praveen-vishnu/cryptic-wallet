@@ -1,16 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
-const BATCHSIZE = 10;
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'origin, x-csrftoken, content-type, accept',
-  })
-};
+const BATCHSIZE = 200;
 
 @Injectable()
 export class ApiService {

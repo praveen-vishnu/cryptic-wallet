@@ -40,11 +40,11 @@ export class ApiService {
   }
 
   callCoinList() {
-    return this.http.get('https://min-api.cryptocompare.com/data/all/coinlist', httpOptions);
+    return this.http.get('https://min-api.cryptocompare.com/data/all/coinlist');
   }
 
   callPriceList(coins) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coins}&tsyms=BTC,USD,EUR`, httpOptions);
+    return this.http.get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coins}&tsyms=BTC,USD,EUR`);
   }
 
   getCoinList(): Subscription {

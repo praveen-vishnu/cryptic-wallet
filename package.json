@@ -27,6 +27,7 @@
     "@ionic/pro": "1.0.16",
     "@ionic/storage": "2.1.3",
     "cordova-plugin-inappbrowser": "^1.7.2",
+    "cordova-plugin-ionic": "^2.0.4",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.2",
@@ -41,7 +42,12 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-inappbrowser": {}
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-ionic": {
+        "APP_ID": "af8c52fa",
+        "CHANNEL_NAME": "Master",
+        "UPDATE_METHOD": "auto"
+      }
     }
   }
 }

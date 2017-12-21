@@ -82,4 +82,9 @@
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
+    <plugin name="cordova-plugin-ionic" spec="^2.0.4">
+        <variable name="APP_ID" value="af8c52fa" />
+        <variable name="CHANNEL_NAME" value="Master" />
+        <variable name="UPDATE_METHOD" value="auto" />
+    </plugin>
 </widget>

@@ -54,25 +54,19 @@ export class ApiService {
         const coinMarketCoinList = data;
         const baseImageUrl = coinMarketCoinList['BaseImageUrl'];
         const coinListJson = coinMarketCoinList['Data'];
-        let listOfCoinProperties = Object.keys(coinListJson).filter(item => !(item.indexOf('*') > -1));
+        let listOfCoinProperties = Object.keys(coinListJson);
         if (BATCHSIZE) {
           listOfCoinProperties.length = BATCHSIZE;
         }
 
-        this.coinList = listOfCoinProperties.filter(item => {
-            const coinObject = coinListJson[item];
-            const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
-            const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
-
-            return !(!hasName || !hasImage);
-          }).map(item => {
+        this.coinList = listOfCoinProperties.map(item => {
             const coinObject = coinListJson[item];
             return {
               name: coinObject['CoinName'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
               // price: this.getPriceInCurrency(item, 'EUR')
             };
-          }).sort(ApiService.comparePricesEuro);
+          })
           // this.isLoading = false;
       },
       err => console.error(err),

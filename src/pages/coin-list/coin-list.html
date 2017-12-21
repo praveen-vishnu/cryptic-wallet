@@ -13,11 +13,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let coin of coins;trackBy: trackByCoin" (click)="goToDetailPage(coin)">
+  <ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin">
+    <ion-item *virtualItem="let coin" (click)="goToDetailPage(coin)">
       <ion-thumbnail item-start>
         <div class="logo">
-          <img [src]="coin.imageUrl">
+          <ion-img [src]="coin.imageUrl"></ion-img>
         </div>
       </ion-thumbnail>
       <span float-start>{{coin.name}}</span>

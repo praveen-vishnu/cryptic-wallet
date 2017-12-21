@@ -45,7 +45,7 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
+$item-ios-thumbnail-size: 20px;
 
 
 
@@ -69,8 +69,17 @@ $colors: (
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
 // default are overridden.
+$text-color: #fff;
+$background-color: #132433;
+$toolbar-background: darken(#132433, 3%);
+$list-border-color: $toolbar-background;
+
+$toolbar-ios-height: 60px;
+$spinner-ios-crescent-color: #fff;
+$tabs-background: $toolbar-background;
 
 @import "ionic.theme.default";
+
 
 
 // Ionicons

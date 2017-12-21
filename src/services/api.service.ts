@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Coin} from "../coin";
+import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
 const BATCHSIZE = 20;

@@ -2,14 +2,14 @@ import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import {CoinListPage} from "../pages/coin-list/coin-list";
-import {ApiService} from "./services/api.service";
+import {ApiService} from "../services/api.service";
+import {TabsPage} from "../pages/tabs/tabs";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class CrytoMoon {
-  rootPage: any = CoinListPage;
+  rootPage: any = TabsPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private apiService: ApiService) {
     platform.ready().then(() => {

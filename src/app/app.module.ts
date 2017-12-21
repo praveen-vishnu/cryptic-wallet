@@ -5,15 +5,21 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
 import {CrytoMoon} from './app.component';
-import {ApiService} from "./services/api.service";
+import {ApiService} from "../services/api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {TabsPage} from "../pages/tabs/tabs";
 import {CoinListPage} from "../pages/coin-list/coin-list";
+import {SettingsPage} from "../pages/settings/settings";
+import {AltfolioPage} from "../pages/altfolio/altfolio";
 
 @NgModule({
   declarations: [
     CrytoMoon,
-    CoinListPage
+    TabsPage,
+    CoinListPage,
+    AltfolioPage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -23,7 +29,10 @@ import {CoinListPage} from "../pages/coin-list/coin-list";
   bootstrap: [IonicApp],
   entryComponents: [
     CrytoMoon,
-    CoinListPage
+    TabsPage,
+    CoinListPage,
+    AltfolioPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,

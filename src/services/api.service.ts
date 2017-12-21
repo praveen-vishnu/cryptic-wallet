@@ -48,7 +48,7 @@ export class ApiService {
   }
 
   getCoinList(): Subscription {
-    this.isLoading = true;
+    // this.isLoading = true;
     return this.callCoinList().subscribe(
       data => {
         const coinMarketCoinList = data;
@@ -73,7 +73,7 @@ export class ApiService {
               // price: this.getPriceInCurrency(item, 'EUR')
             };
           }).sort(ApiService.comparePricesEuro);
-          this.isLoading = false;
+          // this.isLoading = false;
       },
       err => console.error(err),
       () => console.log('done loading coins')

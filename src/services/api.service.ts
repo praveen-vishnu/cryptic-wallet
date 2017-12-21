@@ -18,7 +18,7 @@ export class ApiService {
   indexStart: number = 0;
   priceObject: Object = {};
   promises = [];
-  isLoading: boolean = false;
+  isLoading: boolean = true;
 
   static compareNames(a, b) {
     if (a.name < b.name)

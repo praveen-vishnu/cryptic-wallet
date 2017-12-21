@@ -20,6 +20,10 @@ export class CoinListPage {
     this.apiService.getCoinList();
   }
 
+  get coinListLength(): string {
+    return this.apiService.coinList ? this.apiService.coinList.length.toString() : '0';
+  }
+
   get coins(): Array<Coin> {
     return this.apiService.coinList;
   }

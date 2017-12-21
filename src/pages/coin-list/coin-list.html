@@ -11,10 +11,13 @@
 </ion-header>
 
 <ion-content>
+  <ion-list-header>
+    All {{coinListLength}} coins
+  </ion-list-header>
   <ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding *virtualItem="let coin">
       <button ion-item (click)="goToDetailPage(coin)" detail-none>
-        <ion-avatar item-start>
+        <ion-avatar class="logo" item-start>
           <ion-img [src]="coin.imageUrl" [alt]="coin.name"></ion-img>
         </ion-avatar>
         <span float-start>{{coin.name}}</span>

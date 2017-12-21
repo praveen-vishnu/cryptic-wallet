@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
-const BATCHSIZE = 200;
+const BATCHSIZE = null;
 
 @Injectable()
 export class ApiService {

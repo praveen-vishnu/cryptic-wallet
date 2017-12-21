@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
-import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {Coin} from "../../classes/coin";
+import {CoinDetailsPage} from "../coin-details/coin-details";
 
 @IonicPage()
 @Component({
@@ -13,12 +13,10 @@ export class CoinListPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private apiService: ApiService,
-              private iab: InAppBrowser) {
+              private apiService: ApiService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CoinListPage');
     this.apiService.getCoinList();
   }
 
@@ -26,8 +24,8 @@ export class CoinListPage {
     return this.apiService.coinList;
   }
 
-  openLink(url): void {
-    this.iab.create(url);
+  goToDetailPage(coin): void {
+    this.navCtrl.push(CoinDetailsPage, coin);
   }
 
   trackByCoin(index, item) {

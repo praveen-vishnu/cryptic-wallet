@@ -14,9 +14,11 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let coin of coins;trackBy: trackByCoin">
+    <ion-item *ngFor="let coin of coins;trackBy: trackByCoin" (click)="goToDetailPage(coin)">
       <ion-thumbnail item-start>
-        <img [src]="coin.imageUrl">
+        <div class="logo">
+          <img [src]="coin.imageUrl">
+        </div>
       </ion-thumbnail>
       <span float-start>{{coin.name}}</span>
       <span float-end>{{coin.price}}</span>

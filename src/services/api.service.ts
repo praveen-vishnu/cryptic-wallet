@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
-const BATCHSIZE = 20;
+const BATCHSIZE = 10;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -52,7 +52,6 @@ export class ApiService {
     return this.callCoinList().subscribe(
       data => {
         const coinMarketCoinList = data;
-        const baseLinkUrl = coinMarketCoinList['BaseLinkUrl'];
         const baseImageUrl = coinMarketCoinList['BaseImageUrl'];
         const coinListJson = coinMarketCoinList['Data'];
         let listOfCoinProperties = Object.keys(coinListJson).filter(item => !(item.indexOf('*') > -1));
@@ -77,7 +76,6 @@ export class ApiService {
             const coinObject = coinListJson[item];
             return {
               name: coinObject['CoinName'],
-              url: baseLinkUrl + coinObject['Url'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
               price: this.getPriceInCurrency(item, 'EUR')
             };

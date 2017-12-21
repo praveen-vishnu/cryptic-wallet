@@ -12,12 +12,14 @@ import {TabsPage} from "../pages/tabs/tabs";
 import {CoinListPage} from "../pages/coin-list/coin-list";
 import {SettingsPage} from "../pages/settings/settings";
 import {AltfolioPage} from "../pages/altfolio/altfolio";
+import {CoinDetailsPage} from "../pages/coin-details/coin-details";
 
 @NgModule({
   declarations: [
     CrytoMoon,
     TabsPage,
     CoinListPage,
+    CoinDetailsPage,
     AltfolioPage,
     SettingsPage
   ],
@@ -31,6 +33,7 @@ import {AltfolioPage} from "../pages/altfolio/altfolio";
     CrytoMoon,
     TabsPage,
     CoinListPage,
+    CoinDetailsPage,
     AltfolioPage,
     SettingsPage
   ],

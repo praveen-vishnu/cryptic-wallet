@@ -69,7 +69,7 @@ $item-ios-thumbnail-size: 30px;
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
 // default are overridden.
-$text-color: #fff;
+$text-color: #95adc1;
 $background-color: #132433;
 $toolbar-background: darken(#132433, 3%);
 $list-border-color: $toolbar-background;
@@ -77,6 +77,7 @@ $list-border-color: $toolbar-background;
 $toolbar-ios-height: 60px;
 $spinner-ios-crescent-color: #fff;
 $tabs-background: $toolbar-background;
+$list-ios-activated-background-color: #234263;
 
 @import "ionic.theme.default";
 

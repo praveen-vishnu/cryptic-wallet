@@ -4,32 +4,32 @@ import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
-import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
-import {DemoService} from "./demo.service";
+import {CrytoMoon} from './app.component';
+import {ApiService} from "./services/api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {CoinListPage} from "../pages/coin-list/coin-list";
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage
+    CrytoMoon,
+    CoinListPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(CrytoMoon),
     HttpClientModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage
+    CrytoMoon,
+    CoinListPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DemoService,
+    ApiService,
     InAppBrowser
   ]
 })

@@ -11,8 +11,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list-header>
-    All {{coinListLength}} coins
+  <ion-list-header text-right>
+    {{coinListLength}} coins
   </ion-list-header>
   <ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding *virtualItem="let coin">

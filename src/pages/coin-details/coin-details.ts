@@ -17,4 +17,7 @@ export class CoinDetailsPage {
   ionViewDidLoad() {
   }
 
+  detectChange(priceChange): boolean {
+    return priceChange < 0;
+  }
 }

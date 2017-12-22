@@ -17,6 +17,12 @@
       </ion-col>
       <ion-col col-9 text-right>
         <h1>{{coin.currencies.eur.price}}</h1>
+        <div class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+          {{coin.currencies.eur.change}}%
+        </div>
+        <div>
+          {{coin.currencies.eur.marketcap}}
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -36,3 +36,12 @@
 ion-refresher {
   background: #0c1823;
 }
+
+.priceChange{
+  color: green;
+
+  &.negative{
+    color: red;
+  }
+}
+

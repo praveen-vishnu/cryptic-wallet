@@ -85,6 +85,8 @@ $list-ios-activated-background-color: #234263;
 $list-ios-header-color: $text-color;
 $list-ios-header-color: $text-color;
 $list-ios-header-border-bottom: $hairlines-width solid $background-color;
+$toolbar-ios-title-text-color: $text-color;
+$toolbar-ios-button-color: $toolbar-ios-title-text-color;
 
 @import "ionic.theme.default";
 

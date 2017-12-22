@@ -13,6 +13,7 @@ import {CoinListPage} from "../pages/coin-list/coin-list";
 import {SettingsPage} from "../pages/settings/settings";
 import {AltfolioPage} from "../pages/altfolio/altfolio";
 import {CoinDetailsPage} from "../pages/coin-details/coin-details";
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {CoinDetailsPage} from "../pages/coin-details/coin-details";
     BrowserModule,
     IonicModule.forRoot(CrytoMoon),
     HttpClientModule,
+    ChartsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

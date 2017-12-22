@@ -25,5 +25,18 @@
         </div>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <canvas baseChart width="300" height="400"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

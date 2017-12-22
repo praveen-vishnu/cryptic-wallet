@@ -14,6 +14,8 @@ import {SettingsPage} from "../pages/settings/settings";
 import {AltfolioPage} from "../pages/altfolio/altfolio";
 import {CoinDetailsPage} from "../pages/coin-details/coin-details";
 import {ChartsModule} from "ng2-charts";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,10 @@ import {ChartsModule} from "ng2-charts";
   imports: [
     BrowserModule,
     IonicModule.forRoot(CrytoMoon),
+    BrowserAnimationsModule,
     HttpClientModule,
     ChartsModule,
+    NgxChartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

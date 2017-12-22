@@ -27,6 +27,25 @@
     </ion-row>
     <ion-row>
       <ion-col col-12>
+        <ngx-charts-area-chart
+          [scheme]="colorScheme"
+          [results]="multi"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [autoScale]="autoScale"
+          [showGridLines]="false"
+          (select)="onSelect($event)">
+        </ngx-charts-area-chart>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
         <canvas baseChart width="300" height="400"
                 [datasets]="lineChartData"
                 [labels]="lineChartLabels"

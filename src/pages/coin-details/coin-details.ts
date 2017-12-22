@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from "../../classes/coin";
+import {single, multi} from "../../classes/data";
 
 @IonicPage()
 @Component({
@@ -10,8 +11,36 @@ import {Coin} from "../../classes/coin";
 export class CoinDetailsPage {
   coin?: Coin;
 
+
+  single: any[];
+  multi: any[];
+
+  view: any[] = [700, 400];
+
+  // options
+  showXAxis = false;
+  showYAxis = false;
+  gradient = false;
+  showLegend = false;
+  showXAxisLabel = false;
+  xAxisLabel = 'Country';
+  showYAxisLabel = false;
+  yAxisLabel = 'Population';
+
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
+  // line, area
+  autoScale = true;
+
+
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.coin = navParams.data;
+
+    Object.assign(this, {single, multi});
   }
 
   ionViewDidLoad() {
@@ -78,5 +107,16 @@ export class CoinDetailsPage {
 
   public chartHovered(e: any): void {
     console.log(e);
+  }
+
+
+
+
+
+
+
+
+  onSelect(event) {
+    console.log(event);
   }
 }

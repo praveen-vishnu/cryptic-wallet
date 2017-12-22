@@ -17,6 +17,8 @@
 .logo {
   border-radius: 50%;
   overflow: hidden;
+  box-shadow: inset 0px 0px 0px 100px #0f1c28;
+  padding: 1.3rem;
 }
 
 .big-loader {
@@ -38,10 +40,10 @@ ion-refresher {
 }
 
 .priceChange{
-  color: green;
+  color: #43bd43;
 
   &.negative{
-    color: red;
+    color: #e65757;
   }
 }
 

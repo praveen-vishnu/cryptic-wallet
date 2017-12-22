@@ -114,7 +114,7 @@ export class ApiService {
         if (currencies.hasOwnProperty(currency)) {
           currencies[currency] = {
             price: currencies[currency]['PRICE'],
-            change: Math.round(currencies[currency]['CHANGEPCT24HOUR'] * 100) / 100,
+            change: currencies[currency]['CHANGEPCT24HOUR'],
             marketcap: currencies[currency]['MKTCAP'],
           };
 
@@ -130,7 +130,6 @@ export class ApiService {
 
   refreshCoinList(refresher) {
     this.refresher = refresher;
-    this.coinList.length = 0;
     setTimeout(() => this.getCoinList(), 1000);
   }
 }

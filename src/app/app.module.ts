@@ -16,6 +16,7 @@ import {CoinDetailsPage} from "../pages/coin-details/coin-details";
 import {ChartsModule} from "ng2-charts";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     HttpClientModule,
     ChartsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

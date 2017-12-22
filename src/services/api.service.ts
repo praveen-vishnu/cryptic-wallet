@@ -131,6 +131,6 @@ export class ApiService {
   refreshCoinList(refresher) {
     this.refresher = refresher;
     this.coinList.length = 0;
-    setTimeout(() => this.getCoinList(), 2000);
+    setTimeout(() => this.getCoinList(), 1000);
   }
 }

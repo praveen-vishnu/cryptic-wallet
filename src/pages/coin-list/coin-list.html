@@ -1,9 +1,3 @@
-<!--
-  Generated template for the CoinListPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>CryptoMoon</ion-title>
@@ -11,6 +5,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="Pull to refresh"
+                           refreshingSpinner="crescent"
+                           refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
   <ion-list-header text-right>
     {{coinListLength}} coins
   </ion-list-header>
@@ -20,8 +19,15 @@
         <ion-avatar class="logo" item-start>
           <ion-img [src]="coin.imageUrl" [alt]="coin.name"></ion-img>
         </ion-avatar>
-        <span float-start>{{coin.name}}</span>
-        <strong float-end>€ {{coin.price}}</strong>
+        <ion-label>
+          {{coin.name}}
+        </ion-label>
+        <div item-content>
+          <div>{{coin.currencies.eur.price}}</div>
+          <small class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}" float-end>
+            {{coin.currencies.eur.change}}%
+          </small>
+        </div>
       </button>
       <ion-item-options>
         <button ion-button color="primary">

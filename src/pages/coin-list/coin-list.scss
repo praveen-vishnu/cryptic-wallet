@@ -1,3 +1,11 @@
 page-coin-list {
 
 }
+
+.priceChange{
+  color: green;
+
+  &.negative{
+    color: red;
+  }
+}

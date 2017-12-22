@@ -73,16 +73,20 @@ $text-color: #95adc1;
 $background-color: #132433;
 $toolbar-background: darken(#132433, 3%);
 $list-border-color: $toolbar-background;
+$tabs-background: $toolbar-background;
+$refresher-border-color: $background-color;
+$refresher-icon-color: $text-color;
+$refresher-text-color: $text-color;
+$refresher-text-font-size: 12px;
 
 $toolbar-ios-height: 60px;
 $spinner-ios-crescent-color: #fff;
-$tabs-background: $toolbar-background;
 $list-ios-activated-background-color: #234263;
 $list-ios-header-color: $text-color;
 $list-ios-header-color: $text-color;
+$list-ios-header-border-bottom: $hairlines-width solid $background-color;
 
 @import "ionic.theme.default";
-
 
 
 // Ionicons

@@ -32,8 +32,15 @@ export class CoinListPage {
     this.navCtrl.push(CoinDetailsPage, coin);
   }
 
-  trackByCoin(index, item) {
+  trackByCoin(index, item): number {
     return index; // or item.id
   }
 
+  detectChange(priceChange): boolean {
+    return priceChange < 0;
+  }
+
+  doRefresh(refresher) {
+    this.apiService.refreshCoinList(refresher);
+  }
 }

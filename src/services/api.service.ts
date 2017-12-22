@@ -3,15 +3,16 @@ import {HttpClient} from '@angular/common/http';
 import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
-const BATCHSIZE = null;
+const COINAMOUNT = null;
 
 @Injectable()
 export class ApiService {
   coinList: Array<Coin>;
   indexStart: number = 0;
-  priceObject: Object = {};
+  currencyList: Object = {};
   promises = [];
   isLoading: boolean = false;
+  refresher: any;
 
   static compareNames(a, b) {
     if (a.name < b.name)
@@ -21,10 +22,10 @@ export class ApiService {
     return 0;
   }
 
-  static comparePricesEuro(a, b) {
-    if (parseFloat(a.price) > parseFloat(b.price))
+  static comparePrices(a, b) {
+    if (parseFloat(a.currencies.eur.price) > parseFloat(b.currencies.eur.price))
       return -1;
-    if (parseFloat(a.price) < parseFloat(b.price))
+    if (parseFloat(a.currencies.eur.price) < parseFloat(b.currencies.eur.price))
       return 1;
     return 0;
   }
@@ -37,43 +38,48 @@ export class ApiService {
   }
 
   callPriceList(coins) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coins}&tsyms=BTC,USD,EUR`);
+    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`);
   }
 
   getCoinList(): Subscription {
-    this.isLoading = true;
+    if (!this.refresher) {
+      this.isLoading = true;
+    }
     return this.callCoinList().subscribe(
       data => {
         const coinMarketCoinList = data;
         const baseImageUrl = coinMarketCoinList['BaseImageUrl'];
         const coinListJson = coinMarketCoinList['Data'];
-        let listOfCoinProperties = Object.keys(coinListJson).filter(item => !(item.indexOf('*') > -1));
-        if (BATCHSIZE) {
-          listOfCoinProperties.length = BATCHSIZE;
+        let listOfCoinProperties = Object.keys(coinListJson).filter(coin => !(coin.indexOf('*') > -1));
+        if (COINAMOUNT) {
+          listOfCoinProperties.length = COINAMOUNT;
         }
-        this.iterateThroughCoins(listOfCoinProperties, 60);
-
+        this.getPricesPerBatchSize(listOfCoinProperties, 60);
         Promise.all(this.promises).then(() => {
-          this.coinList = listOfCoinProperties.filter(item => {
-            const coinObject = coinListJson[item];
+          this.coinList = listOfCoinProperties.filter(coin => {
+            const coinObject = coinListJson[coin];
             const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
             const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
             const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
-            const hasPrice = this.priceObject[item]
-              && (!!this.priceObject[item]['USD']
-                && !!this.priceObject[item]['BTC']
-                && !!this.priceObject[item]['EUR']);
-
-            return !(!hasName || !hasUrl || !hasImage || !hasPrice);
-          }).map(item => {
-            const coinObject = coinListJson[item];
+            const hasPrice = this.currencyList[coin]
+              && (!!this.currencyList[coin]['USD']
+                && !!this.currencyList[coin]['BTC']
+                && !!this.currencyList[coin]['EUR']);
+            return hasName && hasUrl && hasImage && hasPrice;
+          }).map(coin => {
+            const coinObject = coinListJson[coin];
             return {
               name: coinObject['CoinName'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
-              price: this.getPriceInCurrency(item, 'EUR')
+              currencies: this.getCurrencies(coin)
             };
-          }).sort(ApiService.comparePricesEuro);
+          }).sort(ApiService.comparePrices);
           this.isLoading = false;
+          this.indexStart = 0;
+          if (this.refresher) {
+            this.refresher.complete();
+            this.refresher = null;
+          }
         }, err => console.error(err));
       },
       err => console.error(err),
@@ -81,22 +87,14 @@ export class ApiService {
     );
   }
 
-  getPriceInCurrency(item, currency): string {
-    if (this.priceObject[item] && this.priceObject[item][currency]) {
-      return this.priceObject[item][currency];
-    }
-    return 'NOTHING';
-  }
-
-  iterateThroughCoins(listOfCoinProperties, batchSize) {
+  getPricesPerBatchSize(listOfCoinProperties, batchSize) {
     const range = this.indexStart + batchSize;
-    const array = listOfCoinProperties.slice(this.indexStart, range);
-    const priceList = this.callPriceList(array.join()).toPromise();
-
+    const shortCoinNames = listOfCoinProperties.slice(this.indexStart, range);
+    const priceList = this.callPriceList(shortCoinNames.join()).toPromise();
     this.promises.push(new Promise((resolve, reject) => {
       priceList.then(
-        data => { // Success
-          Object.assign(this.priceObject, data);
+        data => {
+          Object.assign(this.currencyList, data['RAW']);
           resolve();
         }
       );
@@ -104,7 +102,35 @@ export class ApiService {
 
     this.indexStart += batchSize + 1;
     if (range < listOfCoinProperties.length) {
-      this.iterateThroughCoins(listOfCoinProperties, batchSize);
+      this.getPricesPerBatchSize(listOfCoinProperties, batchSize);
     }
+  }
+
+  getCurrencies(coin): any {
+    if (this.currencyList[coin]) {
+      const currencies = this.currencyList[coin];
+
+      for (let currency in currencies) {
+        if (currencies.hasOwnProperty(currency)) {
+          currencies[currency] = {
+            price: currencies[currency]['PRICE'],
+            change: Math.round(currencies[currency]['CHANGEPCT24HOUR'] * 100) / 100,
+            marketcap: currencies[currency]['MKTCAP'],
+          };
+
+          if (currency !== currency.toLocaleLowerCase()) {
+            Object.defineProperty(currencies, currency.toLocaleLowerCase(), Object.getOwnPropertyDescriptor(currencies, currency));
+            delete currencies[currency];
+          }
+        }
+      }
+      return currencies;
+    }
+  }
+
+  refreshCoinList(refresher) {
+    this.refresher = refresher;
+    this.coinList.length = 0;
+    setTimeout(() => this.getCoinList(), 2000);
   }
 }

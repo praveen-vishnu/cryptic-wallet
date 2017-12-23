@@ -4,6 +4,7 @@ import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
 
 const COINAMOUNT = null;
+const BATCHSIZE = 60;
 
 @Injectable()
 export class ApiService {
@@ -13,6 +14,7 @@ export class ApiService {
   promises = [];
   isLoading: boolean = false;
   refresher: any;
+  coinHistoryPriceList: any = [];
 
   static compareNames(a, b) {
     if (a.name < b.name)
@@ -41,6 +43,10 @@ export class ApiService {
     return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`);
   }
 
+  callPriceHistoryMinute(coin) {
+    return this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=EUR&limit=60&aggregate=3&e=CCCAGG`);
+  }
+
   getCoinList(): Subscription {
     if (!this.refresher) {
       this.isLoading = true;
@@ -54,7 +60,8 @@ export class ApiService {
         if (COINAMOUNT) {
           listOfCoinProperties.length = COINAMOUNT;
         }
-        this.getPricesPerBatchSize(listOfCoinProperties, 60);
+
+        this.getPricesPerBatchSize(listOfCoinProperties, BATCHSIZE);
         Promise.all(this.promises).then(() => {
           this.coinList = listOfCoinProperties.filter(coin => {
             const coinObject = coinListJson[coin];
@@ -70,6 +77,7 @@ export class ApiService {
             const coinObject = coinListJson[coin];
             return {
               name: coinObject['CoinName'],
+              code: coinObject['CoinName'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
               currencies: this.getCurrencies(coin)
             };
@@ -131,5 +139,36 @@ export class ApiService {
   refreshCoinList(refresher) {
     this.refresher = refresher;
     setTimeout(() => this.getCoinList(), 1000);
+  }
+
+  getPriceHistoryMinute(coin) {
+    const code = coin.code;
+
+    return this.callPriceHistoryMinute(code).subscribe(
+      data => {
+        const historyData = data['Data'];
+        console.log(historyData);
+
+        this.coinHistoryPriceList = [
+          {
+            "name": coin.name,
+            "series": ApiService.renderPriceHistory(historyData)
+          },
+        ];
+
+        console.log(this.coinHistoryPriceList);
+      },
+      err => console.error(err),
+      () => console.log('done loading coins')
+    );
+  }
+
+  static renderPriceHistory(historyData): any {
+    return historyData.map(minuteObject => {
+      return {
+        name: minuteObject.time,
+        value: minuteObject.close
+      }
+    });
   }
 }

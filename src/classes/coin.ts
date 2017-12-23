@@ -1,5 +1,6 @@
 export interface Coin {
   name: string;
+  code: string;
   imageUrl: string;
   currencies: {
     eur: CurrencyData,

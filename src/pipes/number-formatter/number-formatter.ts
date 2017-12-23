@@ -13,11 +13,10 @@ export class NumberFormatterPipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: number, ...args: any[]): string {
-    const valueString = value.toString();
     const options = {
       minimumSignificantDigits: 2,
       maximumSignificantDigits: 2
-    }
+    };
 
     args.forEach(arg => {
       if (arg === 'price') {

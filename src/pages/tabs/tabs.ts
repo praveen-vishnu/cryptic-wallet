@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {CoinListPage} from "../coin-list/coin-list";
 import {AltfolioPage} from "../altfolio/altfolio";
 import {SettingsPage} from "../settings/settings";
+import {CoinListPage} from "../coin-list/coin-list";
 
 @IonicPage()
 @Component({

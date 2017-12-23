@@ -17,6 +17,7 @@ import {ChartsModule} from "ng2-charts";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PipesModule} from "../pipes/pipes.module";
+import {ComponentsModule} from "../components/components.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {PipesModule} from "../pipes/pipes.module";
     HttpClientModule,
     ChartsModule,
     NgxChartsModule,
+    ComponentsModule,
     PipesModule
   ],
   bootstrap: [IonicApp],

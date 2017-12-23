@@ -141,22 +141,52 @@ export class ApiService {
     setTimeout(() => this.getCoinList(), 1000);
   }
 
+  // getPriceHistoryMinute(coin) {
+  //   const code = coin.code;
+  //
+  //   return this.callPriceHistoryMinute(code).subscribe(
+  //     data => {
+  //       const historyData = data['Data'];
+  //
+  //       this.coinHistoryPriceList = [
+  //         {
+  //           "name": coin.name,
+  //           "series": ApiService.renderPriceHistory(historyData)
+  //         },
+  //       ];
+  //
+  //       console.log('list: ', this.coinHistoryPriceList);
+  //     },
+  //     err => console.error(err),
+  //     () => console.log('done loading coins')
+  //   );
+  // }
+  //
+  // static renderPriceHistory(historyData): any {
+  //   return historyData.map(minuteObject => {
+  //     return {
+  //       name: minuteObject.time,
+  //       value: minuteObject.close
+  //     }
+  //   });
+  // }
+
   getPriceHistoryMinute(coin) {
     const code = coin.code;
 
     return this.callPriceHistoryMinute(code).subscribe(
       data => {
         const historyData = data['Data'];
-        console.log(historyData);
 
         this.coinHistoryPriceList = [
           {
             "name": coin.name,
-            "series": ApiService.renderPriceHistory(historyData)
+            "labels": ApiService.renderPriceHistory(historyData),
+            "data": ApiService.renderPriceHistory2(historyData),
           },
         ];
 
-        console.log(this.coinHistoryPriceList);
+        console.log(this.coinHistoryPriceList[0].labels.join());
       },
       err => console.error(err),
       () => console.log('done loading coins')
@@ -165,10 +195,13 @@ export class ApiService {
 
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
-      return {
-        name: minuteObject.time,
-        value: minuteObject.close
-      }
+      return minuteObject.time;
+    });
+  }
+
+  static renderPriceHistory2(historyData): any {
+    return historyData.map(minuteObject => {
+      return minuteObject.close;
     });
   }
 }

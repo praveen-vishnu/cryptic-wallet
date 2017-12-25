@@ -1,8 +1,10 @@
 import {NgModule} from '@angular/core';
+import {CustomChartComponent} from './custom-chart/custom-chart';
 
 @NgModule({
-	declarations: [],
-	imports: [],
-	exports: []
+  declarations: [CustomChartComponent],
+  imports: [],
+  exports: [CustomChartComponent]
 })
-export class ComponentsModule {}
+export class ComponentsModule {
+}

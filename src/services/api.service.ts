@@ -141,36 +141,6 @@ export class ApiService {
     setTimeout(() => this.getCoinList(), 1000);
   }
 
-  // getPriceHistoryMinute(coin) {
-  //   const code = coin.code;
-  //
-  //   return this.callPriceHistoryMinute(code).subscribe(
-  //     data => {
-  //       const historyData = data['Data'];
-  //
-  //       this.coinHistoryPriceList = [
-  //         {
-  //           "name": coin.name,
-  //           "series": ApiService.renderPriceHistory(historyData)
-  //         },
-  //       ];
-  //
-  //       console.log('list: ', this.coinHistoryPriceList);
-  //     },
-  //     err => console.error(err),
-  //     () => console.log('done loading coins')
-  //   );
-  // }
-  //
-  // static renderPriceHistory(historyData): any {
-  //   return historyData.map(minuteObject => {
-  //     return {
-  //       name: minuteObject.time,
-  //       value: minuteObject.close
-  //     }
-  //   });
-  // }
-
   getPriceHistoryMinute(coin) {
     const code = coin.code;
 
@@ -181,12 +151,11 @@ export class ApiService {
         this.coinHistoryPriceList = [
           {
             "name": coin.name,
-            "labels": ApiService.renderPriceHistory(historyData),
-            "data": ApiService.renderPriceHistory2(historyData),
+            "series": ApiService.renderPriceHistory(historyData)
           },
         ];
 
-        console.log(this.coinHistoryPriceList[0].labels.join());
+        console.log('list: ', this.coinHistoryPriceList);
       },
       err => console.error(err),
       () => console.log('done loading coins')
@@ -195,13 +164,10 @@ export class ApiService {
 
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
-      return minuteObject.time;
-    });
-  }
-
-  static renderPriceHistory2(historyData): any {
-    return historyData.map(minuteObject => {
-      return minuteObject.close;
+      return {
+        name: minuteObject.time,
+        value: minuteObject.close
+      }
     });
   }
 }

@@ -18,6 +18,7 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PipesModule} from "../pipes/pipes.module";
 import {ComponentsModule} from "../components/components.module";
+import {CustomChartComponent} from "../components/custom-chart/custom-chart";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {ComponentsModule} from "../components/components.module";
     CoinListPage,
     CoinDetailsPage,
     AltfolioPage,
-    SettingsPage
+    SettingsPage,
+    CustomChartComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,7 @@ import {ComponentsModule} from "../components/components.module";
     HttpClientModule,
     ChartsModule,
     NgxChartsModule,
-    ComponentsModule,
+    // ComponentsModule,
     PipesModule
   ],
   bootstrap: [IonicApp],
@@ -45,7 +47,8 @@ import {ComponentsModule} from "../components/components.module";
     CoinListPage,
     CoinDetailsPage,
     AltfolioPage,
-    SettingsPage
+    SettingsPage,
+    // CustomChartComponent
   ],
   providers: [
     StatusBar,

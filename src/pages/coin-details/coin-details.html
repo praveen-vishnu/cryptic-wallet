@@ -27,30 +27,22 @@
     </ion-row>
     <ion-row>
       <ion-col col-12>
-        <!--<ngx-charts-line-chart-->
-        <!--[results]="priceHistoryList"-->
-        <!--[autoScale]="autoScale"-->
-        <!--[timeline]="false"-->
-        <!--[showRefLines]="true"-->
-        <!--[showRefLabels]="true"-->
-        <!--(select)="onSelect($event, series)"-->
-        <!--&gt;-->
-        <!--</ngx-charts-line-chart>-->
-        <canvas id="canvas">{{chart}}</canvas>
+        <custom-chart
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]="priceHistoryList"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [autoScale]="autoScale"
+          (select)="onSelect($event)">
+        </custom-chart>
       </ion-col>
     </ion-row>
-    <!--<ion-row>-->
-    <!--<ion-col col-12>-->
-    <!--<canvas baseChart width="300" height="400"-->
-    <!--[datasets]="lineChartData"-->
-    <!--[labels]="lineChartLabels"-->
-    <!--[options]="lineChartOptions"-->
-    <!--[colors]="lineChartColors"-->
-    <!--[legend]="lineChartLegend"-->
-    <!--[chartType]="lineChartType"-->
-    <!--(chartHover)="chartHovered($event)"-->
-    <!--(chartClick)="chartClicked($event)"></canvas>-->
-    <!--</ion-col>-->
-    <!--</ion-row>-->
   </ion-grid>
 </ion-content>

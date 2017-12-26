@@ -11,9 +11,9 @@
   <ion-grid>
     <ion-row>
       <ion-col col-3>
-        <ion-avatar class="logo">
-          <img [src]="coin.imageUrl" alt="">
-        </ion-avatar>
+        <div class="logo">
+          <img [src]="coin.imageUrl">
+        </div>
       </ion-col>
       <ion-col col-9 text-right>
         <h1>{{coin.currencies.eur.price | numberFormatter}}</h1>
@@ -40,7 +40,8 @@
           [xAxisLabel]="xAxisLabel"
           [yAxisLabel]="yAxisLabel"
           [autoScale]="autoScale"
-          (select)="onSelect($event)">
+          [timeline]="false"
+          (click)="onSelect($event)">
         </custom-chart>
       </ion-col>
     </ion-row>

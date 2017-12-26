@@ -17,7 +17,11 @@
 .logo {
   border-radius: 50%;
   overflow: hidden;
-  border: 5px solid #0f1c28;
+  border: 15px solid #0f1c28;
+
+  img{
+    width: 100%;
+  }
 }
 
 .big-loader {

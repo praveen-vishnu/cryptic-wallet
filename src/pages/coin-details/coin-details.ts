@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from "../../classes/coin";
 import {ApiService} from "../../services/api.service";
-import {Chart} from 'chart.js';
 
 @IonicPage()
 @Component({
@@ -11,8 +10,8 @@ import {Chart} from 'chart.js';
 })
 export class CoinDetailsPage {
   coin?: Coin;
-  view: any[] = [];
-  showXAxis = true;
+  view: any[] = null;
+  showXAxis = false;
   showYAxis = false;
   gradient = false;
   showLegend = false;
@@ -44,7 +43,7 @@ export class CoinDetailsPage {
   }
 
   get priceHistoryList() {
-    console.log(this.apiService.coinHistoryPriceList);
+    // console.log(this.apiService.coinHistoryPriceList);
     return this.apiService.coinHistoryPriceList;
   }
 

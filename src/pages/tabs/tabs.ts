@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {AltfolioPage} from "../altfolio/altfolio";
 import {SettingsPage} from "../settings/settings";
-import {CoinListPage} from "../coin-list/coin-list";
+import {CoinDetailsPage} from "../coin-details/coin-details";
 
 @IonicPage()
 @Component({
@@ -10,7 +10,7 @@ import {CoinListPage} from "../coin-list/coin-list";
   templateUrl: 'tabs.html',
 })
 export class TabsPage {
-  tab1Root = CoinListPage;
+  tab1Root = CoinDetailsPage;
   tab2Root = AltfolioPage;
   tab3Root = SettingsPage;
 

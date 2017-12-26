@@ -312,6 +312,8 @@ export class CustomChartComponent extends BaseChartComponent {
   updateHoveredVertical(item): void {
     this.hoveredVertical = item.value;
     this.deactivateAll();
+
+    console.log(item);
   }
 
   @HostListener('mouseleave')

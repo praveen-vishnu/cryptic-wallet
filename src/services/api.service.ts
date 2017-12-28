@@ -40,11 +40,37 @@ export class ApiService {
   }
 
   callPriceList(coins) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`);
+    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`); // TODO: fix currency to dynamic
   }
 
-  callPriceHistoryMinute(coin) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${coin}&tsym=EUR&limit=60&aggregate=3&e=CCCAGG`);
+  getPriceHistoryHour(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=60&aggregate=1&e=CCCAGG`);
+    return this.getPriceData(url, coin);
+  }
+
+  getPriceHistoryDay(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${code}&tsym=EUR&limit=24&aggregate=1&e=CCCAGG`);
+    this.getPriceData(url, coin);
+  }
+
+  getPriceHistoryMonth(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=30&aggregate=1&e=CCCAGG`);
+    this.getPriceData(url, coin);
+  }
+
+  getPriceHistoryYear(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=1&e=CCCAGG`);
+    this.getPriceData(url, coin);
+  }
+
+  getPriceHistoryAll(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=3650&aggregate=1&e=CCCAGG`);
+    this.getPriceData(url, coin);
   }
 
   getCoinList(): Subscription {
@@ -140,10 +166,8 @@ export class ApiService {
     setTimeout(() => this.getCoinList(), 1000);
   }
 
-  getPriceHistoryMinute(coin) {
-    const code = coin.code;
-
-    return this.callPriceHistoryMinute(code).subscribe(
+  getPriceData(url, coin) {
+    url.subscribe(
       data => {
         const historyData = data['Data'];
 

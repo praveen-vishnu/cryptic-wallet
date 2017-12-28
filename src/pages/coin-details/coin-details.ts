@@ -2,7 +2,8 @@ import {ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
-import {curveLinear} from 'd3-shape';
+import {curveNatural} from 'd3-shape';
+import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -18,8 +19,10 @@ export class CoinDetailsPage {
   showLegend = false;
   showXAxisLabel = false;
   showYAxisLabel = false;
-  curve = curveLinear;
+  curve = curveNatural;
   price: number;
+  timestamp: string;
+  chartMode: any;
 
   colorScheme = {
     domain: ['#2a95da']
@@ -32,7 +35,7 @@ export class CoinDetailsPage {
               private apiService: ApiService,
               private cdRef: ChangeDetectorRef) {
     this.coin = navParams.data;
-
+    //
     // this.coin = {
     //   name: 'Bitcoin',
     //   code: 'BTC',
@@ -52,7 +55,8 @@ export class CoinDetailsPage {
   }
 
   ionViewDidLoad() {
-    this.apiService.getPriceHistoryMinute(this.coin);
+    this.chartMode = 'hour';
+    this.apiService.getPriceHistoryHour(this.coin);
   }
 
   ionViewDidLeave() {
@@ -65,11 +69,41 @@ export class CoinDetailsPage {
   }
 
   onScrub(event, serie) {
+    this.timestamp = moment.unix(event.name).format("DD-MM-YYYY HH:mm");
     this.coin.currencies.eur.price = event.value;
     this.cdRef.detectChanges();
   }
 
   onScrubEnd() {
     this.coin.currencies.eur.price = this.price;
+    this.timestamp = null;
+  }
+
+  chartModeChanged(event) {
+    switch (this.chartMode) {
+      case 'hour':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryHour(this.coin);
+        break;
+      case 'day':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryDay(this.coin);
+        break;
+      case 'month':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryMonth(this.coin);
+        break;
+      case 'year':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryYear(this.coin);
+        break;
+      case 'all':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryAll(this.coin);
+        break;
+      default:
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryHour(this.coin);
+    }
   }
 }

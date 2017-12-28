@@ -11,7 +11,7 @@ import {curveLinear} from "d3-shape";
 })
 export class CoinDetailsPage {
   coin?: Coin;
-  view: any[] = [370, 200]; // TODO
+  view: any[] = undefined;
   showXAxis = false;
   showYAxis = false;
   gradient = false;
@@ -31,27 +31,36 @@ export class CoinDetailsPage {
               public navParams: NavParams,
               private apiService: ApiService,
               private cdRef: ChangeDetectorRef) {
-    this.coin = navParams.data; //TODO
-    this.coin = {
-      name: 'Bitcoin',
-      code: 'BTC',
-      imageUrl: 'https://www.cryptocompare.com/media/19633/btc.png',
-      currencies: {
-        btc: {price: 1, change: -1.189234009752647, marketcap: 16758550},
-        usd: {price: 14809.61, change: 23.051644830863925, marketcap: 248187589665.5},
-        eur: {price: 12965.69, change: 27.148140048699126, marketcap: 217286164149.5}
-      }
-    };
+    this.coin = navParams.data;
+    // this.coin = {
+    //   name: 'Bitcoin',
+    //   code: 'BTC',
+    //   imageUrl: 'https://www.cryptocompare.com/media/19633/btc.png',
+    //   currencies: {
+    //     btc: {price: 1, change: -1.189234009752647, marketcap: 16758550},
+    //     usd: {price: 14809.61, change: 23.051644830863925, marketcap: 248187589665.5},
+    //     eur: {price: 12965.69, change: 27.148140048699126, marketcap: 217286164149.5}
+    //   }
+    // };
   }
 
   get priceHistoryList() {
-    // console.log(this.apiService.coinHistoryPriceList);
+    console.log(!!this.apiService.coinHistoryPriceList);
     return this.apiService.coinHistoryPriceList;
   }
 
   ionViewDidLoad() {
-    this.apiService.getPriceHistoryMinute(this.coin);
+
+    setTimeout(() => {
+
+      this.apiService.getPriceHistoryMinute(this.coin);
+    }, 500);
     this.price = this.coin.currencies.eur.price;
+  }
+
+  ionViewDidLeave() {
+    this.coin = null;
+    this.apiService.coinHistoryPriceList = null;
   }
 
   detectChange(priceChange): boolean {

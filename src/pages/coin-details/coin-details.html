@@ -26,22 +26,27 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <custom-chart
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="priceHistoryList"
-    [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [autoScale]="autoScale"
-    [timeline]="false"
-    [curve]="curve"
-    (select)="onScrub($event)"
-    (touchEnd)="onScrubEnd()">
-  </custom-chart>
+  <div class="chart-wrapper">
+    <custom-chart *ngIf="!!priceHistoryList; else noChart"
+                  [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="priceHistoryList"
+                  [gradient]="gradient"
+                  [xAxis]="showXAxis"
+                  [yAxis]="showYAxis"
+                  [legend]="showLegend"
+                  [showXAxisLabel]="showXAxisLabel"
+                  [showYAxisLabel]="showYAxisLabel"
+                  [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="yAxisLabel"
+                  [autoScale]="autoScale"
+                  [timeline]="false"
+                  [curve]="curve"
+                  (select)="onScrub($event)"
+                  (touchEnd)="onScrubEnd()">
+    </custom-chart>
+    <ng-template #noChart>
+      <ion-spinner name="crescent"></ion-spinner>
+    </ng-template>
+  </div>
 </ion-content>

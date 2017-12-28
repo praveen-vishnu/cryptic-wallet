@@ -1,3 +1,15 @@
 page-coin-details {
+  .chart-wrapper {
+    height: 30vh;
+    position: relative;
 
+    ion-spinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
 }

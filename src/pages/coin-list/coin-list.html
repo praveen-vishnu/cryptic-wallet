@@ -17,7 +17,7 @@
     <ion-item-sliding *virtualItem="let coin">
       <button ion-item (click)="goToDetailPage(coin)" detail-none>
         <ion-avatar class="logo" item-start>
-          <ion-img [src]="coin.imageUrl" [alt]="coin.name"></ion-img>
+          <ion-img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"></ion-img>
         </ion-avatar>
         <ion-label>
           {{coin.name}}

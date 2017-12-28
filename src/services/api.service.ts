@@ -14,7 +14,7 @@ export class ApiService {
   promises = [];
   isLoading: boolean = false;
   refresher: any;
-  coinHistoryPriceList: any = [];
+  coinHistoryPriceList: Array<Object> = null;
 
   static compareNames(a, b) {
     if (a.name < b.name)

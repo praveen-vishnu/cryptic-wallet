@@ -64,6 +64,7 @@ export class CustomChartComponent extends BaseChartComponent {
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
   @Output() deactivate: EventEmitter<any> = new EventEmitter();
+  @Output() touchEnd: EventEmitter<any> = new EventEmitter();
 
   @ContentChild('tooltipTemplate') tooltipTemplate: TemplateRef<any>;
   @ContentChild('seriesTooltipTemplate') seriesTooltipTemplate: TemplateRef<any>;
@@ -312,8 +313,6 @@ export class CustomChartComponent extends BaseChartComponent {
   updateHoveredVertical(item): void {
     this.hoveredVertical = item.value;
     this.deactivateAll();
-
-    console.log(item);
   }
 
   @HostListener('mouseleave')

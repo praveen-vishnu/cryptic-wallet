@@ -21,7 +21,10 @@ import {SettingsPageModule} from "../pages/settings/settings.module";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(CrytoMoon),
+    IonicModule.forRoot(CrytoMoon, {
+      backButtonText: '',
+      pageTransition: 'md-transition'
+    }),
     BrowserAnimationsModule,
     HttpClientModule,
     TabsPageModule,

@@ -60,7 +60,6 @@ export class ApiService {
         if (COINAMOUNT) {
           listOfCoinProperties.length = COINAMOUNT;
         }
-
         this.getPricesPerBatchSize(listOfCoinProperties, BATCHSIZE);
         Promise.all(this.promises).then(() => {
           this.coinList = listOfCoinProperties.filter(coin => {
@@ -77,7 +76,7 @@ export class ApiService {
             const coinObject = coinListJson[coin];
             return {
               name: coinObject['CoinName'],
-              code: coinObject['CoinName'],
+              code: coinObject['Symbol'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
               currencies: this.getCurrencies(coin)
             };

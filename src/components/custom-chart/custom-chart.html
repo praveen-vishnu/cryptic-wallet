@@ -42,7 +42,7 @@
     </svg:g>
     <svg:g [attr.clip-path]="clipPath">
       <svg:g *ngFor="let series of results; trackBy:trackBy" [@animationState]="'active'">
-        <svg:g ngx-charts-line-series
+        <svg:g custom-chart-line-series
                [xScale]="xScale"
                [yScale]="yScale"
                [colors]="colors"
@@ -67,24 +67,26 @@
                [tooltipDisabled]="tooltipDisabled"
                [tooltipTemplate]="seriesTooltipTemplate"
                (hover)="updateHoveredVertical($event)"
+               (touch)="updateHoveredVertical($event)"
+               (touchEnd)="touchEnd.emit()"
         />
 
-        <!--<svg:g *ngFor="let series of results">-->
-          <!--<svg:g ngx-charts-circle-series-->
-                 <!--[xScale]="xScale"-->
-                 <!--[yScale]="yScale"-->
-                 <!--[colors]="colors"-->
-                 <!--[data]="series"-->
-                 <!--[scaleType]="scaleType"-->
-                 <!--[visibleValue]="hoveredVertical"-->
-                 <!--[activeEntries]="activeEntries"-->
-                 <!--[tooltipDisabled]="tooltipDisabled"-->
-                 <!--[tooltipTemplate]="tooltipTemplate"-->
-                 <!--(select)="onClick($event, series)"-->
-                 <!--(activate)="onActivate($event)"-->
-                 <!--(deactivate)="onDeactivate($event)"-->
-          <!--/>-->
-        <!--</svg:g>-->
+        <svg:g *ngFor="let series of results">
+          <svg:g custom-chart-circle-series
+                 [xScale]="xScale"
+                 [yScale]="yScale"
+                 [colors]="colors"
+                 [data]="series"
+                 [scaleType]="scaleType"
+                 [visibleValue]="hoveredVertical"
+                 [activeEntries]="activeEntries"
+                 [tooltipDisabled]="tooltipDisabled"
+                 [tooltipTemplate]="tooltipTemplate"
+                 (select)="onClick($event, series)"
+                 (activate)="onActivate($event)"
+                 (deactivate)="onDeactivate($event)"
+          />
+        </svg:g>
       </svg:g>
     </svg:g>
   </svg:g>

@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from "../../classes/coin";
 import {ApiService} from "../../services/api.service";
+import {curveLinear} from "d3-shape";
 
 @IonicPage()
 @Component({
@@ -10,26 +11,27 @@ import {ApiService} from "../../services/api.service";
 })
 export class CoinDetailsPage {
   coin?: Coin;
-  view: any[] = null;
+  view: any[] = [370, 200]; // TODO
   showXAxis = false;
   showYAxis = false;
   gradient = false;
   showLegend = false;
   showXAxisLabel = false;
-  xAxisLabel = 'Country';
   showYAxisLabel = false;
-  yAxisLabel = 'Population';
+  curve = curveLinear;
+  price: number = 0;
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#2a95da']
   };
   autoScale = true;
 
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private apiService: ApiService) {
-    // this.coin = navParams.data;
+              private apiService: ApiService,
+              private cdRef: ChangeDetectorRef) {
+    this.coin = navParams.data; //TODO
     this.coin = {
       name: 'Bitcoin',
       code: 'BTC',
@@ -49,13 +51,19 @@ export class CoinDetailsPage {
 
   ionViewDidLoad() {
     this.apiService.getPriceHistoryMinute(this.coin);
+    this.price = this.coin.currencies.eur.price;
   }
 
   detectChange(priceChange): boolean {
     return priceChange < 0;
   }
 
-  onSelect(event, serie) {
-    console.log(serie);
+  onScrub(event, serie) {
+    this.price = event.value;
+    this.cdRef.detectChanges();
+  }
+
+  onScrubEnd() {
+    this.price = this.coin.currencies.eur.price;
   }
 }

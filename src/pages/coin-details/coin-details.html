@@ -16,7 +16,7 @@
         </div>
       </ion-col>
       <ion-col col-9 text-right>
-        <h1>{{coin.currencies.eur.price | numberFormatter}}</h1>
+        <h1>{{price}}</h1> <!-- TODO: fix formatting -->
         <div class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
           {{coin.currencies.eur.change | numberFormatter}}%
         </div>
@@ -25,25 +25,23 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col col-12>
-        <custom-chart
-          [view]="view"
-          [scheme]="colorScheme"
-          [results]="priceHistoryList"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
-          [autoScale]="autoScale"
-          [timeline]="false"
-          (click)="onSelect($event)">
-        </custom-chart>
-      </ion-col>
-    </ion-row>
   </ion-grid>
+  <custom-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="priceHistoryList"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [autoScale]="autoScale"
+    [timeline]="false"
+    [curve]="curve"
+    (select)="onScrub($event)"
+    (touchEnd)="onScrubEnd()">
+  </custom-chart>
 </ion-content>

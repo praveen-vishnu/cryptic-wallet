@@ -1,4 +1,4 @@
-<svg:g>
+<svg:g xmlns:svg="http://www.w3.org/2000/svg">
   <svg:rect
     class="tooltip-area"
     [attr.x]="0"
@@ -7,9 +7,11 @@
     [attr.height]="dims.height"
     style="opacity: 0; cursor: 'auto';"
     (mousemove)="mouseMove($event)"
+    (touchmove)="touchMove($event)"
+    (touchend)="hideTooltip()"
     (mouseleave)="hideTooltip()"
   />
-  <xhtml:ng-template #defaultTooltipTemplate let-model="model">
+  <xhtml:ng-template #defaultTooltipTemplate let-model="model" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <xhtml:div class="area-tooltip-container">
       <xhtml:div
         *ngFor="let tooltipItem of model"
@@ -28,7 +30,8 @@
     class="tooltip-anchor"
     [attr.x]="anchorPos"
     y="0"
-    [attr.width]="1"
+    [attr.width]="3"
+    [attr.fill]="color"
     [attr.height]="dims.height"
     [style.opacity]="anchorOpacity"
     [style.pointer-events]="'none'"

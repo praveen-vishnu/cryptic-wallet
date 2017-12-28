@@ -22,12 +22,14 @@
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <small item-content class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}" style="margin-right: 1rem;">
+        <small item-content class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}"
+               style="margin-right: 1rem;">
           {{coin.currencies.eur.change | numberFormatter}}%
         </small>
         <span item-content class="price">
+          <!--TODO fix layout-->
           <!--<small class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">-->
-            <!--{{coin.currencies.eur.change | numberFormatter}}%-->
+          <!--{{coin.currencies.eur.change | numberFormatter}}%-->
           <!--</small>-->
           <span>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</span>
         </span>

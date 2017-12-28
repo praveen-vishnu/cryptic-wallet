@@ -36,6 +36,7 @@ export class CustomChartTooltipAreaComponent {
   anchorPos: number = -1;
   anchorValues: any[] = [];
   lastAnchorPos: number;
+  color = '#f26bf7';
 
   @Input() dims;
   @Input() xSet;
@@ -48,7 +49,8 @@ export class CustomChartTooltipAreaComponent {
   @Input() tooltipTemplate: TemplateRef<any>;
 
   @Output() hover = new EventEmitter();
-  @Output() touchMove = new EventEmitter();
+  @Output() touch = new EventEmitter();
+  @Output() touchEnd = new EventEmitter();
 
   @ViewChild('tooltipAnchor') tooltipAnchor;
 
@@ -98,13 +100,11 @@ export class CustomChartTooltipAreaComponent {
 
   mouseMove(event) {
     const xPos = event.offsetX - this.dims.xOffset;
-
-    console.log(xPos);
     const closestIndex = this.findClosestPointIndex(xPos);
     const closestPoint = this.xSet[closestIndex];
     this.anchorPos = this.xScale(closestPoint);
     this.anchorPos = Math.max(0, this.anchorPos);
-    this.anchorPos = Math.min(this.dims.width, this.anchorPos);
+    this.anchorPos = Math.min(this.dims.width, this.anchorPos) - 1.5;
 
     this.anchorValues = this.getValues(closestPoint);
     if (this.anchorPos !== this.lastAnchorPos) {
@@ -114,7 +114,29 @@ export class CustomChartTooltipAreaComponent {
       this.hover.emit({
         value: closestPoint
       });
-      this.showTooltip();
+      // this.showTooltip();
+
+      this.lastAnchorPos = this.anchorPos;
+    }
+  }
+
+  touchMove(event) {
+    const xPos = event.targetTouches[0].pageX - this.dims.xOffset;
+    const closestIndex = this.findClosestPointIndex(xPos);
+    const closestPoint = this.xSet[closestIndex];
+    this.anchorPos = this.xScale(closestPoint);
+    this.anchorPos = Math.max(0, this.anchorPos);
+    this.anchorPos = Math.min(this.dims.width, this.anchorPos) - 1.5;
+
+    this.anchorValues = this.getValues(closestPoint);
+    if (this.anchorPos !== this.lastAnchorPos) {
+      const ev = new MouseEvent('mouseleave', {bubbles: false});
+      this.renderer.invokeElementMethod(this.tooltipAnchor.nativeElement, 'dispatchEvent', [ev]);
+      this.anchorOpacity = 0.7;
+      this.touch.emit({
+        value: closestPoint
+      });
+      // this.showTooltip();
 
       this.lastAnchorPos = this.anchorPos;
     }
@@ -161,6 +183,7 @@ export class CustomChartTooltipAreaComponent {
     this.renderer.invokeElementMethod(this.tooltipAnchor.nativeElement, 'dispatchEvent', [event]);
     this.anchorOpacity = 0;
     this.lastAnchorPos = -1;
+    this.touchEnd.emit();
   }
 
   getToolTipText(tooltipItem: any): string {

@@ -2,6 +2,7 @@ export interface Coin {
   name: string;
   code: string;
   imageUrl: string;
+  order: string,
   currencies: {
     eur: CurrencyData,
     usd: CurrencyData,

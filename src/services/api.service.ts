@@ -32,6 +32,23 @@ export class ApiService {
     return 0;
   }
 
+  static compareOrder(a, b) {
+    if (Number(a.order) < Number(b.order))
+      return -1;
+    if (Number(a.order) > Number(b.order))
+      return 1;
+    return 0;
+  }
+
+  static renderPriceHistory(historyData): any {
+    return historyData.map(minuteObject => {
+      return {
+        name: minuteObject.time,
+        value: minuteObject.close
+      }
+    });
+  }
+
   constructor(private http: HttpClient) {
   }
 
@@ -63,13 +80,13 @@ export class ApiService {
 
   getPriceHistoryYear(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=7&e=CCCAGG`);
     this.getPriceData(url, coin);
   }
 
   getPriceHistoryAll(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=3650&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&e=CCCAGG&allData=true`);
     this.getPriceData(url, coin);
   }
 
@@ -104,9 +121,10 @@ export class ApiService {
               name: coinObject['CoinName'],
               code: coinObject['Symbol'],
               imageUrl: baseImageUrl + coinObject['ImageUrl'],
-              currencies: this.getCurrencies(coin)
+              currencies: this.getCurrencies(coin),
+              order: coinObject['SortOrder']
             };
-          }).sort(ApiService.comparePrices);
+          }).sort(ApiService.compareOrder);
           this.isLoading = false;
           this.indexStart = 0;
           if (this.refresher) {
@@ -170,27 +188,15 @@ export class ApiService {
     url.subscribe(
       data => {
         const historyData = data['Data'];
-
         this.coinHistoryPriceList = [
           {
             "name": coin.name,
             "series": ApiService.renderPriceHistory(historyData)
           },
         ];
-
-        console.log('list: ', this.coinHistoryPriceList);
       },
       err => console.error(err),
       () => console.log('done loading coins')
     );
-  }
-
-  static renderPriceHistory(historyData): any {
-    return historyData.map(minuteObject => {
-      return {
-        name: minuteObject.time,
-        value: minuteObject.close
-      }
-    });
   }
 }

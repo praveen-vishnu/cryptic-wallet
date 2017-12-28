@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {Coin} from "../../classes/coin";
-import {ApiService} from "../../services/api.service";
-import {curveLinear} from "d3-shape";
+import {Coin} from '../../classes/coin';
+import {ApiService} from '../../services/api.service';
+import {curveLinear} from 'd3-shape';
 
 @IonicPage()
 @Component({
@@ -19,7 +19,7 @@ export class CoinDetailsPage {
   showXAxisLabel = false;
   showYAxisLabel = false;
   curve = curveLinear;
-  price: number = 0;
+  price: number;
 
   colorScheme = {
     domain: ['#2a95da']
@@ -32,6 +32,7 @@ export class CoinDetailsPage {
               private apiService: ApiService,
               private cdRef: ChangeDetectorRef) {
     this.coin = navParams.data;
+
     // this.coin = {
     //   name: 'Bitcoin',
     //   code: 'BTC',
@@ -42,20 +43,16 @@ export class CoinDetailsPage {
     //     eur: {price: 12965.69, change: 27.148140048699126, marketcap: 217286164149.5}
     //   }
     // };
+
+    this.price = this.coin.currencies.eur.price;
   }
 
   get priceHistoryList() {
-    console.log(!!this.apiService.coinHistoryPriceList);
     return this.apiService.coinHistoryPriceList;
   }
 
   ionViewDidLoad() {
-
-    setTimeout(() => {
-
-      this.apiService.getPriceHistoryMinute(this.coin);
-    }, 500);
-    this.price = this.coin.currencies.eur.price;
+    this.apiService.getPriceHistoryMinute(this.coin);
   }
 
   ionViewDidLeave() {
@@ -68,11 +65,11 @@ export class CoinDetailsPage {
   }
 
   onScrub(event, serie) {
-    this.price = event.value;
+    this.coin.currencies.eur.price = event.value;
     this.cdRef.detectChanges();
   }
 
   onScrubEnd() {
-    this.price = this.coin.currencies.eur.price;
+    this.coin.currencies.eur.price = this.price;
   }
 }

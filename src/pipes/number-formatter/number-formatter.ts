@@ -1,28 +1,50 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
-/**
- * Generated class for the NumberFormatterPipe pipe.
- *
- * See https://angular.io/api/core/Pipe for more info on Angular Pipes.
- */
 @Pipe({
   name: 'numberFormatter',
 })
 export class NumberFormatterPipe implements PipeTransform {
-  /**
-   * Takes a value and makes it lowercase.
-   */
-  transform(value: number, ...args: any[]): string {
-    const options = {
-      minimumSignificantDigits: 2,
-      maximumSignificantDigits: 2
-    };
 
-    args.forEach(arg => {
-      if (arg === 'price') {
-        options.maximumSignificantDigits = 3;
-      }
-    });
+  transform(value: number, ...args: any[]): string {
+    const options = {};
+
+    if (args.length > 0) {
+      args.forEach(arg => {
+        if (arg === 'price') {
+          if (parseFloat(value.toString(10)) >= 100) {
+            options['minimumFractionDigits'] = 0;
+            options['maximumFractionDigits'] = 0;
+          }
+          if (parseFloat(value.toString(10)) < 100) {
+            options['minimumFractionDigits'] = 2;
+            options['maximumFractionDigits'] = 2;
+          }
+          if (parseFloat(value.toString(10)) < 0.01) {
+            options['minimumFractionDigits'] = 3;
+            options['maximumFractionDigits'] = 3;
+          }
+          if (parseFloat(value.toString(10)) < 0.001) {
+            options['minimumFractionDigits'] = 4;
+            options['maximumFractionDigits'] = 4;
+          }
+          if (parseFloat(value.toString(10)) < 0.0001) {
+            options['minimumFractionDigits'] = 5;
+            options['maximumFractionDigits'] = 5;
+          }
+          if (parseFloat(value.toString(10)) < 0.00001) {
+            options['minimumFractionDigits'] = 6;
+            options['maximumFractionDigits'] = 6;
+          }
+        }
+
+        if (arg === 'perc') {
+          options['maximumFractionDigits'] = 1;
+        }
+      });
+    } else {
+      options['minimumFractionDigits'] = 0;
+      options['maximumFractionDigits'] = 0;
+    }
 
     return new Intl.NumberFormat('de-DE', options).format(value);
   }

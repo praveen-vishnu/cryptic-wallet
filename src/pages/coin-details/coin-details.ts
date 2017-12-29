@@ -71,13 +71,15 @@ export class CoinDetailsPage {
 
   ionViewDidLoad() {
     this.chartMode = 'hour';
-    this.apiService.getPriceHistoryHour(this.coin);
     this.getChartData();
+    this.apiService.getPriceHistoryHour(this.coin);
   }
 
   ionViewDidLeave() {
     this.coin = null;
     this.apiService.coinHistoryPriceList = null;
+    // this.apiService.coinHistoryPriceListJS.unsubscribe();
+    this.chartjs.destroy();
   }
 
   detectChange(priceChange): boolean {
@@ -125,6 +127,9 @@ export class CoinDetailsPage {
   }
 
   chartJS(labels, data) {
+    if (!!this.chartjs) {
+      this.chartjs.destroy();
+    }
     this.chartjs = new Chart(this.canvas.nativeElement, {
       type: 'line',
       data: {

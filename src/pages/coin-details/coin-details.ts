@@ -38,7 +38,7 @@ export class CoinDetailsPage {
               private apiService: ApiService,
               private cdRef: ChangeDetectorRef) {
     this.coin = navParams.data;
-    this.overrideCoin();
+    // this.overrideCoin();
 
     this.price = this.coin.currencies.eur.price;
   }

@@ -7,7 +7,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content class="scroll-content">
   <ion-grid>
     <ion-row>
       <ion-col col-3>
@@ -46,27 +46,27 @@
     </ion-segment>
   </div>
   <div class="chart-wrapper">
-    <custom-chart *ngIf="!!priceHistoryList; else noChart"
-                  [view]="view"
-                  [scheme]="colorScheme"
-                  [results]="priceHistoryList"
-                  [gradient]="gradient"
-                  [xAxis]="showXAxis"
-                  [yAxis]="showYAxis"
-                  [legend]="showLegend"
-                  [showXAxisLabel]="showXAxisLabel"
-                  [showYAxisLabel]="showYAxisLabel"
-                  [xAxisLabel]="xAxisLabel"
-                  [yAxisLabel]="yAxisLabel"
-                  [autoScale]="autoScale"
-                  [timeline]="false"
-                  [curve]="curve"
-                  (select)="onScrub($event)"
-                  (touchEnd)="onScrubEnd()">
-    </custom-chart>
-    <div *ngIf="timestamp" class="timestamp">{{timestamp}}</div>
-    <ng-template #noChart>
-      <ion-spinner name="crescent"></ion-spinner>
-    </ng-template>
+    <!--<custom-chart *ngIf="!!priceHistoryList; else noChart"-->
+    <!--[view]="view"-->
+    <!--[scheme]="colorScheme"-->
+    <!--[results]="priceHistoryList"-->
+    <!--[gradient]="gradient"-->
+    <!--[xAxis]="showXAxis"-->
+    <!--[yAxis]="showYAxis"-->
+    <!--[legend]="showLegend"-->
+    <!--[showXAxisLabel]="showXAxisLabel"-->
+    <!--[showYAxisLabel]="showYAxisLabel"-->
+    <!--[autoScale]="autoScale"-->
+    <!--[timeline]="false"-->
+    <!--[curve]="curve"-->
+    <!--(select)="onScrub($event)"-->
+    <!--(touchEnd)="onScrubEnd()">-->
+    <!--</custom-chart>-->
+    <!--<div *ngIf="timestamp" class="timestamp">{{timestamp}}</div>-->
+    <!--<ng-template #noChart>-->
+    <!--<ion-spinner name="crescent"></ion-spinner>-->
+    <!--</ng-template>-->
+
+    <canvas #canvas id="myChart" width="400" height="400"></canvas>
   </div>
 </ion-content>

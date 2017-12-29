@@ -11,7 +11,7 @@ export class ApiService {
   coinList: Array<Coin>;
   indexStart: number = 0;
   currencyList: Object = {};
-  promises = [];
+  pricePromises = [];
   isLoading: boolean = false;
   refresher: any;
   coinHistoryPriceList: Array<Object> = null;
@@ -43,20 +43,32 @@ export class ApiService {
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
       return {
-        name: minuteObject.time,
-        value: minuteObject.close
+        x: minuteObject.time,
+        y: minuteObject.close
       }
+    });
+  }
+
+  static renderPriceHistoryChartJSLabel(historyData): any {
+    return historyData.map(minuteObject => {
+      return minuteObject.time;
+    });
+  }
+
+  static renderPriceHistoryChartJSValue(historyData): any {
+    return historyData.map(minuteObject => {
+      return minuteObject.close;
     });
   }
 
   constructor(private http: HttpClient) {
   }
 
-  callCoinList() {
+  private callCoinList() {
     return this.http.get('https://min-api.cryptocompare.com/data/all/coinlist');
   }
 
-  callPriceList(coins) {
+  private callPriceList(coins) {
     return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`); // TODO: fix currency to dynamic
   }
 
@@ -104,45 +116,57 @@ export class ApiService {
           listOfCoinProperties.length = COINAMOUNT;
         }
         this.getPricesPerBatchSize(listOfCoinProperties, BATCHSIZE);
-        Promise.all(this.promises).then(() => {
-          this.coinList = listOfCoinProperties.filter(coin => {
-            const coinObject = coinListJson[coin];
-            const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
-            const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
-            const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
-            const hasPrice = this.currencyList[coin]
-              && (!!this.currencyList[coin]['USD']
-                && !!this.currencyList[coin]['BTC']
-                && !!this.currencyList[coin]['EUR']);
-            return hasName && hasUrl && hasImage && hasPrice;
-          }).map(coin => {
-            const coinObject = coinListJson[coin];
-            return {
-              name: coinObject['CoinName'],
-              code: coinObject['Symbol'],
-              imageUrl: baseImageUrl + coinObject['ImageUrl'],
-              currencies: this.getCurrencies(coin),
-              order: coinObject['SortOrder']
-            };
-          }).sort(ApiService.compareOrder);
-          this.isLoading = false;
-          this.indexStart = 0;
-          if (this.refresher) {
-            this.refresher.complete();
-            this.refresher = null;
-          }
-        }, err => console.error(err));
+        this.prepareCoinList(listOfCoinProperties, coinListJson, baseImageUrl);
       },
       err => console.error(err),
       () => console.log('done loading coins')
     );
   }
 
-  getPricesPerBatchSize(listOfCoinProperties, batchSize) {
+  private prepareCoinList(listOfCoinProperties: string[], coinListJson: any, baseImageUrl: any) {
+    Promise.all(this.pricePromises).then(() => {
+      this.coinList = listOfCoinProperties.filter(coin => {
+        return this.checkForEmptyCoins(coinListJson, coin);
+      }).map(coin => {
+        return this.mapToCoin(coinListJson, coin, baseImageUrl);
+      }).sort(ApiService.compareOrder);
+      this.isLoading = false;
+      this.indexStart = 0;
+      if (this.refresher) {
+        this.refresher.complete();
+        this.refresher = null;
+      }
+    }, err => console.error(err));
+  }
+
+  private mapToCoin(coinListJson: any, coin, baseImageUrl: any) {
+    const coinObject = coinListJson[coin];
+    return {
+      name: coinObject['CoinName'],
+      code: coinObject['Symbol'],
+      imageUrl: baseImageUrl + coinObject['ImageUrl'],
+      currencies: this.mapCurrencies(coin),
+      order: coinObject['SortOrder']
+    };
+  }
+
+  private checkForEmptyCoins(coinListJson: any, coin) {
+    const coinObject = coinListJson[coin];
+    const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
+    const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
+    const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
+    const hasPrice = this.currencyList[coin]
+      && (!!this.currencyList[coin]['USD']
+        && !!this.currencyList[coin]['BTC']
+        && !!this.currencyList[coin]['EUR']);
+    return hasName && hasUrl && hasImage && hasPrice;
+  }
+
+  private getPricesPerBatchSize(listOfCoinProperties, batchSize) {
     const range = this.indexStart + batchSize;
     const shortCoinNames = listOfCoinProperties.slice(this.indexStart, range);
     const priceList = this.callPriceList(shortCoinNames.join()).toPromise();
-    this.promises.push(new Promise((resolve, reject) => {
+    this.pricePromises.push(new Promise((resolve, reject) => {
       priceList.then(
         data => {
           Object.assign(this.currencyList, data['RAW']);
@@ -157,7 +181,7 @@ export class ApiService {
     }
   }
 
-  getCurrencies(coin): any {
+  private mapCurrencies(coin): any {
     if (this.currencyList[coin]) {
       const currencies = this.currencyList[coin];
 
@@ -184,7 +208,7 @@ export class ApiService {
     setTimeout(() => this.getCoinList(), 1000);
   }
 
-  getPriceData(url, coin) {
+  private getPriceData(url, coin) {
     url.subscribe(
       data => {
         const historyData = data['Data'];
@@ -194,6 +218,23 @@ export class ApiService {
             "series": ApiService.renderPriceHistory(historyData)
           },
         ];
+
+        this.coinHistoryPriceList[0]['series'].forEach(item => {
+
+          console.log(item);
+        })
+      },
+      err => console.error(err),
+      () => console.log('done loading coins')
+    );
+  }
+
+  private getPriceDataChartJS(url, coin) {
+    url.subscribe(
+      data => {
+        const historyData = data['Data'];
+        this.coinHistoryPriceList = ApiService.renderPriceHistoryChartJSValue(historyData);
+        console.log(this.coinHistoryPriceList.join());
       },
       err => console.error(err),
       () => console.log('done loading coins')

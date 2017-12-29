@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Coin} from "../classes/coin";
 import {Subscription} from "rxjs/Subscription";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
@@ -15,6 +16,7 @@ export class ApiService {
   isLoading: boolean = false;
   refresher: any;
   coinHistoryPriceList: Array<Object> = null;
+  coinHistoryPriceListJS = new ReplaySubject(1);
 
   static compareNames(a, b) {
     if (a.name < b.name)
@@ -43,8 +45,8 @@ export class ApiService {
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
       return {
-        x: minuteObject.time,
-        y: minuteObject.close
+        name: minuteObject.time,
+        value: minuteObject.close
       }
     });
   }
@@ -75,31 +77,31 @@ export class ApiService {
   getPriceHistoryHour(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=60&aggregate=1&e=CCCAGG`);
-    return this.getPriceData(url, coin);
+    this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryDay(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${code}&tsym=EUR&limit=24&aggregate=1&e=CCCAGG`);
-    this.getPriceData(url, coin);
+    this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryMonth(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=30&aggregate=1&e=CCCAGG`);
-    this.getPriceData(url, coin);
+    this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryYear(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=7&e=CCCAGG`);
-    this.getPriceData(url, coin);
+    this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryAll(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&e=CCCAGG&allData=true`);
-    this.getPriceData(url, coin);
+    this.getPriceDataChartJS(url, coin);
   }
 
   getCoinList(): Subscription {
@@ -218,11 +220,6 @@ export class ApiService {
             "series": ApiService.renderPriceHistory(historyData)
           },
         ];
-
-        this.coinHistoryPriceList[0]['series'].forEach(item => {
-
-          console.log(item);
-        })
       },
       err => console.error(err),
       () => console.log('done loading coins')
@@ -233,8 +230,11 @@ export class ApiService {
     url.subscribe(
       data => {
         const historyData = data['Data'];
-        this.coinHistoryPriceList = ApiService.renderPriceHistoryChartJSValue(historyData);
-        console.log(this.coinHistoryPriceList.join());
+
+        this.coinHistoryPriceListJS.next({
+          labels: ApiService.renderPriceHistoryChartJSLabel(historyData),
+          data: ApiService.renderPriceHistoryChartJSValue(historyData)
+        });
       },
       err => console.error(err),
       () => console.log('done loading coins')

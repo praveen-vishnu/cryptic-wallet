@@ -94,7 +94,7 @@ export class ApiService {
 
   getPriceHistoryYear(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=7&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 

@@ -50,7 +50,10 @@ export class CoinDetailsPage {
   getChartData() {
     this.apiService.coinHistoryPriceListJS.subscribe(value => {
       if (!!value) {
-        this.chartJS(value['labels'], value['data']);
+        const labels = value['labels'].map(item => {
+          return moment.unix(item).format("DD-MM-YYYY HH:mm");
+        });
+        this.chartJS(labels, value['data']);
       }
     });
   }

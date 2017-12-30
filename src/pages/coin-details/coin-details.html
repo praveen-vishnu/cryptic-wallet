@@ -26,25 +26,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div class="chart-segment" padding>
-    <ion-segment [(ngModel)]="chartMode" (ionChange)="chartModeChanged($event)">
-      <ion-segment-button value="hour">
-        1H
-      </ion-segment-button>
-      <ion-segment-button value="day">
-        1D
-      </ion-segment-button>
-      <ion-segment-button value="month">
-        1M
-      </ion-segment-button>
-      <ion-segment-button value="year">
-        1Y
-      </ion-segment-button>
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+
   <div class="chart-wrapper">
     <!--<custom-chart *ngIf="!!priceHistoryList; else noChart"-->
     <!--[view]="view"-->
@@ -66,7 +48,29 @@
     <!--<ng-template #noChart>-->
     <!--<ion-spinner name="crescent"></ion-spinner>-->
     <!--</ng-template>-->
-
-    <canvas #canvas id="myChart"></canvas>
+    <div style="min-height: 2rem;" text-right>{{timestamp}}</div>
+    <div class="custom-chart" (touchmove)="onScrubChartJs($event)" (touchend)="onScrubEndChartJs($event)">
+      <canvas #canvas id="myChart"></canvas>
+      <div class="scrubber" [style.left]="scrubberX + 'px'"></div>
+    </div>
+  </div>
+  <div class="chart-segment" padding>
+    <ion-segment [(ngModel)]="chartMode" (ionChange)="chartModeChanged($event)">
+      <ion-segment-button value="day">
+        D
+      </ion-segment-button>
+      <ion-segment-button value="week">
+        W
+      </ion-segment-button>
+      <ion-segment-button value="month">
+        M
+      </ion-segment-button>
+      <ion-segment-button value="year">
+        Y
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        All
+      </ion-segment-button>
+    </ion-segment>
   </div>
 </ion-content>

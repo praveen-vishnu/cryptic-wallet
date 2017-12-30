@@ -24,4 +24,18 @@ page-coin-details {
     color: white;
     padding: 0.1rem 0.7rem;
   }
+
+  .custom-chart {
+    position: relative;
+
+    .scrubber {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 3px;
+      background: #b12a2a;
+      height: 100%;
+      z-index: 99;
+    }
+  }
 }

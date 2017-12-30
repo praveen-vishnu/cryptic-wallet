@@ -24,13 +24,15 @@ export class CoinDetailsPage {
   price: number;
   timestamp: string;
   chartMode: any;
+  scrubberX: number;
 
   colorScheme = {
     domain: ['#2a95da']
   };
   autoScale = true;
 
-  chartjs: any;
+  chartjs: Chart;
+
   @ViewChild('canvas') canvas: ElementRef;
 
   constructor(public navCtrl: NavController,
@@ -38,7 +40,7 @@ export class CoinDetailsPage {
               private apiService: ApiService,
               private cdRef: ChangeDetectorRef) {
     this.coin = navParams.data;
-    // this.overrideCoin();
+    this.overrideCoin();
 
     this.price = this.coin.currencies.eur.price;
   }
@@ -50,10 +52,10 @@ export class CoinDetailsPage {
   getChartData() {
     this.apiService.coinHistoryPriceListJS.subscribe(value => {
       if (!!value) {
-        const labels = value['labels'].map(item => {
-          return moment.unix(item).format("DD-MM-YYYY HH:mm");
-        });
-        this.chartJS(labels, value['data']);
+        // const labels = value['labels'].map(item => {
+        //   return moment.unix(item).format("DD-MM-YYYY HH:mm");
+        // });
+        this.chartJS(value['labels'], value['data']);
       }
     });
   }
@@ -73,9 +75,9 @@ export class CoinDetailsPage {
   }
 
   ionViewDidLoad() {
-    this.chartMode = 'hour';
+    this.chartMode = 'day';
     this.getChartData();
-    this.apiService.getPriceHistoryHour(this.coin);
+    this.apiService.getPriceHistoryDay(this.coin);
   }
 
   ionViewDidLeave() {
@@ -103,13 +105,13 @@ export class CoinDetailsPage {
   chartModeChanged(event) {
     this.chartjs.destroy();
     switch (this.chartMode) {
-      case 'hour':
-        this.apiService.coinHistoryPriceList = null;
-        this.apiService.getPriceHistoryHour(this.coin);
-        break;
       case 'day':
         this.apiService.coinHistoryPriceList = null;
         this.apiService.getPriceHistoryDay(this.coin);
+        break;
+      case 'week':
+        this.apiService.coinHistoryPriceList = null;
+        this.apiService.getPriceHistoryWeek(this.coin);
         break;
       case 'month':
         this.apiService.coinHistoryPriceList = null;
@@ -141,21 +143,21 @@ export class CoinDetailsPage {
           data: data,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            // 'rgba(54, 162, 235, 0.2)',
+            // 'rgba(255, 206, 86, 0.2)',
+            // 'rgba(75, 192, 192, 0.2)',
+            // 'rgba(153, 102, 255, 0.2)',
+            // 'rgba(255, 159, 64, 0.2)'
           ],
           borderColor: [
             'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
+            // 'rgba(54, 162, 235, 1)',
+            // 'rgba(255, 206, 86, 1)',
+            // 'rgba(75, 192, 192, 1)',
+            // 'rgba(153, 102, 255, 1)',
+            // 'rgba(255, 159, 64, 1)'
           ],
-          borderWidth: 1,
+          borderWidth: 2,
           pointRadius: 0,
         }]
       },
@@ -165,6 +167,7 @@ export class CoinDetailsPage {
           display: false
         },
         tooltips: {
+          enabled: false,
           mode: 'index',
           intersect: false,
         },
@@ -188,5 +191,24 @@ export class CoinDetailsPage {
         }
       }
     });
+  }
+
+  onScrubChartJs(evt) {
+    const xPos = evt.targetTouches[0].pageX;
+    this.scrubberX = xPos;
+    const index = this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
+    if (!!index) {
+      const label = this.chartjs.data.labels[index];
+      const value = this.chartjs.data.datasets[0].data[index];
+
+      if (!!value && !!label) {
+        this.timestamp = moment.unix(label).format("DD-MM-YYYY HH:mm");
+        this.coin.currencies.eur.price = value;
+      }
+    }
+  }
+
+  onScrubEndChartJs() {
+    this.coin.currencies.eur.price = this.price;
   }
 }

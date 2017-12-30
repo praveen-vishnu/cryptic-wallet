@@ -86,6 +86,12 @@ export class ApiService {
     this.getPriceDataChartJS(url, coin);
   }
 
+  getPriceHistoryWeek(coin) {
+    const code = coin.code;
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=7&aggregate=1&e=CCCAGG`);
+    this.getPriceDataChartJS(url, coin);
+  }
+
   getPriceHistoryMonth(coin) {
     const code = coin.code;
     const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=30&aggregate=1&e=CCCAGG`);
@@ -100,7 +106,7 @@ export class ApiService {
 
   getPriceHistoryAll(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&e=CCCAGG&allData=true`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&aggregate=1&e=CCCAGG&allData=true`);
     this.getPriceDataChartJS(url, coin);
   }
 

@@ -29,13 +29,19 @@ page-coin-details {
     position: relative;
 
     .scrubber {
+      transition: right 750ms;
+      transition-timing-function: ease;
       position: absolute;
       top: 0;
       right: 0;
       width: 3px;
-      background: #b12a2a;
+      background: #95adc1;
       height: 100%;
       z-index: 99;
+
+      &.active {
+        transition: unset;
+      }
     }
   }
 }

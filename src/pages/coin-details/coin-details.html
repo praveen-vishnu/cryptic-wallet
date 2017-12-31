@@ -49,9 +49,12 @@
     <!--<ion-spinner name="crescent"></ion-spinner>-->
     <!--</ng-template>-->
     <div style="min-height: 2rem;" text-right>{{timestamp}}</div>
-    <div class="custom-chart" (touchmove)="onScrubChartJs($event)" (touchend)="onScrubEndChartJs($event)">
+    <div class="custom-chart"
+         (touchstart)="onScrubStartChartJs($event)"
+         (touchmove)="onScrubChartJs($event)"
+         (touchend)="onScrubEndChartJs($event)">
       <canvas #canvas id="myChart"></canvas>
-      <div class="scrubber" [style.left]="scrubberX + 'px'"></div>
+      <div class="scrubber" [ngClass]="{'active': scrubberIsActive}" [style.right]="scrubberX + 'px'"></div>
     </div>
   </div>
   <div class="chart-segment" padding>

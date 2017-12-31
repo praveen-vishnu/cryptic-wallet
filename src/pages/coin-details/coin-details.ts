@@ -25,6 +25,7 @@ export class CoinDetailsPage {
   timestamp: string;
   chartMode: any;
   scrubberX: number;
+  scrubberIsActive: boolean = false;
 
   colorScheme = {
     domain: ['#2a95da']
@@ -52,9 +53,6 @@ export class CoinDetailsPage {
   getChartData() {
     this.apiService.coinHistoryPriceListJS.subscribe(value => {
       if (!!value) {
-        // const labels = value['labels'].map(item => {
-        //   return moment.unix(item).format("DD-MM-YYYY HH:mm");
-        // });
         this.chartJS(value['labels'], value['data']);
       }
     });
@@ -141,23 +139,13 @@ export class CoinDetailsPage {
         labels: labels,
         datasets: [{
           data: data,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            // 'rgba(54, 162, 235, 0.2)',
-            // 'rgba(255, 206, 86, 0.2)',
-            // 'rgba(75, 192, 192, 0.2)',
-            // 'rgba(153, 102, 255, 0.2)',
-            // 'rgba(255, 159, 64, 0.2)'
-          ],
+          // backgroundColor: [
+          //   'rgba(35, 87, 105, 0.2)',
+          // ],
           borderColor: [
-            'rgba(255,99,132,1)',
-            // 'rgba(54, 162, 235, 1)',
-            // 'rgba(255, 206, 86, 1)',
-            // 'rgba(75, 192, 192, 1)',
-            // 'rgba(153, 102, 255, 1)',
-            // 'rgba(255, 159, 64, 1)'
+            'rgba(35, 87, 105, 1)',
           ],
-          borderWidth: 2,
+          borderWidth: 3,
           pointRadius: 0,
         }]
       },
@@ -194,9 +182,31 @@ export class CoinDetailsPage {
   }
 
   onScrubChartJs(evt) {
-    const xPos = evt.targetTouches[0].pageX;
-    this.scrubberX = xPos;
-    const index = this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
+    const index = this.getIndexForTouchEvent(evt);
+    this.updatePriceAndDate(index);
+  }
+
+  onScrubStartChartJs(evt) {
+    const index = this.getIndexForTouchEvent(evt);
+    this.updatePriceAndDate(index);
+    this.scrubberIsActive = true;
+  }
+
+  onScrubEndChartJs(evt) {
+    this.coin.currencies.eur.price = this.price;
+    this.scrubberX = 0;
+    this.scrubberIsActive = false;
+  }
+
+  private getIndexForTouchEvent(evt) {
+    const targetTouch = evt.targetTouches[0];
+    const xPos = targetTouch.pageX;
+    const canvasWidth = targetTouch.target.clientWidth;
+    this.scrubberX = canvasWidth - xPos;
+    return this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
+  }
+
+  private updatePriceAndDate(index: any) {
     if (!!index) {
       const label = this.chartjs.data.labels[index];
       const value = this.chartjs.data.datasets[0].data[index];
@@ -206,9 +216,5 @@ export class CoinDetailsPage {
         this.coin.currencies.eur.price = value;
       }
     }
-  }
-
-  onScrubEndChartJs() {
-    this.coin.currencies.eur.price = this.price;
   }
 }

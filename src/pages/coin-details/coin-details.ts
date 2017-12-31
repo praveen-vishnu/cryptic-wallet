@@ -1,10 +1,9 @@
-import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
 import {curveNatural} from 'd3-shape';
 import * as moment from 'moment';
-import Chart from 'chart.js';
 
 @IonicPage()
 @Component({
@@ -24,17 +23,14 @@ export class CoinDetailsPage {
   price: number;
   timestamp: string;
   chartMode: any;
-  scrubberX: number;
-  scrubberIsActive: boolean = false;
+
 
   colorScheme = {
     domain: ['#2a95da']
   };
   autoScale = true;
 
-  chartjs: Chart;
-
-  @ViewChild('canvas') canvas: ElementRef;
+  data: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -50,10 +46,10 @@ export class CoinDetailsPage {
     return this.apiService.coinHistoryPriceList;
   }
 
-  getChartData() {
+  getChartJSData() {
     this.apiService.coinHistoryPriceListJS.subscribe(value => {
       if (!!value) {
-        this.chartJS(value['labels'], value['data']);
+        this.data = value;
       }
     });
   }
@@ -74,7 +70,7 @@ export class CoinDetailsPage {
 
   ionViewDidLoad() {
     this.chartMode = 'day';
-    this.getChartData();
+    this.getChartJSData();
     this.apiService.getPriceHistoryDay(this.coin);
   }
 
@@ -82,7 +78,6 @@ export class CoinDetailsPage {
     this.coin = null;
     this.apiService.coinHistoryPriceList = null;
     // this.apiService.coinHistoryPriceListJS.unsubscribe();
-    this.chartjs.destroy();
   }
 
   detectChange(priceChange): boolean {
@@ -101,7 +96,6 @@ export class CoinDetailsPage {
   }
 
   chartModeChanged(event) {
-    this.chartjs.destroy();
     switch (this.chartMode) {
       case 'day':
         this.apiService.coinHistoryPriceList = null;
@@ -129,92 +123,17 @@ export class CoinDetailsPage {
     }
   }
 
-  chartJS(labels, data) {
-    if (!!this.chartjs) {
-      this.chartjs.destroy();
-    }
-    this.chartjs = new Chart(this.canvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          // backgroundColor: [
-          //   'rgba(35, 87, 105, 0.2)',
-          // ],
-          borderColor: [
-            'rgba(35, 87, 105, 1)',
-          ],
-          borderWidth: 3,
-          pointRadius: 0,
-        }]
-      },
-      options: {
-        responsive: true,
-        legend: {
-          display: false
-        },
-        tooltips: {
-          enabled: false,
-          mode: 'index',
-          intersect: false,
-        },
-        hover: {
-          mode: 'nearest',
-          intersect: true
-        },
-        scales: {
-          yAxes: [{
-            display: false,
-            ticks: {
-              beginAtZero: false
-            }
-          }],
-          xAxes: [{
-            display: false,
-            ticks: {
-              beginAtZero: false
-            }
-          }]
-        }
-      }
-    });
-  }
 
-  onScrubChartJs(evt) {
-    const index = this.getIndexForTouchEvent(evt);
-    this.updatePriceAndDate(index);
-  }
-
-  onScrubStartChartJs(evt) {
-    const index = this.getIndexForTouchEvent(evt);
-    this.updatePriceAndDate(index);
-    this.scrubberIsActive = true;
-  }
-
-  onScrubEndChartJs(evt) {
-    this.coin.currencies.eur.price = this.price;
-    this.scrubberX = 0;
-    this.scrubberIsActive = false;
-  }
-
-  private getIndexForTouchEvent(evt) {
-    const targetTouch = evt.targetTouches[0];
-    const xPos = targetTouch.pageX;
-    const canvasWidth = targetTouch.target.clientWidth;
-    this.scrubberX = canvasWidth - xPos;
-    return this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
-  }
-
-  private updatePriceAndDate(index: any) {
-    if (!!index) {
-      const label = this.chartjs.data.labels[index];
-      const value = this.chartjs.data.datasets[0].data[index];
-
-      if (!!value && !!label) {
-        this.timestamp = moment.unix(label).format("DD-MM-YYYY HH:mm");
-        this.coin.currencies.eur.price = value;
-      }
+  updatePrice(value) {
+    if (!!value) {
+      this.coin.currencies.eur.price = value;
+    } else {
+      this.coin.currencies.eur.price = this.price;
     }
   }
+
+  updateDate(value) {
+    this.timestamp = value;
+  }
+
 }

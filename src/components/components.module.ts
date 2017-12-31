@@ -5,6 +5,7 @@ import {CustomChartTooltipAreaComponent} from "./custom-chart-tooltip-area/custo
 import {CustomChartCircleSeriesComponent} from './custom-chart-circle-series/custom-chart-circle-series';
 import {CustomChartLineSeriesComponent} from './custom-chart-line-series/custom-chart-line-series';
 import {CustomChartLineComponent} from './custom-chart-line/custom-chart-line';
+import {ChartjsComponent} from './chartjs/chartjs';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import {CustomChartLineComponent} from './custom-chart-line/custom-chart-line';
     CustomChartCircleSeriesComponent,
     CustomChartLineSeriesComponent,
     CustomChartLineComponent,
+    ChartjsComponent,
   ],
   imports: [
     NgxChartsModule
@@ -22,7 +24,8 @@ import {CustomChartLineComponent} from './custom-chart-line/custom-chart-line';
     CustomChartTooltipAreaComponent,
     CustomChartCircleSeriesComponent,
     CustomChartLineSeriesComponent,
-    CustomChartLineComponent
+    CustomChartLineComponent,
+    ChartjsComponent
   ]
 })
 export class ComponentsModule {

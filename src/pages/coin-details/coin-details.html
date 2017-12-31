@@ -28,27 +28,10 @@
   </ion-grid>
 
   <div class="chart-wrapper">
-    <!--<custom-chart *ngIf="!!priceHistoryList; else noChart"-->
-    <!--[view]="view"-->
-    <!--[scheme]="colorScheme"-->
-    <!--[results]="priceHistoryList"-->
-    <!--[gradient]="gradient"-->
-    <!--[xAxis]="showXAxis"-->
-    <!--[yAxis]="showYAxis"-->
-    <!--[legend]="showLegend"-->
-    <!--[showXAxisLabel]="showXAxisLabel"-->
-    <!--[showYAxisLabel]="showYAxisLabel"-->
-    <!--[autoScale]="autoScale"-->
-    <!--[timeline]="false"-->
-    <!--[curve]="curve"-->
-    <!--(select)="onScrub($event)"-->
-    <!--(touchEnd)="onScrubEnd()">-->
-    <!--</custom-chart>-->
-    <!--<div *ngIf="timestamp" class="timestamp">{{timestamp}}</div>-->
-    <!--<ng-template #noChart>-->
-    <!--<ion-spinner name="crescent"></ion-spinner>-->
-    <!--</ng-template>-->
+
     <div style="min-height: 2rem;" text-right>{{timestamp}}</div>
+    <!--TODO Fix api with subclassing-->
+    <!--<ngx-chart [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></ngx-chart>-->
     <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
   </div>
   <div class="chart-segment" padding>

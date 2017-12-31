@@ -1,9 +1,7 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
-import {curveNatural} from 'd3-shape';
-import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -12,41 +10,29 @@ import * as moment from 'moment';
 })
 export class CoinDetailsPage {
   coin?: Coin;
-  view: any[] = undefined;
-  showXAxis = false;
-  showYAxis = false;
-  gradient = false;
-  showLegend = false;
-  showXAxisLabel = false;
-  showYAxisLabel = false;
-  curve = curveNatural;
   price: number;
   timestamp: string;
   chartMode: any;
-
-
-  colorScheme = {
-    domain: ['#2a95da']
-  };
-  autoScale = true;
-
   data: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private apiService: ApiService,
-              private cdRef: ChangeDetectorRef) {
+              private apiService: ApiService) {
     this.coin = navParams.data;
     this.overrideCoin();
 
     this.price = this.coin.currencies.eur.price;
   }
 
-  get priceHistoryList() {
-    return this.apiService.coinHistoryPriceList;
+  subscribePriceHistoryDataNGX() {
+    this.apiService.coinHistoryPriceListJS.subscribe(value => {
+      if (!!value) {
+        this.data = value;
+      }
+    });
   }
 
-  getChartJSData() {
+  subscribePriceHistoryData() {
     this.apiService.coinHistoryPriceListJS.subscribe(value => {
       if (!!value) {
         this.data = value;
@@ -70,7 +56,7 @@ export class CoinDetailsPage {
 
   ionViewDidLoad() {
     this.chartMode = 'day';
-    this.getChartJSData();
+    this.subscribePriceHistoryData();
     this.apiService.getPriceHistoryDay(this.coin);
   }
 
@@ -82,17 +68,6 @@ export class CoinDetailsPage {
 
   detectChange(priceChange): boolean {
     return priceChange < 0;
-  }
-
-  onScrub(event, serie) {
-    this.timestamp = moment.unix(event.name).format("DD-MM-YYYY HH:mm");
-    this.coin.currencies.eur.price = event.value;
-    this.cdRef.detectChanges();
-  }
-
-  onScrubEnd() {
-    this.coin.currencies.eur.price = this.price;
-    this.timestamp = null;
   }
 
   chartModeChanged(event) {
@@ -123,7 +98,6 @@ export class CoinDetailsPage {
     }
   }
 
-
   updatePrice(value) {
     if (!!value) {
       this.coin.currencies.eur.price = value;
@@ -135,5 +109,4 @@ export class CoinDetailsPage {
   updateDate(value) {
     this.timestamp = value;
   }
-
 }

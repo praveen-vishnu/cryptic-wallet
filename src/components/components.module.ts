@@ -6,6 +6,8 @@ import {CustomChartCircleSeriesComponent} from './custom-chart-circle-series/cus
 import {CustomChartLineSeriesComponent} from './custom-chart-line-series/custom-chart-line-series';
 import {CustomChartLineComponent} from './custom-chart-line/custom-chart-line';
 import {ChartjsComponent} from './chartjs/chartjs';
+import {NgxChartComponent} from './ngx-chart/ngx-chart';
+import {IonicModule} from "ionic-angular";
 
 @NgModule({
   declarations: [
@@ -15,9 +17,11 @@ import {ChartjsComponent} from './chartjs/chartjs';
     CustomChartLineSeriesComponent,
     CustomChartLineComponent,
     ChartjsComponent,
+    NgxChartComponent,
   ],
   imports: [
-    NgxChartsModule
+    IonicModule,
+    NgxChartsModule,
   ],
   exports: [
     CustomChartComponent,
@@ -25,7 +29,8 @@ import {ChartjsComponent} from './chartjs/chartjs';
     CustomChartCircleSeriesComponent,
     CustomChartLineSeriesComponent,
     CustomChartLineComponent,
-    ChartjsComponent
+    ChartjsComponent,
+    NgxChartComponent
   ]
 })
 export class ComponentsModule {

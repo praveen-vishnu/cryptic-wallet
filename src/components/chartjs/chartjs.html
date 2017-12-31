@@ -4,4 +4,5 @@
      (touchend)="onScrubEndChartJs($event)">
   <canvas #canvas id="myChart"></canvas>
   <div class="scrubber" [ngClass]="{'active': scrubberIsActive}" [style.right]="scrubberX + 'px'"></div>
+  <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
 </div>

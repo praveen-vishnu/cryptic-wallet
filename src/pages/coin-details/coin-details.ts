@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -19,9 +20,10 @@ export class CoinDetailsPage {
               public navParams: NavParams,
               private apiService: ApiService) {
     this.coin = navParams.data;
-    this.overrideCoin();
+    // this.overrideCoin();
 
     this.price = this.coin.currencies.eur.price;
+    this.timestamp = moment().format("DD-MM-YYYY HH:mm");
   }
 
   subscribePriceHistoryDataNGX() {
@@ -62,8 +64,9 @@ export class CoinDetailsPage {
 
   ionViewDidLeave() {
     this.coin = null;
-    this.apiService.coinHistoryPriceList = null;
-    // this.apiService.coinHistoryPriceListJS.unsubscribe();
+    this.data = null;
+    // this.apiService.coinHistoryPriceList = null;
+    this.apiService.coinHistoryPriceListJS.next(null);
   }
 
   detectChange(priceChange): boolean {
@@ -71,6 +74,7 @@ export class CoinDetailsPage {
   }
 
   chartModeChanged(event) {
+    this.data = null;
     switch (this.chartMode) {
       case 'day':
         this.apiService.coinHistoryPriceList = null;

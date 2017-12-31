@@ -82,7 +82,7 @@ export class ApiService {
 
   getPriceHistoryDay(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=1440&aggregate=15&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=1440&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
@@ -94,7 +94,7 @@ export class ApiService {
 
   getPriceHistoryMonth(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${code}&tsym=EUR&limit=672&aggregate=12&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=30&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
@@ -233,17 +233,19 @@ export class ApiService {
   }
 
   private getPriceDataChartJS(url, coin) {
-    url.subscribe(
-      data => {
-        const historyData = data['Data'];
+    setTimeout(() => {
+      url.subscribe(
+        data => {
+          const historyData = data['Data'];
 
-        this.coinHistoryPriceListJS.next({
-          labels: ApiService.renderPriceHistoryChartJSLabel(historyData),
-          data: ApiService.renderPriceHistoryChartJSValue(historyData)
-        });
-      },
-      err => console.error(err),
-      () => console.log('done loading coins')
-    );
+          this.coinHistoryPriceListJS.next({
+            labels: ApiService.renderPriceHistoryChartJSLabel(historyData),
+            data: ApiService.renderPriceHistoryChartJSValue(historyData)
+          });
+        },
+        err => console.error(err),
+        () => console.log('done loading coins')
+      );
+    }, 500);
   }
 }

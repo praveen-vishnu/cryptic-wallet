@@ -1,7 +1,15 @@
 page-coin-details {
 
+  color: $text-color;
+
   .scroll-content {
     overflow: hidden;
+  }
+
+  h1 {
+    font-size: 6rem;
+    padding: 0;
+    margin: 0;
   }
 
   .chart-wrapper {

@@ -115,6 +115,13 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
       legend: {
         display: false
       },
+      elements: {
+        point: {
+          radius: 0,
+          hitRadius: 0,
+          hoverRadius: 0
+        }
+      },
       tooltips: {
         enabled: false,
         mode: 'index',

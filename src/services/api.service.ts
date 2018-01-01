@@ -82,7 +82,7 @@ export class ApiService {
 
   getPriceHistoryDay(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=1440&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=1440&aggregate=30&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 

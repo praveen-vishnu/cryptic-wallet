@@ -99,7 +99,7 @@ export class CoinDetailsPage {
         break;
       default:
         this.apiService.coinHistoryPriceList = null;
-        this.apiService.getPriceHistoryHour(this.coin);
+        this.apiService.getPriceHistoryDay(this.coin);
     }
   }
 

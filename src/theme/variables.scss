@@ -84,6 +84,10 @@ $segment-button-ios-border-width: 0px;
 $segment-button-ios-text-color: $text-color;
 $loading-ios-spinner-color: $text-color;
 
+$tabs-tab-color-active: $text-color;
+$tabs-tab-color-inactive: #35546f;
+$tabs-ios-border: none;
+
 @import "ionic.theme.default";
 
 // Ionicons

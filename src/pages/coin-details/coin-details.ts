@@ -22,9 +22,11 @@ export class CoinDetailsPage {
               private apiService: ApiService) {
     this.coin = navParams.data;
     // this.overrideCoin();
-    this.price = this.coin.currencies.eur.price;
-    //TODO the current date probably doesn't correspond with the last retrieved price date
-    this.priceDate = this.currentDate = moment.unix(this.coin.currencies.eur.priceLastUpdated).format("DD-MM-YYYY HH:mm");
+    if (this.coin) {
+      this.price = this.coin.currencies.eur.price;
+      //TODO the current date probably doesn't correspond with the last retrieved price date
+      this.priceDate = this.currentDate = moment.unix(this.coin.currencies.eur.priceLastUpdated).format("DD-MM-YYYY HH:mm");
+    }
   }
 
   subscribePriceHistoryDataNGX() {
@@ -64,9 +66,6 @@ export class CoinDetailsPage {
   }
 
   ionViewDidLeave() {
-    this.coin = null;
-    this.data = null;
-    // this.apiService.coinHistoryPriceList = null;
     this.apiService.coinHistoryPriceListJS.next(null);
   }
 

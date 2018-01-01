@@ -16,6 +16,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
   scrubberX: number;
   scrubberIsActive: boolean = false;
   isLoading: boolean = false;
+  storedChartIndex: number;
 
   @Output() price = new EventEmitter();
   @Output() date = new EventEmitter();
@@ -49,13 +50,13 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         labels: labels,
         datasets: [{
           data: data,
-          // backgroundColor: [
-          //   'rgba(35, 87, 105, 0.2)',
-          // ],
+          backgroundColor: [
+            'rgba(15, 28, 40, 1)',
+          ],
           borderColor: [
             'rgba(35, 87, 105, 1)',
           ],
-          borderWidth: 3,
+          borderWidth: 2,
           pointRadius: 0,
         }]
       },
@@ -91,8 +92,12 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
     const targetTouch = evt.targetTouches[0];
     const xPos = targetTouch.pageX;
     const canvasWidth = targetTouch.target.clientWidth;
-    this.scrubberX = canvasWidth - xPos;
-    return this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
+    const currentIndex = this.chartjs.scales['x-axis-0'].getValueForPixel(xPos);
+    if (currentIndex !== this.storedChartIndex) {
+      this.scrubberX = canvasWidth - xPos;
+    }
+    this.storedChartIndex = currentIndex;
+    return currentIndex;
   }
 
   private updatePriceAndDate(index: any) {
@@ -116,6 +121,9 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         display: false
       },
       elements: {
+        line: {
+          tension: 0
+        },
         point: {
           radius: 0,
           hitRadius: 0,

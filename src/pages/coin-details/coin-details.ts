@@ -20,7 +20,7 @@ export class CoinDetailsPage {
               public navParams: NavParams,
               private apiService: ApiService) {
     this.coin = navParams.data;
-    // this.overrideCoin();
+    this.overrideCoin();
 
     this.price = this.coin.currencies.eur.price;
     this.timestamp = moment().format("DD-MM-YYYY HH:mm");

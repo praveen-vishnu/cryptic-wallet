@@ -22,7 +22,7 @@
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <small item-content class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}"
+        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}"
                style="margin-right: 1rem;">
           {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
         </small>

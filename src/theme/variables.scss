@@ -76,8 +76,12 @@ $toolbar-ios-button-color: $toolbar-ios-title-text-color;
 $font-family-base: 'Oswald', sans-serif;
 
 $toolbar-ios-active-color: $text-color;
+$font-size-base: 1.6rem;
+$segment-button-ios-border-radius: 0px;
+$segment-button-ios-background-color-activated: $toolbar-background;
+$segment-button-ios-border-width: 0px;
 $segment-button-ios-text-color: $text-color;
-$font-size-base: 2rem;
+
 @import "ionic.theme.default";
 
 // Ionicons

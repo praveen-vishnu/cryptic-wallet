@@ -1,6 +1,16 @@
 chartjs {
   .custom-chart {
     position: relative;
+    display: block;
+    height: 35vh;
+    overflow: hidden;
+    background: #0f1d29;
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block !important;
+    }
 
     .scrubber {
       transition: right 750ms;
@@ -16,6 +26,15 @@ chartjs {
       &.active {
         transition: unset;
       }
+    }
+
+    ion-spinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
     }
   }
 }

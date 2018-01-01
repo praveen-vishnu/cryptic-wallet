@@ -1,55 +1,31 @@
 page-coin-details {
-
-  color: $text-color;
-
   .scroll-content {
     overflow: hidden;
   }
 
-  h1 {
-    font-size: 6rem;
-    padding: 0;
+  .coin-title {
+    font-size: 2.5rem;
+    padding: 1rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .coin-market-cap {
+    padding: 0 0 0.5rem;
+    display: block;
+  }
+
+  .coin-price {
+    font-size: 5rem;
+    padding: 1rem;
+    padding-bottom: 0;
+    padding-bottom: 0;
     margin: 0;
   }
 
-  .chart-wrapper {
-    height: 30vh;
-    position: relative;
-
-    ion-spinner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-    }
-  }
-
-  .timestamp {
-    text-align: center;
-    background: #298acb;
-    color: white;
-    padding: 0.1rem 0.7rem;
-  }
-
-  .custom-chart {
-    position: relative;
-
-    .scrubber {
-      transition: right 750ms;
-      transition-timing-function: ease;
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 3px;
-      background: #95adc1;
-      height: 100%;
-      z-index: 99;
-
-      &.active {
-        transition: unset;
-      }
-    }
+  .chart-timestamp {
+    background: $toolbar-background;
+    color: $text-color;
+    font-size: 1rem;
+    padding: 0.6rem;
   }
 }

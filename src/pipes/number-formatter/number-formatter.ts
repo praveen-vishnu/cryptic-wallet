@@ -38,7 +38,7 @@ export class NumberFormatterPipe implements PipeTransform {
         }
 
         if (arg === 'perc') {
-          options['maximumFractionDigits'] = 1;
+          options['maximumFractionDigits'] = 2;
         }
       });
     } else {

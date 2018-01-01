@@ -23,6 +23,7 @@ import {SettingsPageModule} from "../pages/settings/settings.module";
     BrowserModule,
     IonicModule.forRoot(CrytoMoon, {
       backButtonText: '',
+      swipeBackEnabled: false,
     }),
     BrowserAnimationsModule,
     HttpClientModule,

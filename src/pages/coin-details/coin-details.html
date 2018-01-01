@@ -1,37 +1,31 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{coin.name}}</ion-title>
+    <ion-title text-center>
+      <div class="logo logo--header">
+        <img [src]="coin.imageUrl">
+      </div>
+    </ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-3>
-        <div class="logo">
-          <img [src]="coin.imageUrl">
-        </div>
-      </ion-col>
-      <ion-col col-9 text-right>
-        <h1>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</h1> <!-- TODO: fix formatting -->
-        <div class="priceChange" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
-          {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
-        </div>
-        <div>
-          {{coin.currencies.eur.marketcap | numberFormatter}}
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-
+  <div class="coin-title" text-center>{{coin.name}}</div>
+  <small class="coin-market-cap" text-center>
+    € {{coin.currencies.eur.marketcap | numberFormatter}}
+  </small>
+  <div class="coin-price" text-center>
+    € {{coin.currencies.eur.price | numberFormatter: 'price'}}
+  </div>
+  <!-- TODO: fix formatting -->
+  <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+    {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+  </div>
 </ion-content>
 
 <ion-footer>
-  <div class="chart-segment" padding>
+
+  <div class="chart-segment">
     <ion-segment [(ngModel)]="chartMode" (ionChange)="chartModeChanged($event)">
       <ion-segment-button value="day">
         D
@@ -50,11 +44,11 @@
       </ion-segment-button>
     </ion-segment>
   </div>
+  <div class="chart-timestamp" text-center>{{timestamp}}</div>
 
-  <div padding text-right>{{timestamp}}</div>
-  <div class="chart-wrapper">
-    <!--TODO Fix api with subclassing-->
-    <!--<ngx-chart [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></ngx-chart>-->
-    <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
-  </div>
+  <!--<div class="chart-wrapper">-->
+  <!--TODO Fix api with subclassing-->
+  <!--<ngx-chart [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></ngx-chart>-->
+  <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
+  <!--</div>-->
 </ion-footer>

@@ -17,13 +17,20 @@
 .logo {
   border-radius: 50%;
   overflow: hidden;
-  border: 15px solid #0f1c28;
+  border: 5px solid #0f1c28;
 
-  img{
+  img {
     width: 100%;
     height: auto;
     display: block;
   }
+}
+
+.logo--header {
+  display: inline-block;
+  width: 6rem;
+  padding: 0.5rem;
+  padding-top: 1rem;
 }
 
 .big-loader {
@@ -44,11 +51,21 @@ ion-refresher {
   background: #0c1823;
 }
 
-.priceChange{
+.price-change {
+  padding-top: 0;
   color: #43bd43;
 
-  &.negative{
+  &.negative {
     color: #e65757;
   }
 }
 
+.segment-ios,
+.segment-md {
+
+  .segment-button {
+    color: $text-color;
+    padding: 0.5rem;
+    height: auto;
+  }
+}

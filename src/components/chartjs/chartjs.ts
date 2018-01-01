@@ -76,6 +76,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
 
   onScrubEndChartJs(evt) {
     this.price.emit(null);
+    this.date.emit(null);
     this.scrubberX = 0;
     this.scrubberIsActive = false;
   }

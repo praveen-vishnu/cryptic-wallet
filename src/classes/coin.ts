@@ -12,6 +12,7 @@ export interface Coin {
 
 export interface CurrencyData {
   price: number,
+  priceLastUpdated: number,
   change: number,
   marketcap: number,
 }

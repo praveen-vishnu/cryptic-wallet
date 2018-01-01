@@ -12,7 +12,8 @@ import * as moment from "moment";
 export class CoinDetailsPage {
   coin?: Coin;
   price: number;
-  timestamp: string;
+  currentDate: string;
+  priceDate: string;
   chartMode: any;
   data: any;
 
@@ -21,9 +22,9 @@ export class CoinDetailsPage {
               private apiService: ApiService) {
     this.coin = navParams.data;
     // this.overrideCoin();
-
     this.price = this.coin.currencies.eur.price;
-    this.timestamp = moment().format("DD-MM-YYYY HH:mm");
+    //TODO the current date probably doesn't correspond with the last retrieved price date
+    this.priceDate = this.currentDate = moment.unix(this.coin.currencies.eur.priceLastUpdated).format("DD-MM-YYYY HH:mm");
   }
 
   subscribePriceHistoryDataNGX() {
@@ -49,9 +50,9 @@ export class CoinDetailsPage {
       imageUrl: 'https://www.cryptocompare.com/media/19633/btc.png',
       order: '1',
       currencies: {
-        btc: {price: 1, change: -1.189234009752647, marketcap: 16758550},
-        usd: {price: 14809.61, change: 23.051644830863925, marketcap: 248187589665.5},
-        eur: {price: 12965.69, change: 27.148140048699126, marketcap: 217286164149.5}
+        btc: {price: 1, priceLastUpdated: 1514827291, change: -1.189234009752647, marketcap: 16758550},
+        usd: {price: 14809.61, priceLastUpdated: 1514827291, change: 23.051644830863925, marketcap: 248187589665.5},
+        eur: {price: 12965.69, priceLastUpdated: 1514827291, change: 27.148140048699126, marketcap: 217286164149.5}
       }
     };
   }
@@ -111,6 +112,10 @@ export class CoinDetailsPage {
   }
 
   updateDate(value) {
-    this.timestamp = value;
+    if (!!value) {
+      this.priceDate = value;
+    } else {
+      this.priceDate = this.currentDate;
+    }
   }
 }

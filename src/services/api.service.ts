@@ -197,6 +197,7 @@ export class ApiService {
         if (currencies.hasOwnProperty(currency)) {
           currencies[currency] = {
             price: currencies[currency]['PRICE'],
+            priceLastUpdated: currencies[currency]['LASTUPDATE'],
             change: currencies[currency]['CHANGEPCT24HOUR'],
             marketcap: currencies[currency]['MKTCAP'],
           };

@@ -57,9 +57,9 @@ $item-ios-thumbnail-size: 30px;
 // default are overridden.
 $text-color: #95adc1;
 $background-color: #132433;
-$toolbar-background: darken(#132433, 3%);
+$toolbar-background: $background-color;
 $list-border-color: $toolbar-background;
-$tabs-background: $toolbar-background;
+$tabs-background: darken($background-color, 3%);
 $refresher-border-color: $background-color;
 $refresher-icon-color: $text-color;
 $refresher-text-color: $text-color;
@@ -78,9 +78,10 @@ $font-family-base: 'Oswald', sans-serif;
 $toolbar-ios-active-color: $text-color;
 $font-size-base: 1.6rem;
 $segment-button-ios-border-radius: 0px;
-$segment-button-ios-background-color-activated: $toolbar-background;
+$segment-button-ios-background-color-activated: darken($background-color, 3%);
 $segment-button-ios-border-width: 0px;
 $segment-button-ios-text-color: $text-color;
+$loading-ios-spinner-color: $text-color;
 
 @import "ionic.theme.default";
 

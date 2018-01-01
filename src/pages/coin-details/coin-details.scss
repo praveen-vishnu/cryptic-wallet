@@ -18,12 +18,11 @@ page-coin-details {
     font-size: 5rem;
     padding: 1rem;
     padding-bottom: 0;
-    padding-bottom: 0;
     margin: 0;
   }
 
   .chart-timestamp {
-    background: $toolbar-background;
+    background: darken($background-color, 3%);
     color: $text-color;
     font-size: 1rem;
     padding: 0.6rem;

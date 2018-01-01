@@ -88,6 +88,8 @@ $tabs-tab-color-active: $text-color;
 $tabs-tab-color-inactive: #35546f;
 $tabs-ios-border: none;
 
+$tabs-ios-tab-min-height: 55px;
+
 @import "ionic.theme.default";
 
 // Ionicons

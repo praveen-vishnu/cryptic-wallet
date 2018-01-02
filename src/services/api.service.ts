@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from "rxjs/Subject";
+import {Utils} from "../classes/utils";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
@@ -15,30 +16,6 @@ export class ApiService {
   refresher: any;
   coinHistoryPriceList = new Subject();
   coinHistoryPriceListJS = new Subject();
-
-  static compareNames(a, b) {
-    if (a.name < b.name)
-      return -1;
-    if (a.name > b.name)
-      return 1;
-    return 0;
-  }
-
-  static comparePrices(a, b) {
-    if (parseFloat(a.currencies.eur.price) > parseFloat(b.currencies.eur.price))
-      return -1;
-    if (parseFloat(a.currencies.eur.price) < parseFloat(b.currencies.eur.price))
-      return 1;
-    return 0;
-  }
-
-  static compareOrder(a, b) {
-    if (Number(a.order) < Number(b.order))
-      return -1;
-    if (Number(a.order) > Number(b.order))
-      return 1;
-    return 0;
-  }
 
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
@@ -135,7 +112,7 @@ export class ApiService {
         return this.checkForEmptyCoins(coinListJson, coin);
       }).map(coin => {
         return this.mapToCoin(coinListJson, coin, baseImageUrl);
-      }).sort(ApiService.compareOrder);
+      }).sort(Utils.compareOrder);
       this.isLoading = false;
       this.indexStart = 0;
       if (this.refresher) {

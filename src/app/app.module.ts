@@ -14,6 +14,8 @@ import {CoinDetailsPageModule} from "../pages/coin-details/coin-details.module";
 import {CoinListPageModule} from "../pages/coin-list/coin-list.module";
 import {SettingsPageModule} from "../pages/settings/settings.module";
 import {WalletPageModule} from "../pages/wallet/wallet.module";
+import {IonicStorageModule} from "@ionic/storage";
+import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
 
 @NgModule({
   declarations: [
@@ -25,12 +27,14 @@ import {WalletPageModule} from "../pages/wallet/wallet.module";
       backButtonText: '',
       swipeBackEnabled: false,
     }),
+    IonicStorageModule.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,
     TabsPageModule,
     CoinListPageModule,
     CoinDetailsPageModule,
     WalletPageModule,
+    WalletEditPageModule,
     SettingsPageModule,
   ],
   bootstrap: [IonicApp],

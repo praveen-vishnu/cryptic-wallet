@@ -11,12 +11,11 @@ import {CoinDetailsPage} from "../coin-details/coin-details";
 export class CoinListPage {
   search: boolean = false;
   coins: any;
-  coinsSearchList: any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public apiService: ApiService) {
-    this.apiService.coinList.subscribe(coinList => this.coinsSearchList = this.coins = coinList);
+    this.apiService.coinList.subscribe(coinList => this.coins = coinList);
   }
 
   ionViewDidLoad() {

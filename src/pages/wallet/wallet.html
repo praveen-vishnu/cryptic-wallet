@@ -1,26 +1,38 @@
 <ion-header no-border>
   <ion-navbar>
     <ion-title>Wallets</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="goToEditWallets()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content>
   <ion-slides pager centeredSlides="false" zoom="false">
+    <ion-slide class="align-top" *ngFor="let wallet of wallets">
+      <h1>{{wallet.name}}</h1>
+    </ion-slide>
     <ion-slide>
-      <h2>Elvis</h2>
-      <div class="wallet-total" text-center>
-        € 0
-      </div>
+      <button ion-button (click)="addNewCoin()">Add new wallet</button>
     </ion-slide>
 
-    <ion-slide>
-      <h2>Marko</h2>
-    </ion-slide>
+    <!--<ion-slide>-->
+    <!--<h2>Elvis</h2>-->
+    <!--<div class="wallet-total" text-center>-->
+    <!--€ 0-->
+    <!--</div>-->
+    <!--</ion-slide>-->
 
-    <ion-slide>
-      <h2>Slide 3</h2>
-    </ion-slide>
+    <!--<ion-slide>-->
+    <!--<h2>Marko</h2>-->
+    <!--</ion-slide>-->
+
+    <!--<ion-slide>-->
+    <!--<h2>Slide 3</h2>-->
+    <!--</ion-slide>-->
 
   </ion-slides>
   <ion-fab right bottom>

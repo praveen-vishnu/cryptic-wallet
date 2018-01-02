@@ -1,0 +1,32 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-title>All wallets</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addNewCoin()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list reorder="true" (ionItemReorder)="reorder($event);">
+    <ion-item-sliding #item *ngFor="let wallet of wallets;let index = index">
+      <ion-item detail-none>
+        {{ wallet.name }}
+      </ion-item>
+      <ion-item-options>
+        <button ion-button color="primary" (click)="changeCoin(item)">
+          edit
+        </button>
+        <button ion-button color="danger" (click)="delete(index)">
+          remove
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
+
+
+

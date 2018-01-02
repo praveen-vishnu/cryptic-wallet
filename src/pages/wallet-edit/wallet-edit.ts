@@ -1,22 +1,20 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
-import {Storage} from '@ionic/storage';
+import {AlertController, IonicPage, NavController, NavParams, reorderArray, ToastController} from 'ionic-angular';
 import {Wallet} from "../../classes/wallet";
-import {WalletEditPage} from "../wallet-edit/wallet-edit";
+import {Storage} from "@ionic/storage";
 
 @IonicPage()
 @Component({
-  selector: 'page-wallet',
-  templateUrl: 'wallet.html',
+  selector: 'page-wallet-edit',
+  templateUrl: 'wallet-edit.html',
 })
-export class WalletPage {
+export class WalletEditPage {
   wallets: Array<Wallet> = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private alertCtrl: AlertController,
               public toastCtrl: ToastController,
+              private alertCtrl: AlertController,
               private storage: Storage) {
   }
 
@@ -24,27 +22,14 @@ export class WalletPage {
     this.storage.get('wallets').then(data => this.wallets = data);
   }
 
-  ionViewWillEnter() {
-    this.storage.get('wallets').then(data => this.wallets = data);
-    // const wallet: Wallet = {
-    //   id: 0,
-    //   name: 'Doris',
-    //   coins: []
-    // };
-    //
-    // this.storage.set('wallets:' + wallet.id, wallet);
-    //
-    // this.storage.get('wallets').then(value => {
-    //   console.log(value);
-    // });
+  reorder(event) {
+    this.wallets = reorderArray(this.wallets, event);
+    this.storage.set('wallets', this.wallets);
   }
 
-  goToEditWallets() {
-    this.navCtrl.push(WalletEditPage);
-  }
-
-  goToCoinList() {
-    this.navCtrl.push(CoinListWalletPage);
+  delete(index) {
+    this.wallets.splice(index, 1);
+    this.storage.set('wallets', this.wallets);
   }
 
   openToast(text) {
@@ -54,6 +39,45 @@ export class WalletPage {
       duration: 3000
     });
     toast.present();
+  }
+
+  changeCoin(wallet) {
+    let alert = this.alertCtrl.create({
+      title: 'New wallet name',
+      inputs: [
+        {
+          name: 'name',
+          placeholder: 'Name',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            if (data.name) {
+              const index = Number(wallet.item.id);
+              if (!this.checkIfExists(data)) {
+                this.wallets[index].name = data.name;
+                this.storage.set('wallets', this.wallets);
+              } else {
+                this.openToast('Name is already been used');
+              }
+              wallet.close();
+            } else {
+              this.openToast('Name cannot be empty');
+            }
+          }
+        }
+      ]
+    });
+
+    alert.present();
   }
 
   addNewCoin() {

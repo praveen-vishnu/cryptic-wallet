@@ -7,36 +7,11 @@
 
 <ion-content>
   <ion-slides pager centeredSlides="false" zoom="false">
-
     <ion-slide>
       <h2>Elvis</h2>
       <div class="wallet-total" text-center>
-        € 120000
+        € 0
       </div>
-      <div text-center class="wallet-change">
-        12%
-      </div>
-      <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
-
-      <!--<ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin" no-lines>-->
-      <!--<ion-item-sliding *virtualItem="let coin">-->
-      <!--<button ion-item (click)="goToDetailPage(coin)" detail-none>-->
-      <!--<ion-avatar class="logo" item-start>-->
-      <!--<ion-img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"></ion-img>-->
-      <!--</ion-avatar>-->
-      <!--<ion-label>-->
-      <!--{{coin.name}}-->
-      <!--</ion-label>-->
-      <!--<small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}"-->
-      <!--style="margin-right: 1rem;">-->
-      <!--{{coin.currencies.eur.change | numberFormatter: 'perc'}}%-->
-      <!--</small>-->
-      <!--<span item-end class="price">-->
-      <!--<span>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</span>-->
-      <!--</span>-->
-      <!--</button>-->
-      <!--</ion-item-sliding>-->
-      <!--</ion-list>-->
     </ion-slide>
 
     <ion-slide>
@@ -48,4 +23,9 @@
     </ion-slide>
 
   </ion-slides>
+  <ion-fab right bottom>
+    <button ion-fab mini (click)="goToCoinList()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>

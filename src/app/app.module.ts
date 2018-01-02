@@ -4,7 +4,7 @@ import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
-import {CrytoMoon} from './app.component';
+import {CryptoMoon} from './app.component';
 import {ApiService} from "../services/api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
@@ -17,11 +17,11 @@ import {WalletPageModule} from "../pages/wallet/wallet.module";
 
 @NgModule({
   declarations: [
-    CrytoMoon,
+    CryptoMoon,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(CrytoMoon, {
+    IonicModule.forRoot(CryptoMoon, {
       backButtonText: '',
       swipeBackEnabled: false,
     }),
@@ -35,7 +35,7 @@ import {WalletPageModule} from "../pages/wallet/wallet.module";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    CrytoMoon,
+    CryptoMoon,
   ],
   providers: [
     StatusBar,

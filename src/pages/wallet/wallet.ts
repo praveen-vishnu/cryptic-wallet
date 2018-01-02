@@ -21,11 +21,19 @@ export class WalletPage {
   }
 
   ionViewDidLoad() {
-    this.storage.get('wallets').then(data => this.wallets = data);
+    this.storage.get('wallets').then(data => {
+      if (!!data) {
+        this.wallets = data;
+      }
+    });
   }
 
   ionViewWillEnter() {
-    this.storage.get('wallets').then(data => this.wallets = data);
+    this.storage.get('wallets').then(data => {
+      if (!!data) {
+        this.wallets = data;
+      }
+    });
     // const wallet: Wallet = {
     //   id: 0,
     //   name: 'Doris',
@@ -98,6 +106,6 @@ export class WalletPage {
   }
 
   checkIfExists(data): boolean {
-    return this.wallets.some(item => data.name.toLowerCase() === item.name.toLowerCase());
+    return !!this.wallets ? this.wallets.some(item => data.name.toLowerCase() === item.name.toLowerCase()) : false;
   }
 }

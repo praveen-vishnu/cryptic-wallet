@@ -1,13 +1,17 @@
 export interface Coin {
-  name: string;
-  code: string;
-  imageUrl: string;
+  name: string,
+  code: string,
+  imageUrl: string,
   order: string,
   currencies: {
     eur: CurrencyData,
     usd: CurrencyData,
     btc: CurrencyData,
   };
+  wallet?: {
+    amount: number,
+    total: number,
+  }
 }
 
 export interface CurrencyData {

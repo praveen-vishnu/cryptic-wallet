@@ -24,7 +24,6 @@ export class WalletPage {
 
   ionViewDidLoad() {
     this.getStoredWallets();
-
   }
 
   ionViewWillEnter() {
@@ -60,6 +59,14 @@ export class WalletPage {
   goToCoinList() {
     const index = this.slides.getActiveIndex();
     this.navCtrl.push(CoinListWalletPage, {'walletIndex': index});
+  }
+
+  getTotalPrice() {
+    let total: number = 0;
+    this.currentWallet.coins.forEach(coin => {
+      total += coin.wallet.total;
+    });
+    return total;
   }
 
   openToast(text) {

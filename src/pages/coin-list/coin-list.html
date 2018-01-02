@@ -1,6 +1,13 @@
 <ion-header no-border>
   <ion-navbar>
-    <ion-title>CryptoMoon</ion-title>
+    <ion-title>
+      <ng-container *ngIf="!search; else wallet">
+        CryptoMoon
+      </ng-container>
+      <ng-template #wallet>
+        Choose your coins
+      </ng-template>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -26,8 +33,7 @@
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}"
-               style="margin-right: 1rem;">
+        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
           {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
         </small>
         <span item-end class="price">

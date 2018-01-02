@@ -13,7 +13,7 @@
       <ion-slide class="align-top" *ngFor="let wallet of wallets">
         <h1 class="page-title" text-center>{{wallet.name}}</h1>
         <div class="wallet-amount" text-center>
-          €12300
+          {{getTotalPrice()}}
         </div>
       </ion-slide>
     </ion-slides>
@@ -31,15 +31,17 @@
             <img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"/>
           </ion-avatar>
           <ion-label>
-            {{coin.name}}
+            <p>{{coin.name}}</p>
+            <div>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</div>
+            <small item-content class="price-change"
+                   [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+              {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+            </small>
           </ion-label>
-          <small item-content class="price-change"
-                 [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
-            {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
-          </small>
-          <span item-end class="price">
-            <span>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</span>
-          </span>
+          <div item-end>
+            <p>{{coin.wallet.total}}</p>
+            <p>{{coin.wallet.amount}}</p>
+          </div>
         </button>
         <ion-item-options>
           <button ion-button color="primary">
@@ -48,11 +50,11 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <!--<ion-slide>-->
-    <!--<button ion-button (click)="addNewCoin()">Add new wallet</button>-->
-    <!--</ion-slide>-->
   </ng-container>
   <ng-template #loader>
+    <div padding>
+      <button ion-button full (click)="addNewCoin()">Add new wallet</button>
+    </div>
     <!--spinner-->
   </ng-template>
 

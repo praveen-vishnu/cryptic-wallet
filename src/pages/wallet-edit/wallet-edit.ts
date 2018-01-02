@@ -19,7 +19,11 @@ export class WalletEditPage {
   }
 
   ionViewDidLoad() {
-    this.storage.get('wallets').then(data => this.wallets = data);
+    this.storage.get('wallets').then(data => {
+      if (!!data) {
+        this.wallets = data;
+      }
+    });
   }
 
   reorder(event) {
@@ -124,6 +128,6 @@ export class WalletEditPage {
   }
 
   checkIfExists(value): boolean {
-    return this.wallets.some(item => value.toLowerCase() === item.name.toLowerCase());
+    return !!this.wallets ? this.wallets.some(item => value.toLowerCase() === item.name.toLowerCase()) : false;
   }
 }

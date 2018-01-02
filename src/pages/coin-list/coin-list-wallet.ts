@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {CoinListPage} from "./coin-list";
-import {NavController, NavParams} from "ionic-angular";
+import {AlertController, NavController, NavParams, ToastController} from "ionic-angular";
 import {ApiService} from "../../services/api.service";
 import {Storage} from '@ionic/storage';
 import {Wallet} from "../../classes/wallet";
+import {Coin} from "../../classes/coin";
 
 @Component({
   selector: 'page-coin-list-wallet',
@@ -18,6 +19,8 @@ export class CoinListWalletPage extends CoinListPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public apiService: ApiService,
+              public toastCtrl: ToastController,
+              private alertCtrl: AlertController,
               private storage: Storage) {
     super(navCtrl, navParams, apiService);
     this.currentWalletIndex = navParams.data.walletIndex;
@@ -40,8 +43,7 @@ export class CoinListWalletPage extends CoinListPage {
 
   selectedCoin(coin) {
     console.log(this.storage.driver);
-    this.wallets[this.currentWalletIndex].coins.push(coin);
-    this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
+    this.addNewCoinAmount(coin);
   }
 
   filterCoins(event) {
@@ -54,4 +56,52 @@ export class CoinListWalletPage extends CoinListPage {
       })
     }
   }
+
+  addNewCoinAmount(coin: Coin) {
+    let alert = this.alertCtrl.create({
+      title: 'How much coins did you buy?',
+      inputs: [
+        {
+          name: 'amount',
+          placeholder: 'amount',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            const value = data.amount.trim();
+            if (value) {
+              coin.wallet = {
+                amount: parseFloat(value),
+                total: parseFloat(value) * coin.currencies.eur.price
+              };
+              this.wallets[this.currentWalletIndex].coins.push(coin);
+              this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
+            } else {
+              this.openToast('Name cannot be empty');
+            }
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+
+  openToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      position: 'bottom',
+      duration: 3000
+    });
+    toast.present();
+  }
+
 }

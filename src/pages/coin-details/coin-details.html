@@ -6,24 +6,23 @@
       </div>
     </ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <h1 class="coin-title" text-center>{{coin.name}}</h1>
+    <small class="coin-market-cap" text-center>
+      € {{coin.currencies.eur.marketcap | numberFormatter}}
+    </small>
+    <div class="coin-price" text-center>
+      € {{coin.currencies.eur.price | numberFormatter: 'price'}}
+    </div>
+    <!-- TODO: fix formatting -->
+    <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+      {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+    </div>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content>
-  <h1 class="coin-title" text-center>{{coin.name}}</h1>
-  <small class="coin-market-cap" text-center>
-    € {{coin.currencies.eur.marketcap | numberFormatter}}
-  </small>
-  <div class="coin-price" text-center>
-    € {{coin.currencies.eur.price | numberFormatter: 'price'}}
-  </div>
-  <!-- TODO: fix formatting -->
-  <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
-    {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
-  </div>
-</ion-content>
-
-<ion-footer>
   <div class="chart-segment">
     <ion-segment [(ngModel)]="chartMode" (ionChange)="chartModeChanged($event)">
       <ion-segment-button value="day">
@@ -50,4 +49,4 @@
   <!--<ngx-chart [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></ngx-chart>-->
   <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
   <!--</div>-->
-</ion-footer>
+</ion-content>

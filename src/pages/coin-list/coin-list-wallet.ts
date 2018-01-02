@@ -21,7 +21,12 @@ export class CoinListWalletPage extends CoinListPage {
               private storage: Storage) {
     super(navCtrl, navParams, apiService);
     this.currentWalletIndex = navParams.data.walletIndex;
-    this.apiService.coinList.subscribe(coinList => this.coinsSearchList = this.coins = coinList);
+    this.apiService.coinList.subscribe((coinList: Array<any>) => {
+      const filteredList = coinList.filter(coin => {
+        return !this.wallets[this.currentWalletIndex].coins.some(item => item.name === coin.name);
+      });
+      return this.coinsSearchList = this.coins = filteredList;
+    });
   }
 
   ionViewDidLoad() {

@@ -12,8 +12,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TabsPageModule} from "../pages/tabs/tabs.module";
 import {CoinDetailsPageModule} from "../pages/coin-details/coin-details.module";
 import {CoinListPageModule} from "../pages/coin-list/coin-list.module";
-import {AltfolioPageModule} from "../pages/altfolio/altfolio.module";
 import {SettingsPageModule} from "../pages/settings/settings.module";
+import {WalletPageModule} from "../pages/wallet/wallet.module";
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import {SettingsPageModule} from "../pages/settings/settings.module";
     TabsPageModule,
     CoinListPageModule,
     CoinDetailsPageModule,
-    AltfolioPageModule,
+    WalletPageModule,
     SettingsPageModule,
   ],
   bootstrap: [IonicApp],

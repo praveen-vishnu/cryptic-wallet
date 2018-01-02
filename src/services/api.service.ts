@@ -1,22 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Coin} from "../classes/coin";
-import {Subscription} from "rxjs/Subscription";
-import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Subject} from "rxjs/Subject";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
 
 @Injectable()
 export class ApiService {
-  coinList: Array<Coin>;
+  coinList = new Subject();
   indexStart: number = 0;
   currencyList: Object = {};
   pricePromises = [];
   isLoading: boolean = false;
   refresher: any;
-  coinHistoryPriceList = new ReplaySubject(1);
-  coinHistoryPriceListJS = new ReplaySubject(1);
+  coinHistoryPriceList = new Subject();
+  coinHistoryPriceListJS = new Subject();
 
   static compareNames(a, b) {
     if (a.name < b.name)
@@ -110,11 +108,11 @@ export class ApiService {
     this.getPriceDataChartJS(url, coin);
   }
 
-  getCoinList(): Subscription {
+  getCoinList() {
     if (!this.refresher) {
       this.isLoading = true;
     }
-    return this.callCoinList().subscribe(
+    this.callCoinList().subscribe(
       data => {
         const coinMarketCoinList = data;
         const baseImageUrl = coinMarketCoinList['BaseImageUrl'];
@@ -133,7 +131,7 @@ export class ApiService {
 
   private prepareCoinList(listOfCoinProperties: string[], coinListJson: any, baseImageUrl: any) {
     Promise.all(this.pricePromises).then(() => {
-      this.coinList = listOfCoinProperties.filter(coin => {
+      const coinList = listOfCoinProperties.filter(coin => {
         return this.checkForEmptyCoins(coinListJson, coin);
       }).map(coin => {
         return this.mapToCoin(coinListJson, coin, baseImageUrl);
@@ -144,6 +142,8 @@ export class ApiService {
         this.refresher.complete();
         this.refresher = null;
       }
+
+      this.coinList.next(coinList);
     }, err => console.error(err));
   }
 

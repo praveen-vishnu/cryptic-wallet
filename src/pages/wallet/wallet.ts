@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 
 @IonicPage()
 @Component({
@@ -16,6 +17,6 @@ export class WalletPage {
   }
 
   goToCoinList() {
-    // this.navCtrl.push(CoinListWalletPage);
+    this.navCtrl.push(CoinListWalletPage);
   }
 }

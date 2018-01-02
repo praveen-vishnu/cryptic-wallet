@@ -12,6 +12,7 @@ import {WalletEditPage} from "../wallet-edit/wallet-edit";
 })
 export class WalletPage {
   wallets: Array<Wallet> = [];
+  currentWallet: Wallet;
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
@@ -42,8 +43,23 @@ export class WalletPage {
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;
+        this.setCurrentWallet();
       }
     });
+  }
+
+  slideChanged() {
+    this.setCurrentWallet();
+  }
+
+  slidesssChanged() {
+    this.setCurrentWallet();
+  }
+
+  private setCurrentWallet() {
+    const currentIndex = this.slides.getActiveIndex();
+    console.log(currentIndex);
+    this.currentWallet = this.wallets[currentIndex];
   }
 
   goToEditWallets() {

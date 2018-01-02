@@ -2,4 +2,27 @@ page-wallet {
   .align-top.swiper-slide {
     align-items: flex-start;
   }
+
+  .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 0;
+  }
+
+  .swiper-container {
+    padding-bottom: 2rem;
+    color: $text-color;
+    height: 30vh;
+  }
+
+  .wallet-title {
+    font-size: 2.5rem;
+    padding: 1rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .wallet-amount {
+    font-size: 5rem;
+    padding: 1rem;
+    padding-bottom: 0;
+    margin: 0;
+  }
 }

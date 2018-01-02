@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, IonicPage, NavController, NavParams, Slides, ToastController} from 'ionic-angular';
 import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 import {Storage} from '@ionic/storage';
 import {Wallet} from "../../classes/wallet";
@@ -12,6 +12,7 @@ import {WalletEditPage} from "../wallet-edit/wallet-edit";
 })
 export class WalletPage {
   wallets: Array<Wallet> = [];
+  @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -21,30 +22,28 @@ export class WalletPage {
   }
 
   ionViewDidLoad() {
-    this.storage.get('wallets').then(data => {
-      if (!!data) {
-        this.wallets = data;
-      }
-    });
+    this.getStoredWallets();
+
   }
 
   ionViewWillEnter() {
+    this.getStoredWallets();
+  }
+
+  trackByCoin(index, item): number {
+    return index; // or item.id
+  }
+
+  detectChange(priceChange): boolean {
+    return priceChange < 0;
+  }
+
+  private getStoredWallets() {
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;
       }
     });
-    // const wallet: Wallet = {
-    //   id: 0,
-    //   name: 'Doris',
-    //   coins: []
-    // };
-    //
-    // this.storage.set('wallets:' + wallet.id, wallet);
-    //
-    // this.storage.get('wallets').then(value => {
-    //   console.log(value);
-    // });
   }
 
   goToEditWallets() {
@@ -52,7 +51,8 @@ export class WalletPage {
   }
 
   goToCoinList() {
-    this.navCtrl.push(CoinListWalletPage);
+    const index = this.slides.getActiveIndex();
+    this.navCtrl.push(CoinListWalletPage, {'walletIndex': index});
   }
 
   openToast(text) {

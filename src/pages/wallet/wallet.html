@@ -14,26 +14,35 @@
   <ion-slides pager centeredSlides="false" zoom="false">
     <ion-slide class="align-top" *ngFor="let wallet of wallets">
       <h1>{{wallet.name}}</h1>
+      <ion-list>
+        <ion-item-sliding #item *ngFor="let coin of wallet.coins;trackBy: trackByCoin;let index = index;">
+          <button ion-item detail-none>
+            <ion-avatar class="logo" item-start>
+              <!--TODO fix ion image-->
+              <img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"/>
+            </ion-avatar>
+            <ion-label>
+              {{coin.name}}
+            </ion-label>
+            <small item-content class="price-change"
+                   [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+              {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+            </small>
+            <span item-end class="price">
+          <span>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</span>
+        </span>
+          </button>
+          <ion-item-options>
+            <button ion-button color="primary">
+              <ion-icon name="star" item-start></ion-icon>
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
     </ion-slide>
     <ion-slide>
       <button ion-button (click)="addNewCoin()">Add new wallet</button>
     </ion-slide>
-
-    <!--<ion-slide>-->
-    <!--<h2>Elvis</h2>-->
-    <!--<div class="wallet-total" text-center>-->
-    <!--€ 0-->
-    <!--</div>-->
-    <!--</ion-slide>-->
-
-    <!--<ion-slide>-->
-    <!--<h2>Marko</h2>-->
-    <!--</ion-slide>-->
-
-    <!--<ion-slide>-->
-    <!--<h2>Slide 3</h2>-->
-    <!--</ion-slide>-->
-
   </ion-slides>
   <ion-fab right bottom>
     <button ion-fab mini (click)="goToCoinList()">

@@ -10,7 +10,7 @@ page-wallet {
   .swiper-container {
     padding-bottom: 2rem;
     color: $text-color;
-    height: 30vh;
+    min-height: 30vh;
   }
 
   .wallet-title {

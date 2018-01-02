@@ -21,9 +21,8 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <div class="chart-segment">
+  <div #segment class="chart-segment">
     <ion-segment [(ngModel)]="chartMode" (ionChange)="chartModeChanged($event)">
       <ion-segment-button value="day">
         D
@@ -42,11 +41,11 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-  <div class="chart-timestamp" text-center><span class="date">{{priceDate}}</span></div>
-
+  <div #timestamp class="chart-timestamp" text-center><span class="date">{{priceDate}}</span></div>
   <!--<div class="chart-wrapper">-->
   <!--TODO Fix api with subclassing-->
   <!--<ngx-chart [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></ngx-chart>-->
-  <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"></chartjs>
+  <chartjs [data]="data" (price)="updatePrice($event)" (date)="updateDate($event)"
+           [style.height]="calculateChartHeight"></chartjs>
   <!--</div>-->
 </ion-content>

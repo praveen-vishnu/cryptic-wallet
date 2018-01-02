@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
@@ -16,6 +16,8 @@ export class CoinDetailsPage {
   priceDate: string;
   chartMode: any;
   data: any;
+  @ViewChild('segment') segment: ElementRef;
+  @ViewChild('timestamp') timestamp: ElementRef;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -67,6 +69,11 @@ export class CoinDetailsPage {
 
   ionViewDidLeave() {
     this.apiService.coinHistoryPriceListJS.next(null);
+  }
+
+  get calculateChartHeight() {
+    const heightNumber = this.segment.nativeElement.clientHeight + this.timestamp.nativeElement.clientHeight;
+    return `calc(100% - ${heightNumber}px)`;
   }
 
   detectChange(priceChange): boolean {

@@ -7,10 +7,9 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar class="wallet-slider" no-border>
+  <ion-toolbar class="wallet-slider">
     <ion-slides pager centeredSlides="true" zoom="false"
-                (ionSlideDidChange)="slideChanged()"
-                (ionSlideNextEnd)="slidesssChanged()">
+                (ionSlideDidChange)="slideChanged($event)">
       <ion-slide class="align-top" *ngFor="let wallet of wallets">
         <h1 class="page-title" text-center>{{wallet.name}}</h1>
         <div class="wallet-amount" text-center>

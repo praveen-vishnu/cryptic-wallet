@@ -60,10 +60,11 @@ export class WalletEditPage {
         {
           text: 'Save',
           handler: data => {
-            if (data.name) {
+            const value = data.name.trim();
+            if (value) {
               const index = Number(wallet.item.id);
-              if (!this.checkIfExists(data)) {
-                this.wallets[index].name = data.name;
+              if (!this.checkIfExists(value)) {
+                this.wallets[index].name = value;
                 this.storage.set('wallets', this.wallets);
               } else {
                 this.openToast('Name is already been used');
@@ -99,10 +100,11 @@ export class WalletEditPage {
         {
           text: 'Save',
           handler: data => {
-            if (data.name) {
-              if (!this.checkIfExists(data)) {
+            const value = data.name.trim();
+            if (value) {
+              if (!this.checkIfExists(value)) {
                 const wallet: Wallet = {
-                  name: data.name,
+                  name: value,
                   coins: []
                 };
                 this.wallets.push(wallet);
@@ -121,7 +123,7 @@ export class WalletEditPage {
     alert.present();
   }
 
-  checkIfExists(data): boolean {
-    return this.wallets.some(item => data.name.toLowerCase() === item.name.toLowerCase());
+  checkIfExists(value): boolean {
+    return this.wallets.some(item => value.toLowerCase() === item.name.toLowerCase());
   }
 }

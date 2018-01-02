@@ -43,23 +43,14 @@ export class WalletPage {
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;
-        this.setCurrentWallet();
+        const currentIndex = this.slides.getActiveIndex();
+        this.currentWallet = this.wallets[currentIndex];
       }
     });
   }
 
-  slideChanged() {
-    this.setCurrentWallet();
-  }
-
-  slidesssChanged() {
-    this.setCurrentWallet();
-  }
-
-  private setCurrentWallet() {
-    const currentIndex = this.slides.getActiveIndex();
-    console.log(currentIndex);
-    this.currentWallet = this.wallets[currentIndex];
+  slideChanged(event) {
+    this.currentWallet = this.wallets[event.realIndex];
   }
 
   goToEditWallets() {

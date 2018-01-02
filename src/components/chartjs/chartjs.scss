@@ -1,10 +1,11 @@
 chartjs {
   display: block;
+  height: 100%;
 
   .custom-chart {
     position: relative;
     display: block;
-    height: 35vh;
+    height: 100%;
     overflow: hidden;
     background: #0f1d29;
 

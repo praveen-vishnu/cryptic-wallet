@@ -81,6 +81,45 @@ export class WalletPage {
     toast.present();
   }
 
+  changeCoin(slider, index) {
+    let alert = this.alertCtrl.create({
+      title: 'New coin amount',
+      inputs: [
+        {
+          name: 'amount',
+          placeholder: 'amount',
+          type: 'number',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            const value = data.amount.trim().replace(',', '.');
+            if (value) {
+              const currentCoin = this.currentWallet.coins[index];
+              currentCoin.wallet = {
+                amount: parseFloat(value),
+                total: parseFloat(value) * currentCoin.currencies.eur.price
+              };
+              slider.close();
+            } else {
+              this.openToast('Name cannot be empty');
+            }
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+
   addNewCoin() {
     let alert = this.alertCtrl.create({
       title: 'Wallet name',

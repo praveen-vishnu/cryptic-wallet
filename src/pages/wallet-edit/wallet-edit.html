@@ -13,7 +13,7 @@
   <ion-list reorder="true" (ionItemReorder)="reorder($event);">
     <ion-item-sliding #item *ngFor="let wallet of wallets;let index = index">
       <ion-item detail-none>
-        {{ wallet.name }}
+        <h1><strong>{{ wallet.name }}</strong></h1>
       </ion-item>
       <ion-item-options>
         <button ion-button color="primary" (click)="changeCoin(item, index)">

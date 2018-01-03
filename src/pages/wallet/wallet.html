@@ -11,24 +11,31 @@
     <ion-slides pager centeredSlides="true" zoom="false"
                 (ionSlideDidChange)="slideChanged($event)">
       <ion-slide class="align-top" *ngFor="let wallet of wallets">
-        <h1 class="page-title" text-center>{{wallet.name}}</h1>
-        <div class="wallet-amount" text-center>
-          <div class="currency">
-            <span class="currency__symbol">€</span>
-            <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
+        <ion-item item-start>
+          <ion-icon name="arrow-back" item-start></ion-icon>
+
+          <div>
+            <h1 class="page-title" text-center>{{wallet.name}}</h1>
+            <div class="wallet-amount" text-center>
+              <div class="currency">
+                <span class="currency__symbol">€</span>
+                <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <ion-icon name="arrow-forward" item-end></ion-icon>
+        </ion-item>
       </ion-slide>
     </ion-slides>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ng-container *ngIf="currentWallet;else loader">
     <ion-list>
       <ion-item-sliding #item *ngFor="let coin of currentWallet.coins;trackBy: trackByCoin;let index = index;">
-        <button ion-item detail-none>
+        <ion-item detail-none>
           <ion-avatar class="logo" item-start>
             <!--TODO fix ion image-->
             <img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"/>
@@ -45,8 +52,11 @@
             <p>€ {{coin.wallet.total | numberFormatter: 'price'}}</p>
             <p>{{coin.wallet.amount}}</p>
           </div>
-        </button>
+        </ion-item>
         <ion-item-options>
+          <button ion-button color="primary" (click)="changeCoin(item, index)">
+            edit
+          </button>
           <button ion-button color="danger" (click)="delete(index)">
             remove
           </button>
@@ -55,14 +65,14 @@
     </ion-list>
   </ng-container>
   <ng-template #loader>
-    <div padding>
-      <button ion-button full (click)="addNewCoin()">Add new wallet</button>
-    </div>
     <!--spinner-->
   </ng-template>
 
+  <div *ngIf="wallets.length === 0" padding>
+    <button ion-button full (click)="addNewCoin()">Add new wallet</button>
+  </div>
 
-  <ion-fab right bottom>
+  <ion-fab *ngIf="wallets.length > 0" right bottom>
     <button ion-fab mini (click)="goToCoinList()">
       <ion-icon name="add"></ion-icon>
     </button>

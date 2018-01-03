@@ -18,30 +18,38 @@ export class CoinListWalletPage extends CoinListPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public storage: Storage,
               public apiService: ApiService,
               public toastCtrl: ToastController,
-              private alertCtrl: AlertController,
-              private storage: Storage) {
-    super(navCtrl, navParams, apiService);
+              private alertCtrl: AlertController) {
+    super(navCtrl, navParams, storage, apiService);
     this.currentWalletIndex = navParams.data.walletIndex;
     this.apiService.coinList.subscribe((coinList: Array<any>) => {
-      const filteredList = coinList.filter(coin => {
-        return !this.wallets[this.currentWalletIndex].coins.some(item => item.name === coin.name);
-      });
+      const filteredList = this.filterCoinList(coinList);
       return this.coinsSearchList = this.coins = filteredList;
     });
   }
 
-  ionViewDidLoad() {
-
-  }
-
   ionViewDidEnter() {
-    this.apiService.getCoinList();
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;
+
+        this.storage.get('coin-list').then(list => {
+          if (!list) {
+            this.apiService.getCoinList();
+          } else {
+            const filteredList = this.filterCoinList(list);
+            this.coinsSearchList = this.coins = filteredList;
+          }
+        });
       }
+    });
+  }
+
+  private filterCoinList(coinList: Array<any>) {
+    return coinList.filter(coin => {
+      return !this.wallets[this.currentWalletIndex].coins.some(item => item.name === coin.name);
     });
   }
 
@@ -87,8 +95,10 @@ export class CoinListWalletPage extends CoinListPage {
                 amount: parseFloat(value),
                 total: parseFloat(value) * coin.currencies.eur.price
               };
-              this.wallets[this.currentWalletIndex].coins.push(coin);
-              this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
+              if (this.wallets.length > 0) {
+                this.wallets[this.currentWalletIndex].coins.push(coin);
+                this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
+              }
             } else {
               this.openToast('Name cannot be empty');
             }

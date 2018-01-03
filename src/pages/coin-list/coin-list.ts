@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
+import {Storage} from "@ionic/storage";
 
 @IonicPage()
 @Component({
@@ -14,12 +15,18 @@ export class CoinListPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public storage: Storage,
               public apiService: ApiService) {
-    this.apiService.coinList.subscribe(coinList => this.coins = coinList);
+    this.apiService.coinList.subscribe(coinList => {
+      this.storage.set('coin-list', coinList);
+      return this.coins = coinList;
+    });
   }
 
-  ionViewDidLoad() {
-    this.apiService.getCoinList();
+  ionViewDidEnter() {
+    this.storage.get('coin-list').then(list => {
+      !list ? this.apiService.getCoinList() : this.coins = list;
+    });
   }
 
   get coinListLength(): string {

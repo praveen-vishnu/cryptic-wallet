@@ -191,7 +191,7 @@ export class ApiService {
 
   refreshCoinList(refresher) {
     this.refresher = refresher;
-    setTimeout(() => this.getCoinList(), 1000);
+    setTimeout(() => this.getCoinList(), 500);
   }
 
   private getPriceData(url, coin) {

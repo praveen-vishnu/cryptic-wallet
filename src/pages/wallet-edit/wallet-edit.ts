@@ -64,18 +64,10 @@ export class WalletEditPage {
         {
           text: 'Save',
           handler: data => {
-            const value = data.name.trim();
-            if (value) {
-              if (!this.checkIfExists(value)) {
-                this.wallets[index].name = value;
-                this.storage.set('wallets', this.wallets);
-              } else {
-                this.openToast('Name is already been used');
-              }
-              slider.close();
-            } else {
-              this.openToast('Name cannot be empty');
-            }
+            this.checkConstraints((value) => {
+              this.wallets[index].name = value;
+              this.storage.set('wallets', this.wallets);
+            }, data, slider);
           }
         }
       ]
@@ -103,27 +95,40 @@ export class WalletEditPage {
         {
           text: 'Save',
           handler: data => {
-            const value = data.name.trim();
-            if (value) {
-              if (!this.checkIfExists(value)) {
-                const wallet: Wallet = {
-                  name: value,
-                  coins: []
-                };
-                this.wallets.push(wallet);
-                this.storage.set('wallets', this.wallets);
-              } else {
-                this.openToast('Name is already been used');
-              }
-            } else {
-              this.openToast('Name cannot be empty');
-            }
+            this.checkConstraints((value) => {
+              const wallet: Wallet = {
+                name: value,
+                coins: []
+              };
+              this.wallets.push(wallet);
+              this.storage.set('wallets', this.wallets);
+            }, data);
           }
         }
       ]
     });
 
     alert.present();
+  }
+
+  private checkConstraints(storeValue, data?, slider?) {
+    const value = data.name.trim();
+    if (value) {
+      if (value.length <= 32) {
+        if (!this.checkIfExists(value)) {
+          storeValue(value);
+        } else {
+          this.openToast('Name is already used');
+        }
+        if (!!slider) {
+          slider.close();
+        }
+      } else {
+        this.openToast('Name cannot be more then 32 characters');
+      }
+    } else {
+      this.openToast('Name cannot be empty');
+    }
   }
 
   checkIfExists(value): boolean {

@@ -61,7 +61,7 @@ export class CoinDetailsPage {
     };
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.chartMode = 'day';
     this.subscribePriceHistoryData();
     this.apiService.getPriceHistoryDay(this.coin);

@@ -42,7 +42,7 @@
             </small>
           </ion-label>
           <div item-end>
-            <p>{{coin.wallet.total}}</p>
+            <p>€ {{coin.wallet.total | numberFormatter: 'price'}}</p>
             <p>{{coin.wallet.amount}}</p>
           </div>
         </button>

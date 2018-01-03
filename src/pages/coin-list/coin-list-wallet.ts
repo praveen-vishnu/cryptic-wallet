@@ -33,6 +33,10 @@ export class CoinListWalletPage extends CoinListPage {
   }
 
   ionViewDidLoad() {
+
+  }
+
+  ionViewDidEnter() {
     this.apiService.getCoinList();
     this.storage.get('wallets').then(data => {
       if (!!data) {
@@ -43,7 +47,7 @@ export class CoinListWalletPage extends CoinListPage {
 
   selectedCoin(coin) {
     console.log(this.storage.driver);
-    this.addNewCoinAmount(coin);
+    this.addCoinAmount(coin);
   }
 
   filterCoins(event) {
@@ -57,13 +61,14 @@ export class CoinListWalletPage extends CoinListPage {
     }
   }
 
-  addNewCoinAmount(coin: Coin) {
+  addCoinAmount(coin: Coin) {
     let alert = this.alertCtrl.create({
-      title: 'How much coins did you buy?',
+      title: 'How many coins do you have?',
       inputs: [
         {
           name: 'amount',
           placeholder: 'amount',
+          type: 'number',
         },
       ],
       buttons: [
@@ -76,7 +81,7 @@ export class CoinListWalletPage extends CoinListPage {
         {
           text: 'Save',
           handler: data => {
-            const value = data.amount.trim();
+            const value = data.amount.trim().replace(',', '.');
             if (value) {
               coin.wallet = {
                 amount: parseFloat(value),

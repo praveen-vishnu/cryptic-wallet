@@ -35,6 +35,10 @@ export class NumberFormatterPipe implements PipeTransform {
             options['minimumFractionDigits'] = 6;
             options['maximumFractionDigits'] = 6;
           }
+          if (parseFloat(value.toString(10)) <= 0) {
+            options['minimumFractionDigits'] = 0;
+            options['maximumFractionDigits'] = 0;
+          }
         }
 
         if (arg === 'perc') {

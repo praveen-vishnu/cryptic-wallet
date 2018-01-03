@@ -12,11 +12,17 @@
       € {{coin.currencies.eur.marketcap | numberFormatter}}
     </small>
     <div class="coin-price" text-center>
-      € {{coin.currencies.eur.price | numberFormatter: 'price'}}
+      <div class="currency">
+        <span class="currency__symbol">€</span>
+        <span class="currency__number">{{coin.currencies.eur.price | numberFormatter: 'price'}}</span>
+      </div>
     </div>
     <!-- TODO: fix formatting -->
     <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
-      {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+      <div class="percentage">
+        <span class="percentage__number">{{coin.currencies.eur.change | numberFormatter: 'perc'}}</span>
+        <span class="percentage__symbol">%</span>
+      </div>
     </div>
   </ion-toolbar>
 </ion-header>

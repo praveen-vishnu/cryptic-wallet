@@ -62,11 +62,14 @@ export class WalletPage {
   }
 
   getTotalPrice() {
-    let total: number = 0;
-    this.currentWallet.coins.forEach(coin => {
-      total += coin.wallet.total;
-    });
-    return total;
+    if (this.currentWallet) {
+      let total: number = 0;
+      this.currentWallet.coins.forEach(coin => {
+        total += coin.wallet.total;
+      });
+      return total;
+    }
+    return 0;
   }
 
   openToast(text) {
@@ -121,5 +124,10 @@ export class WalletPage {
 
   checkIfExists(data): boolean {
     return !!this.wallets ? this.wallets.some(item => data.name.toLowerCase() === item.name.toLowerCase()) : false;
+  }
+
+  delete(index) {
+    this.wallets[this.slides.getActiveIndex()].coins.splice(index, 1);
+    this.storage.set('wallets', this.wallets);
   }
 }

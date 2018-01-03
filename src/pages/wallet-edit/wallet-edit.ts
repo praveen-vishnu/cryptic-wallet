@@ -45,7 +45,7 @@ export class WalletEditPage {
     toast.present();
   }
 
-  changeCoin(wallet) {
+  changeCoin(slider, index) {
     let alert = this.alertCtrl.create({
       title: 'New wallet name',
       inputs: [
@@ -66,14 +66,13 @@ export class WalletEditPage {
           handler: data => {
             const value = data.name.trim();
             if (value) {
-              const index = Number(wallet.item.id);
               if (!this.checkIfExists(value)) {
                 this.wallets[index].name = value;
                 this.storage.set('wallets', this.wallets);
               } else {
                 this.openToast('Name is already been used');
               }
-              wallet.close();
+              slider.close();
             } else {
               this.openToast('Name cannot be empty');
             }

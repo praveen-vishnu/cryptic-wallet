@@ -19,7 +19,6 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
-  <preference name="orientation" value="portrait"/>
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png"/>
@@ -89,4 +88,5 @@
     <variable name="UPDATE_METHOD" value="auto"/>
   </plugin>
   <plugin name="cordova-sqlite-storage" spec="^2.1.5"/>
+  <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1"/>
 </widget>

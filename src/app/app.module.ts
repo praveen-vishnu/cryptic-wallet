@@ -16,6 +16,7 @@ import {SettingsPageModule} from "../pages/settings/settings.module";
 import {WalletPageModule} from "../pages/wallet/wallet.module";
 import {IonicStorageModule} from "@ionic/storage";
 import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiService,
-    InAppBrowser
+    InAppBrowser,
+    ScreenOrientation
   ]
 })
 export class AppModule {

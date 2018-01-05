@@ -11,21 +11,13 @@
     <ion-slides pager centeredSlides="true" zoom="false"
                 (ionSlideDidChange)="slideChanged($event)">
       <ion-slide class="align-top" *ngFor="let wallet of wallets">
-        <ion-item item-start>
-          <ion-icon name="arrow-back" item-start></ion-icon>
-
-          <div>
-            <h1 class="page-title" text-center>{{wallet.name}}</h1>
-            <div class="wallet-amount" text-center>
-              <div class="currency">
-                <span class="currency__symbol">€</span>
-                <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
-              </div>
-            </div>
+        <h1 class="page-title" text-center>{{wallet.name}}</h1>
+        <div class="wallet-amount" text-center>
+          <div class="currency">
+            <span class="currency__symbol">€</span>
+            <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
           </div>
-
-          <ion-icon name="arrow-forward" item-end></ion-icon>
-        </ion-item>
+        </div>
       </ion-slide>
     </ion-slides>
   </ion-toolbar>

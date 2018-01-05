@@ -17,6 +17,7 @@ import {WalletPageModule} from "../pages/wallet/wallet.module";
 import {IonicStorageModule} from "@ionic/storage";
 import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiService,
     InAppBrowser,
-    ScreenOrientation
+    ScreenOrientation,
+    NativePageTransitions
   ]
 })
 export class AppModule {

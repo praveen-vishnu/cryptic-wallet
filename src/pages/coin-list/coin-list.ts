@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
 import {Storage} from "@ionic/storage";
+import {NativePageTransitions, NativeTransitionOptions} from "@ionic-native/native-page-transitions";
 
 @IonicPage()
 @Component({
@@ -16,6 +17,7 @@ export class CoinListPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public storage: Storage,
+              private nativePageTransitions: NativePageTransitions,
               public apiService: ApiService) {
     this.apiService.coinList.subscribe(coinList => {
       this.storage.set('coin-list', coinList);
@@ -27,6 +29,25 @@ export class CoinListPage {
     this.storage.get('coin-list').then(list => {
       !list ? this.apiService.getCoinList() : this.coins = list;
     });
+  }
+
+  ionViewWillLeave() {
+
+    let options: NativeTransitionOptions = {
+      direction: 'down',
+      duration: 500,
+      slowdownfactor: 3,
+      slidePixels: 20,
+      iosdelay: 100,
+      androiddelay: 150,
+      fixedPixelsTop: 0,
+      fixedPixelsBottom: 60
+    };
+
+    this.nativePageTransitions.slide(options)
+      .then(() => console.log('transition done'))
+      .catch();
+
   }
 
   get coinListLength(): string {

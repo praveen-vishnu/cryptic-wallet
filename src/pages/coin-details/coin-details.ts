@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../classes/coin';
 import {ApiService} from '../../services/api.service';
 import * as moment from "moment";
+import {Currency} from "../../classes/currency";
 
 @IonicPage()
 @Component({
@@ -11,11 +12,13 @@ import * as moment from "moment";
 })
 export class CoinDetailsPage {
   coin?: Coin;
+  coinInCurrency?: any;
   price: number;
   currentDate: string;
   priceDate: string;
   chartMode: any;
   data: any;
+  currency: Currency;
   @ViewChild('segment') segment: ElementRef;
   @ViewChild('timestamp') timestamp: ElementRef;
 
@@ -25,9 +28,13 @@ export class CoinDetailsPage {
     this.coin = navParams.data;
     // this.overrideCoin();
     if (this.coin) {
-      this.price = this.coin.currencies.eur.price;
-      //TODO the current date probably doesn't correspond with the last retrieved price date
-      this.priceDate = this.currentDate = moment.unix(this.coin.currencies.eur.priceLastUpdated).format("DD-MM-YYYY HH:mm");
+      this.apiService.storedCurrency.subscribe(item => {
+        this.currency = item;
+        this.coinInCurrency = this.coin.currencies[item.code];
+        this.price = this.coinInCurrency.price;
+        //TODO the current date probably doesn't correspond with the last retrieved price date
+        this.priceDate = this.currentDate = moment.unix(this.coinInCurrency.priceLastUpdated).format("DD-MM-YYYY HH:mm");
+      })
     }
   }
 
@@ -124,5 +131,19 @@ export class CoinDetailsPage {
     } else {
       this.priceDate = this.currentDate;
     }
+  }
+
+  getPrice(coin) {
+    if (this.currency) {
+      return coin.currencies[this.currency.code].price;
+    }
+    return '';
+  }
+
+  getChange(coin) {
+    if (this.currency) {
+      return coin.currencies[this.currency.code].change;
+    }
+    return '';
   }
 }

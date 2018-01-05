@@ -4,6 +4,8 @@ import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 import {Storage} from '@ionic/storage';
 import {Wallet} from "../../classes/wallet";
 import {WalletEditPage} from "../wallet-edit/wallet-edit";
+import {Currency} from "../../classes/currency";
+import {ApiService} from "../../services/api.service";
 
 @IonicPage()
 @Component({
@@ -14,13 +16,18 @@ export class WalletPage {
   wallets: Array<Wallet> = [];
   currentWallet?: Wallet;
   walletButtonEnabled: boolean = false;
+  currency: Currency;
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private alertCtrl: AlertController,
               public toastCtrl: ToastController,
+              public apiService: ApiService,
               private storage: Storage) {
+    this.apiService.storedCurrency.subscribe(item => {
+      this.currency = item;
+    })
   }
 
   ionViewWillEnter() {
@@ -60,8 +67,22 @@ export class WalletPage {
     this.navCtrl.push(CoinListWalletPage, {'walletIndex': this.slides.getActiveIndex()});
   }
 
+  getPrice(wallet) {
+    if (this.currency) {
+      return wallet.coin.currencies[this.currency.code].price;
+    }
+    return '';
+  }
+
+  getChange(wallet) {
+    if (this.currency) {
+      return wallet.coin.currencies[this.currency.code].change;
+    }
+    return '';
+  }
+
   getCoinPrice(wallet): number {
-    return parseFloat(wallet.amount) * wallet.coin.currencies.eur.price;
+    return parseFloat(wallet.amount) * this.getPrice(wallet);
   }
 
   getTotalPrice() {

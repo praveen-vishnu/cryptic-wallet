@@ -9,18 +9,18 @@
   <ion-toolbar>
     <h1 class="coin-title" text-center>{{coin.name}}</h1>
     <small class="coin-market-cap" text-center>
-      € {{coin.currencies.eur.marketcap | numberFormatter}}
+      {{currency?.symbol}} {{coinInCurrency?.marketcap | numberFormatter}}
     </small>
     <div class="coin-price" text-center>
       <div class="currency">
-        <span class="currency__symbol">€</span>
-        <span class="currency__number">{{coin.currencies.eur.price | numberFormatter: 'price'}}</span>
+        <span class="currency__symbol">{{currency?.symbol}}</span>
+        <span class="currency__number">{{coinInCurrency?.price | numberFormatter: 'price'}}</span>
       </div>
     </div>
     <!-- TODO: fix formatting -->
-    <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
+    <div text-center class="price-change" [ngClass]="{'negative' : detectChange(coinInCurrency?.change)}">
       <div class="percentage">
-        <span class="percentage__number">{{coin.currencies.eur.change | numberFormatter: 'perc'}}</span>
+        <span class="percentage__number">{{coinInCurrency?.change | numberFormatter: 'perc'}}</span>
         <span class="percentage__symbol">%</span>
       </div>
     </div>

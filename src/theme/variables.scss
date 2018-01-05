@@ -29,9 +29,9 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: #488aff,
+  primary: #95adc1,
   secondary: #32db64,
-  danger: #f53d3d,
+  danger: #cc5050,
   light: #f4f4f4,
   dark: #222
 );
@@ -65,6 +65,7 @@ $refresher-icon-color: $text-color;
 $refresher-icon-font-size: 20px;
 $refresher-text-color: $text-color;
 $refresher-text-font-size: 12px;
+$button-ios-text-color: #132433;
 
 $toolbar-ios-height: 60px;
 $spinner-ios-crescent-color: #fff;

@@ -7,8 +7,27 @@
 </ion-header>
 
 
-<ion-content padding>
-  <button ion-button full color="danger" (click)="clearStorage()">
-    Clear storage
-  </button>
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      Preferences
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Choose your currency</ion-label>
+      <ion-select [(ngModel)]="currentCurrency" (ionChange)="currencyChanged($event)">
+        <ion-option #item *ngFor="let currency of currencies" [value]="currency.code">
+          {{currency.name}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+    <button ion-item [color]="'danger'" (click)="clearStorage()">
+      Clear storage
+    </button>
+    <ion-list-header>
+      Contact
+    </ion-list-header>
+    <button ion-item>
+      Sent me an email
+    </button>
+  </ion-list>
 </ion-content>

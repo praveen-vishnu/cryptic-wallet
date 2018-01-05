@@ -17,7 +17,7 @@
         <h1 class="page-title" text-center>{{wallet.name}}</h1>
         <div class="wallet-amount" text-center>
           <div class="currency">
-            <span class="currency__symbol">€</span>
+            <span class="currency__symbol">{{currency?.symbol}}</span>
             <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
           </div>
         </div>
@@ -37,14 +37,14 @@
           </ion-avatar>
           <ion-label>
             <p>{{wallet.coin.name}}</p>
-            <div>€ {{wallet.coin.currencies.eur.price | numberFormatter: 'price'}}</div>
+            <div>{{currency?.symbol}} {{getPrice(wallet) | numberFormatter: 'price'}}</div>
             <small item-content class="price-change"
-                   [ngClass]="{'negative' : detectChange(wallet.coin.currencies.eur.change)}">
-              {{wallet.coin.currencies.eur.change | numberFormatter: 'perc'}}%
+                   [ngClass]="{'negative' : detectChange(getChange(wallet))}">
+              {{getChange(wallet) | numberFormatter: 'perc'}}%
             </small>
           </ion-label>
           <div item-end>
-            <p>€ {{getCoinPrice(wallet) | numberFormatter: 'price'}}</p>
+            <p>{{currency?.symbol}} {{getCoinPrice(wallet) | numberFormatter: 'price'}}</p>
             <p>{{wallet.amount}}</p>
           </div>
         </ion-item>

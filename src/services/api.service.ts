@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Subject} from "rxjs/Subject";
 import {Utils} from "../classes/utils";
 import {Storage} from "@ionic/storage";
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Currency} from "../classes/currency";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
@@ -17,6 +19,7 @@ export class ApiService {
   refresher: any;
   coinHistoryPriceList = new Subject();
   coinHistoryPriceListJS = new Subject();
+  storedCurrency: ReplaySubject<Currency> = new ReplaySubject();
 
   // TODO Do something when the api is down
 
@@ -42,6 +45,25 @@ export class ApiService {
   }
 
   constructor(private http: HttpClient, private storage: Storage) {
+    this.storage.get('currency').then(currency => {
+      if (currency) {
+        this.storedCurrency.next(currency);
+      } else {
+        //TODO default value
+        if (navigator.language === 'en-GB') {
+          this.storedCurrency.next({
+            name: 'US Dollar',
+            code: 'usd',
+            symbol: '$'
+          },);
+        }
+      }
+    });
+  }
+
+  saveCurrency(currency) {
+    this.storage.set('currency', currency);
+    this.storedCurrency.next(currency);
   }
 
   private callCoinList() {

@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
 import {Storage} from "@ionic/storage";
+import {Currency} from "../../classes/currency";
 
 @IonicPage()
 @Component({
@@ -12,6 +13,7 @@ import {Storage} from "@ionic/storage";
 export class CoinListPage {
   search: boolean = false;
   coins: any;
+  currency: Currency;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -21,6 +23,10 @@ export class CoinListPage {
       this.storage.set('coin-list', coinList);
       return this.coins = coinList;
     });
+
+    this.apiService.storedCurrency.subscribe(item => {
+      this.currency = item;
+    })
   }
 
   ionViewDidEnter() {
@@ -39,6 +45,20 @@ export class CoinListPage {
 
   selectedCoin(coin): void {
     this.navCtrl.push(CoinDetailsPage, coin);
+  }
+
+  getPrice(coin) {
+    if (this.currency) {
+      return coin.currencies[this.currency.code].price;
+    }
+    return '';
+  }
+
+  getChange(coin) {
+    if (this.currency) {
+      return coin.currencies[this.currency.code].change;
+    }
+    return '';
   }
 
   trackByCoin(index, item): number {

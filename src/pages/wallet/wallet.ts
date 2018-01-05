@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, Slides, ToastController} from 'ionic-angular';
 import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 import {Storage} from '@ionic/storage';
-import {Wallet, WalletItem} from "../../classes/wallet";
+import {Wallet} from "../../classes/wallet";
 import {WalletEditPage} from "../wallet-edit/wallet-edit";
 
 @IonicPage()
@@ -106,8 +106,9 @@ export class WalletPage {
           handler: data => {
             const value = data.amount.trim().replace(',', '.');
             if (value) {
-              const currentCoin: WalletItem = this.currentWallet.wallet[index];
-              currentCoin.amount = parseFloat(value);
+              const walletIndex = this.wallets.indexOf(this.currentWallet);
+              this.wallets[walletIndex].wallet[index].amount = parseFloat(value);
+              this.storage.set('wallets', this.wallets);
               slider.close();
             } else {
               this.openToast('Name cannot be empty');
@@ -120,7 +121,7 @@ export class WalletPage {
     alert.present();
   }
 
-  addNewCoin() {
+  addNewWallet() {
     let alert = this.alertCtrl.create({
       title: 'Wallet name',
       inputs: [

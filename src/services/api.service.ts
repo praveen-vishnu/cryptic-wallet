@@ -227,7 +227,7 @@ export class ApiService {
         ]);
       },
       err => console.error(err),
-      () => console.log('done loading coins')
+      () => console.log('done loading chart')
     );
   }
 
@@ -243,7 +243,7 @@ export class ApiService {
           });
         },
         err => console.error(err),
-        () => console.log('done loading coins')
+        () => console.log('done loading chart')
       );
     }, 500);
   }

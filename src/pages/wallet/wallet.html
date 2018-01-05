@@ -8,7 +8,10 @@
     </ion-buttons>
   </ion-navbar>
   <ion-toolbar class="wallet-slider">
-    <ion-slides pager centeredSlides="true" zoom="false"
+    <ion-slides [pager]="true"
+                [paginationType]="'bullets'"
+                [centeredSlides]="false"
+                [zoom]="false"
                 (ionSlideDidChange)="slideChanged($event)">
       <ion-slide class="align-top" *ngFor="let wallet of wallets">
         <h1 class="page-title" text-center>{{wallet.name}}</h1>

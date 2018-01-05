@@ -19,7 +19,6 @@ export class WalletEditPage {
   }
 
   ionViewDidLoad() {
-    //TODO When there is one wallet left it is not shown in the wallet page
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;
@@ -35,6 +34,14 @@ export class WalletEditPage {
   delete(index) {
     this.wallets.splice(index, 1);
     this.storage.set('wallets', this.wallets);
+
+    const walletPage = this.navCtrl.first().instance;
+    walletPage.slides.slideTo(0);
+
+    if (this.wallets.length === 0) {
+      walletPage.wallets = [];
+      walletPage.currentWallet = null;
+    }
   }
 
   openToast(text) {

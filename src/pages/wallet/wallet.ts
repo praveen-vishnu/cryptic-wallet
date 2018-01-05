@@ -12,7 +12,7 @@ import {WalletEditPage} from "../wallet-edit/wallet-edit";
 })
 export class WalletPage {
   wallets: Array<Wallet> = [];
-  currentWallet: Wallet;
+  currentWallet?: Wallet;
   walletButtonEnabled: boolean = false;
   @ViewChild(Slides) slides: Slides;
 
@@ -21,10 +21,6 @@ export class WalletPage {
               private alertCtrl: AlertController,
               public toastCtrl: ToastController,
               private storage: Storage) {
-  }
-
-  ionViewDidEnter() {
-    this.getStoredWallets();
   }
 
   ionViewWillEnter() {
@@ -43,8 +39,7 @@ export class WalletPage {
     this.storage.get('wallets').then(data => {
       if (data && data.length > 0) {
         this.wallets = data;
-        const currentIndex = this.slides.getActiveIndex();
-        this.currentWallet = this.wallets[currentIndex];
+        this.currentWallet = this.wallets[this.slides.getActiveIndex()];
       } else {
         this.walletButtonEnabled = true;
       }
@@ -62,8 +57,7 @@ export class WalletPage {
   }
 
   goToCoinList() {
-    const index = this.slides.getActiveIndex();
-    this.navCtrl.push(CoinListWalletPage, {'walletIndex': index});
+    this.navCtrl.push(CoinListWalletPage, {'walletIndex': this.slides.getActiveIndex()});
   }
 
   getCoinPrice(wallet): number {

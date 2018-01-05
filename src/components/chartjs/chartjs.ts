@@ -35,7 +35,8 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     this.destroyChart();
-    if (!!changes.data.currentValue) {
+    const chartDataExists = changes.data.currentValue && changes.data.currentValue.labels.length > 0 && changes.data.currentValue.data.length > 0;
+    if (chartDataExists) {
       this.isLoading = false;
       this.chartJS(changes.data.currentValue.labels, changes.data.currentValue.data);
     } else {

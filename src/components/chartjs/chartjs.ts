@@ -18,7 +18,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
   chartjs: Chart;
   scrubberXPos: number;
   scrubberYPos: number;
-  isLoading: boolean = false;
+  isLoading: boolean = true;
   allTicksPositions: any;
   currentTick: any;
   requestAnimation: any = null;
@@ -31,14 +31,12 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.isLoading = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.destroyChart();
-
-    if (!!changes.data.currentValue) {
-      console.log('data: ', changes.data.currentValue);
+    if (changes.data.currentValue) {
+      this.isLoading = false;
       this.chartJS(changes.data.currentValue.labels, changes.data.currentValue.data);
     } else {
       this.isLoading = true;
@@ -50,8 +48,6 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   chartJS(labels, data) {
-    this.isLoading = false;
-    this.destroyChart();
     this.chartjs = new Chart(this.canvas.nativeElement, {
       type: 'line',
       data: {
@@ -76,7 +72,6 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.canvasClientWidth = this.chartjs.canvas.clientWidth;
     this.canvasClientHeight = this.chartjs.canvas.clientHeight;
-    console.log(this.chartjs);
     this.getAllTickPositions();
   }
 
@@ -94,6 +89,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         value: this.chartjs.data.datasets[0].data[item['_index']],
       };
     });
+
     this.calculateCoordinates(this.allTicksPositions[this.allTicksPositions.length - 1]);
   }
 
@@ -117,35 +113,54 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   glideToOriginalPosition() {
-    const fps = 60;
+    const range = this.calculateRange();
+    let isLastTick: boolean = false;
+    let lastTickPositionReached: boolean = false;
+    const fps = 30;
     const then = Date.now();
     const interval = 1000 / fps;
     let now;
     let delta;
-    let allTicks = this.allTicksPositions;
-    let indexPosition = allTicks.indexOf(this.currentTick);
-    const restOfPositions = allTicks.slice(indexPosition);
-    let counter = 0;
+    const boundry = 0 - (this.scrubberX.nativeElement.clientWidth / 2);
 
     const animate = () => {
+      console.log('animating');
       now = Date.now();
       delta = now - then;
-      if (delta > interval && counter < restOfPositions.length) {
-        const tick = restOfPositions[counter++];
-        this.calculateCoordinates(tick);
+
+      if (delta > interval) {
+        this.scrubberXPos = this.scrubberXPos - 4;
+
+        if (isLastTick) {
+          lastTickPositionReached = this.scrubberXPos === 0 - (this.scrubberX.nativeElement.clientWidth / 2);
+        } else {
+          const originalXPos = this.canvasClientWidth - this.scrubberXPos;
+          this.allTicksPositions.find(tick => {
+            if (originalXPos >= (tick.x - range) && originalXPos <= (tick.x + range)) {
+              this.currentTick = tick;
+              this.scrubberYPos = tick.y;
+              this.updatePriceAndDate(tick.labels, tick.value);
+              isLastTick = this.allTicksPositions.indexOf(this.currentTick) === 0;
+            }
+          });
+        }
       }
 
-      if (counter < restOfPositions.length) {
+      if (!lastTickPositionReached && this.scrubberXPos > boundry) {
         this.requestAnimation = requestAnimationFrame(animate);
+      } else {
+        cancelAnimationFrame(this.requestAnimation);
       }
     };
     this.requestAnimation = requestAnimationFrame(animate);
   }
 
   private calculateCoordinates(tick) {
-    this.scrubberXPos = (this.canvasClientWidth - tick.x) - (this.scrubberX.nativeElement.clientWidth / 2);
-    this.scrubberYPos = tick.y;
-    this.updatePriceAndDate(tick.labels, tick.value);
+    if (this.scrubberX && this.scrubberY) {
+      this.scrubberXPos = (this.canvasClientWidth - tick.x) - (this.scrubberX.nativeElement.clientWidth / 2);
+      this.scrubberYPos = tick.y;
+      this.updatePriceAndDate(tick.labels, tick.value);
+    }
   }
 
   onScrubStart(event) {
@@ -201,6 +216,11 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         mode: 'index',
         intersect: false,
         backgroundColor: 'rgba(122,122,122,0.8)',
+        callbacks: {
+          labelTextColor: (item, chart) => {
+            console.log(item, chart);
+          }
+        },
       },
       hover: {
         mode: 'nearest',

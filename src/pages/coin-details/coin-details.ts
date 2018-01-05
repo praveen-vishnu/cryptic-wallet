@@ -69,6 +69,7 @@ export class CoinDetailsPage {
 
   ionViewDidLeave() {
     this.apiService.coinHistoryPriceListJS.next(null);
+    this.data = null;
   }
 
   get calculateChartHeight() {

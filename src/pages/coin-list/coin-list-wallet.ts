@@ -3,8 +3,7 @@ import {CoinListPage} from "./coin-list";
 import {AlertController, NavController, NavParams, ToastController} from "ionic-angular";
 import {ApiService} from "../../services/api.service";
 import {Storage} from '@ionic/storage';
-import {Wallet} from "../../classes/wallet";
-import {Coin} from "../../classes/coin";
+import {Wallet, WalletItem} from "../../classes/wallet";
 
 @Component({
   selector: 'page-coin-list-wallet',
@@ -32,7 +31,7 @@ export class CoinListWalletPage extends CoinListPage {
 
   ionViewDidEnter() {
     this.storage.get('wallets').then(data => {
-      if (!!data) {
+      if (data && data.length > 0) {
         this.wallets = data;
 
         this.storage.get('coin-list').then(list => {
@@ -48,28 +47,15 @@ export class CoinListWalletPage extends CoinListPage {
   }
 
   private filterCoinList(coinList: Array<any>) {
-    return coinList.filter(coin => {
-      return !this.wallets[this.currentWalletIndex].coins.some(item => item.name === coin.name);
-    });
+    if (this.wallets[this.currentWalletIndex].wallet.length > 0) {
+      return coinList.filter(coin => {
+        return !this.wallets[this.currentWalletIndex].wallet.some(item => item.coin.name === coin.name);
+      });
+    }
+    return coinList;
   }
 
   selectedCoin(coin) {
-    console.log(this.storage.driver);
-    this.addCoinAmount(coin);
-  }
-
-  filterCoins(event) {
-    this.coins = this.coinsSearchList;
-    let value = event.target.value;
-
-    if (value && value.trim() != '') {
-      this.coins = this.coins.filter((item) => {
-        return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
-      })
-    }
-  }
-
-  addCoinAmount(coin: Coin) {
     let alert = this.alertCtrl.create({
       title: 'How many coins do you have?',
       inputs: [
@@ -91,12 +77,13 @@ export class CoinListWalletPage extends CoinListPage {
           handler: data => {
             const value = data.amount.trim().replace(',', '.');
             if (value) {
-              coin.wallet = {
+              const walletCoin: WalletItem = {
+                coin: coin,
                 amount: parseFloat(value),
-                total: parseFloat(value) * coin.currencies.eur.price
               };
+
               if (this.wallets.length > 0) {
-                this.wallets[this.currentWalletIndex].coins.push(coin);
+                this.wallets[this.currentWalletIndex].wallet.push(walletCoin);
                 this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
               }
             } else {
@@ -108,6 +95,17 @@ export class CoinListWalletPage extends CoinListPage {
     });
 
     alert.present();
+  }
+
+  filterCoinsOnSearch(event) {
+    this.coins = this.coinsSearchList;
+    let value = event.target.value;
+
+    if (value && value.trim() != '') {
+      this.coins = this.coins.filter((item) => {
+        return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+      })
+    }
   }
 
   openToast(text) {

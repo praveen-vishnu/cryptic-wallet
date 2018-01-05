@@ -25,24 +25,24 @@
 
 <ion-content>
   <ng-container *ngIf="currentWallet;else loader">
-    <ion-list>
-      <ion-item-sliding #item *ngFor="let coin of currentWallet.coins;trackBy: trackByCoin;let index = index;">
+    <ion-list *ngIf="currentWallet.wallet.length > 0;else noCoins">
+      <ion-item-sliding #item *ngFor="let wallet of currentWallet.wallet;trackBy: trackByCoin;let index = index;">
         <ion-item detail-none>
           <ion-avatar class="logo" item-start>
             <!--TODO fix ion image-->
-            <img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"/>
+            <img width="36" height="36" [src]="wallet.coin.imageUrl" [alt]="wallet.coin.name"/>
           </ion-avatar>
           <ion-label>
-            <p>{{coin.name}}</p>
-            <div>€ {{coin.currencies.eur.price | numberFormatter: 'price'}}</div>
+            <p>{{wallet.coin.name}}</p>
+            <div>€ {{wallet.coin.currencies.eur.price | numberFormatter: 'price'}}</div>
             <small item-content class="price-change"
-                   [ngClass]="{'negative' : detectChange(coin.currencies.eur.change)}">
-              {{coin.currencies.eur.change | numberFormatter: 'perc'}}%
+                   [ngClass]="{'negative' : detectChange(wallet.coin.currencies.eur.change)}">
+              {{wallet.coin.currencies.eur.change | numberFormatter: 'perc'}}%
             </small>
           </ion-label>
           <div item-end>
-            <p>€ {{coin.wallet.total | numberFormatter: 'price'}}</p>
-            <p>{{coin.wallet.amount}}</p>
+            <p>€ {{getCoinPrice(wallet) | numberFormatter: 'price'}}</p>
+            <p>{{wallet.amount}}</p>
           </div>
         </ion-item>
         <ion-item-options>
@@ -55,12 +55,15 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
+    <ng-template #noCoins>
+      <div padding text-center>No coins yet</div>
+    </ng-template>
   </ng-container>
   <ng-template #loader>
     <!--spinner-->
   </ng-template>
 
-  <div *ngIf="wallets.length === 0" padding>
+  <div *ngIf="checkWallet()" padding>
     <button ion-button full (click)="addNewCoin()">Add new wallet</button>
   </div>
 

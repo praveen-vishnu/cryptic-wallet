@@ -46,7 +46,7 @@ export class WalletEditPage {
     toast.present();
   }
 
-  changeCoin(slider, index) {
+  changeWallet(slider, index) {
     let alert = this.alertCtrl.create({
       title: 'New wallet name',
       inputs: [
@@ -77,7 +77,7 @@ export class WalletEditPage {
     alert.present();
   }
 
-  addNewCoin() {
+  addNewWallet() {
     let alert = this.alertCtrl.create({
       title: 'Wallet name',
       inputs: [
@@ -99,7 +99,7 @@ export class WalletEditPage {
             this.checkConstraints((value) => {
               const wallet: Wallet = {
                 name: value,
-                coins: []
+                wallet: []
               };
               this.wallets.push(wallet);
               this.storage.set('wallets', this.wallets);

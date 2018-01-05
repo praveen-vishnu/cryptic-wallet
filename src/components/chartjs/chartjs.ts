@@ -35,7 +35,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     this.destroyChart();
-    if (changes.data.currentValue) {
+    if (!!changes.data.currentValue) {
       this.isLoading = false;
       this.chartJS(changes.data.currentValue.labels, changes.data.currentValue.data);
     } else {
@@ -54,9 +54,9 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         labels: labels,
         datasets: [{
           data: data,
-          // backgroundColor: [
-          //   'rgba(15, 28, 40, 1)',
-          // ],
+          backgroundColor: [
+            'transparent',
+          ],
           borderColor: [
             // TODO Different theme colors
             'rgba(228, 107, 32, 1)',

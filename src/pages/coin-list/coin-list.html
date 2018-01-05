@@ -19,7 +19,7 @@
                            refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
   <ng-container *ngIf="search">
-    <ion-searchbar (ionInput)="filterCoins($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
   </ng-container>
   <ion-list-header text-right>
     {{coinListLength}} coins

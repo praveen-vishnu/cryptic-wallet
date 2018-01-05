@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, Slides, ToastController} from 'ionic-angular';
 import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 import {Storage} from '@ionic/storage';
-import {Wallet} from "../../classes/wallet";
+import {Wallet, WalletItem} from "../../classes/wallet";
 import {WalletEditPage} from "../wallet-edit/wallet-edit";
 
 @IonicPage()
@@ -13,6 +13,7 @@ import {WalletEditPage} from "../wallet-edit/wallet-edit";
 export class WalletPage {
   wallets: Array<Wallet> = [];
   currentWallet: Wallet;
+  walletButtonEnabled: boolean = false;
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
@@ -22,7 +23,7 @@ export class WalletPage {
               private storage: Storage) {
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.getStoredWallets();
   }
 
@@ -40,16 +41,20 @@ export class WalletPage {
 
   private getStoredWallets() {
     this.storage.get('wallets').then(data => {
-      if (!!data) {
+      if (data && data.length > 0) {
         this.wallets = data;
         const currentIndex = this.slides.getActiveIndex();
         this.currentWallet = this.wallets[currentIndex];
+      } else {
+        this.walletButtonEnabled = true;
       }
     });
   }
 
   slideChanged(event) {
-    this.currentWallet = this.wallets[event.realIndex];
+    if (event.realIndex || event.realIndex === 0) {
+      this.currentWallet = this.wallets[event.realIndex];
+    }
   }
 
   goToEditWallets() {
@@ -61,11 +66,15 @@ export class WalletPage {
     this.navCtrl.push(CoinListWalletPage, {'walletIndex': index});
   }
 
+  getCoinPrice(wallet): number {
+    return parseFloat(wallet.amount) * wallet.coin.currencies.eur.price;
+  }
+
   getTotalPrice() {
     if (this.currentWallet) {
       let total: number = 0;
-      this.currentWallet.coins.forEach(coin => {
-        total += coin.wallet.total;
+      this.currentWallet.wallet.forEach(wallet => {
+        total += this.getCoinPrice(wallet);
       });
       return total;
     }
@@ -103,11 +112,8 @@ export class WalletPage {
           handler: data => {
             const value = data.amount.trim().replace(',', '.');
             if (value) {
-              const currentCoin = this.currentWallet.coins[index];
-              currentCoin.wallet = {
-                amount: parseFloat(value),
-                total: parseFloat(value) * currentCoin.currencies.eur.price
-              };
+              const currentCoin: WalletItem = this.currentWallet.wallet[index];
+              currentCoin.amount = parseFloat(value);
               slider.close();
             } else {
               this.openToast('Name cannot be empty');
@@ -143,7 +149,7 @@ export class WalletPage {
               if (!this.checkIfExists(data)) {
                 const wallet: Wallet = {
                   name: data.name,
-                  coins: []
+                  wallet: []
                 };
                 this.wallets.push(wallet);
                 this.storage.set('wallets', this.wallets);
@@ -166,7 +172,11 @@ export class WalletPage {
   }
 
   delete(index) {
-    this.wallets[this.slides.getActiveIndex()].coins.splice(index, 1);
+    this.wallets[this.slides.getActiveIndex()].wallet.splice(index, 1);
     this.storage.set('wallets', this.wallets);
+  }
+
+  checkWallet() {
+    return this.walletButtonEnabled && this.wallets.length === 0;
   }
 }

@@ -8,10 +8,6 @@ export interface Coin {
     usd: CurrencyData,
     btc: CurrencyData,
   };
-  wallet?: {
-    amount: number,
-    total: number,
-  }
 }
 
 export interface CurrencyData {

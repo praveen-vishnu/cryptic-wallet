@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from "rxjs/Subject";
 import {Utils} from "../classes/utils";
+import {Storage} from "@ionic/storage";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
@@ -40,7 +41,7 @@ export class ApiService {
     });
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storage: Storage) {
   }
 
   private callCoinList() {
@@ -123,7 +124,25 @@ export class ApiService {
       }
 
       this.coinList.next(coinList);
+      this.updateWallets(coinList);
+
     }, err => console.error(err));
+  }
+
+  private updateWallets(coinList) {
+    this.storage.get('wallets').then((wallets) => {
+      if (wallets && wallets.length > 0) {
+        wallets.forEach(wallet => {
+          wallet.wallet.forEach(walletItem => {
+            walletItem.coin = coinList.find(coin => {
+              return coin.name === walletItem.coin.name;
+            });
+          })
+        });
+
+        this.storage.set('wallets', wallets);
+      }
+    });
   }
 
   private mapToCoin(coinListJson: any, coin, baseImageUrl: any) {

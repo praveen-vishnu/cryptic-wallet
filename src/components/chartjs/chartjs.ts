@@ -102,7 +102,9 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
       // console.log((xPos >= (tick.x - range) && xPos <= (tick.x + range)) + '--xPos: ' + xPos + ' --tick.x: ' + tick.x + '--range: ' + Math.floor(range));
       if (xPos >= (tick.x - range) && xPos <= (tick.x + range)) {
         this.currentTick = tick;
-        this.calculateCoordinates(tick);
+        this.calculateCoordinates(tick, () => {
+          this.updatePriceAndDate(tick.labels, tick.value);
+        });
       }
     });
   }
@@ -116,6 +118,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
     const range = this.calculateRange();
     let isLastTick: boolean = false;
     let lastTickPositionReached: boolean = false;
+    const speed = 6;
     const fps = 30;
     const then = Date.now();
     const interval = 1000 / fps;
@@ -124,12 +127,11 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
     const boundry = 0 - (this.scrubberX.nativeElement.clientWidth / 2);
 
     const animate = () => {
-      console.log('animating');
       now = Date.now();
       delta = now - then;
 
       if (delta > interval) {
-        this.scrubberXPos = this.scrubberXPos - 4;
+        this.scrubberXPos = this.scrubberXPos - speed;
 
         if (isLastTick) {
           lastTickPositionReached = this.scrubberXPos === 0 - (this.scrubberX.nativeElement.clientWidth / 2);
@@ -146,20 +148,28 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
 
-      if (!lastTickPositionReached && this.scrubberXPos > boundry) {
+      if (!lastTickPositionReached && this.scrubberXPos > boundry && this.scrubberXPos > -50) {
         this.requestAnimation = requestAnimationFrame(animate);
       } else {
         cancelAnimationFrame(this.requestAnimation);
+        this.resetDateAndPrice();
       }
     };
     this.requestAnimation = requestAnimationFrame(animate);
   }
 
-  private calculateCoordinates(tick) {
+  private resetDateAndPrice() {
+    this.price.emit(null);
+    this.date.emit(null);
+  }
+
+  private calculateCoordinates(tick, next?) {
     if (this.scrubberX && this.scrubberY) {
       this.scrubberXPos = (this.canvasClientWidth - tick.x) - (this.scrubberX.nativeElement.clientWidth / 2);
       this.scrubberYPos = tick.y;
-      this.updatePriceAndDate(tick.labels, tick.value);
+      if (next) {
+        next();
+      }
     }
   }
 
@@ -175,8 +185,6 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
 
   onScrubEnd(event) {
     this.glideToOriginalPosition();
-    // this.price.emit(null);
-    // this.date.emit(null); // TODO Check to set the correct price on original position
   }
 
   private destroyChart() {

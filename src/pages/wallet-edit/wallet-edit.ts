@@ -19,6 +19,7 @@ export class WalletEditPage {
   }
 
   ionViewDidLoad() {
+    //TODO When there is one wallet left it is not shown in the wallet page
     this.storage.get('wallets').then(data => {
       if (!!data) {
         this.wallets = data;

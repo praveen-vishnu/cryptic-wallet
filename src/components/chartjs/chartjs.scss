@@ -9,26 +9,25 @@ chartjs {
     overflow: hidden;
     background: #0f1d29;
 
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-      display: block !important;
-    }
-
-    .scrubber {
-      transition: right 750ms;
-      transition-timing-function: ease;
+    .scrubberX {
       position: absolute;
       top: 0;
-      right: 0;
-      width: 2px;
-      background: #95adc1;
+      right: -50px;
+      width: 16px;
       height: 100%;
+      background: rgba(149, 173, 193, 0.2);
       z-index: 99;
+    }
 
-      &.active {
-        transition: unset;
-      }
+    .scrubberY {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      height: 0;
+      width: 2px;
+      transform: translateX(-50%);
+      background: $text-color;
+      z-index: 99;
     }
 
     ion-spinner {

@@ -17,6 +17,8 @@ export class ApiService {
   coinHistoryPriceList = new Subject();
   coinHistoryPriceListJS = new Subject();
 
+  // TODO Do something when the api is down
+
   static renderPriceHistory(historyData): any {
     return historyData.map(minuteObject => {
       return {

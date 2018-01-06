@@ -2,9 +2,9 @@ import {Component, ViewChild} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, Slides, ToastController} from 'ionic-angular';
 import {CoinListWalletPage} from "../coin-list/coin-list-wallet";
 import {Storage} from '@ionic/storage';
-import {Wallet} from "../../classes/wallet";
+import {Wallet} from "../../interfaces/wallet";
 import {WalletEditPage} from "../wallet-edit/wallet-edit";
-import {Currency} from "../../classes/currency";
+import {Currency} from "../../interfaces/currency";
 import {ApiService} from "../../services/api.service";
 
 @IonicPage()

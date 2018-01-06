@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Storage} from '@ionic/storage';
 import {ApiService} from "../../services/api.service";
-import {Currency} from "../../classes/currency";
+import {Currency} from "../../interfaces/currency";
+import {currencies} from "../../classes/currencies";
 
 @IonicPage()
 @Component({
@@ -10,8 +11,9 @@ import {Currency} from "../../classes/currency";
   templateUrl: 'settings.html',
 })
 export class SettingsPage {
-  currentCurrency: any = 'EUR';
-  currencies: Array<Currency>;
+  currentCurrency: any;
+  currencies: Array<Currency> = currencies;
+  f
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -25,24 +27,6 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    //TODO Get a nice list of currencies
-    this.currencies = [
-      {
-        name: 'Euro',
-        code: 'eur',
-        symbol: '€'
-      },
-      {
-        name: 'US Dollar',
-        code: 'usd',
-        symbol: '$'
-      },
-      {
-        name: 'Bitcoin',
-        code: 'btc',
-        symbol: 'B'
-      },
-    ];
   }
 
   currencyChanged(event) {

@@ -9,6 +9,18 @@
       </ng-template>
     </ion-title>
   </ion-navbar>
+  <ion-toolbar class="list-header">
+    <ion-item detail-none no-lines>
+      <ion-select item-start [(ngModel)]="sorter" (ionChange)="sorterChanged($event)">
+        <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">
+          {{sorter.name}}
+        </ion-option>
+      </ion-select>
+      <span item-end>
+        {{coinListLength}} coins
+      </span>
+    </ion-item>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -21,9 +33,6 @@
   <ng-container *ngIf="search">
     <ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
   </ng-container>
-  <ion-list-header text-right>
-    {{coinListLength}} coins
-  </ion-list-header>
   <ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding *virtualItem="let coin">
       <button ion-item (click)="selectedCoin(coin)" detail-none>

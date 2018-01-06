@@ -3,7 +3,7 @@ import {CoinListPage} from "./coin-list";
 import {AlertController, NavController, NavParams, ToastController} from "ionic-angular";
 import {ApiService} from "../../services/api.service";
 import {Storage} from '@ionic/storage';
-import {Wallet, WalletItem} from "../../classes/wallet";
+import {Wallet, WalletItem} from "../../interfaces/wallet";
 
 @Component({
   selector: 'page-coin-list-wallet',

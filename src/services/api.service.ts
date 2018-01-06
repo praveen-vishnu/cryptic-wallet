@@ -1,17 +1,18 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Subject} from "rxjs/Subject";
-import {Utils} from "../classes/utils";
 import {Storage} from "@ionic/storage";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {Currency} from "../classes/currency";
+import {Currency} from "../interfaces/currency";
+import {currencies} from "../classes/currencies";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Coin} from "../interfaces/coin";
 
 const COINAMOUNT = null;
 const BATCHSIZE = 60;
 
 @Injectable()
 export class ApiService {
-  coinList = new Subject();
+  coinList: Subject<Array<Coin>> = new Subject<Array<Coin>>();
   indexStart: number = 0;
   currencyList: Object = {};
   pricePromises = [];
@@ -19,7 +20,8 @@ export class ApiService {
   refresher: any;
   coinHistoryPriceList = new Subject();
   coinHistoryPriceListJS = new Subject();
-  storedCurrency: ReplaySubject<Currency> = new ReplaySubject();
+  storedCurrency: BehaviorSubject<Currency>;
+  currentCurrency: Currency;
 
   // TODO Do something when the api is down
 
@@ -45,20 +47,21 @@ export class ApiService {
   }
 
   constructor(private http: HttpClient, private storage: Storage) {
+    this.storedCurrency = new BehaviorSubject<Currency>(currencies.find(item => item.code === 'USD'));
+
     this.storage.get('currency').then(currency => {
       if (currency) {
         this.storedCurrency.next(currency);
-      } else {
-        //TODO default value
-        if (navigator.language === 'en-GB') {
-          this.storedCurrency.next({
-            name: 'US Dollar',
-            code: 'usd',
-            symbol: '$'
-          },);
-        }
       }
     });
+
+    this.storedCurrency.subscribe(item => {
+      this.currentCurrency = item;
+    })
+  }
+
+  static getCurrencieCodes() {
+    return currencies.map(item => item.code).join();
   }
 
   saveCurrency(currency) {
@@ -71,42 +74,42 @@ export class ApiService {
   }
 
   private callPriceList(coins) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=BTC,USD,EUR&e=CCCAGG`); // TODO: fix currency to dynamic
+    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=${ApiService.getCurrencieCodes()}&e=CCCAGG`); // TODO: fix currency to dynamic
   }
 
   getPriceHistoryHour(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=60&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=${this.currentCurrency.code}&limit=60&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryDay(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=EUR&limit=1440&aggregate=30&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histominute?fsym=${code}&tsym=${this.currentCurrency.code}&limit=1440&aggregate=30&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryWeek(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${code}&tsym=EUR&limit=168&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histohour?fsym=${code}&tsym=${this.currentCurrency.code}&limit=168&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryMonth(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=30&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=${this.currentCurrency.code}&limit=30&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryYear(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&limit=365&aggregate=1&e=CCCAGG`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=${this.currentCurrency.code}&limit=365&aggregate=1&e=CCCAGG`);
     this.getPriceDataChartJS(url, coin);
   }
 
   getPriceHistoryAll(coin) {
     const code = coin.code;
-    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=EUR&aggregate=1&e=CCCAGG&allData=true`);
+    const url = this.http.get(`https://min-api.cryptocompare.com/data/histoday?fsym=${code}&tsym=${this.currentCurrency.code}&aggregate=1&e=CCCAGG&allData=true`);
     this.getPriceDataChartJS(url, coin);
   }
 
@@ -133,11 +136,11 @@ export class ApiService {
 
   private prepareCoinList(listOfCoinProperties: string[], coinListJson: any, baseImageUrl: any) {
     Promise.all(this.pricePromises).then(() => {
-      const coinList = listOfCoinProperties.filter(coin => {
+      const coinList: Array<Coin> = listOfCoinProperties.filter(coin => {
         return this.checkForEmptyCoins(coinListJson, coin);
       }).map(coin => {
         return this.mapToCoin(coinListJson, coin, baseImageUrl);
-      }).sort(Utils.compareOrder);
+      });
       this.isLoading = false;
       this.indexStart = 0;
       if (this.refresher) {
@@ -221,11 +224,6 @@ export class ApiService {
             change: currencies[currency]['CHANGEPCT24HOUR'],
             marketcap: currencies[currency]['MKTCAP'],
           };
-
-          if (currency !== currency.toLocaleLowerCase()) {
-            Object.defineProperty(currencies, currency.toLocaleLowerCase(), Object.getOwnPropertyDescriptor(currencies, currency));
-            delete currencies[currency];
-          }
         }
       }
       return currencies;

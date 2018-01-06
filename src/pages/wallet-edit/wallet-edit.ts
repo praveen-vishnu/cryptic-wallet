@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, reorderArray, ToastController} from 'ionic-angular';
-import {Wallet} from "../../classes/wallet";
+import {Wallet} from "../../interfaces/wallet";
 import {Storage} from "@ionic/storage";
 
 @IonicPage()

@@ -7,7 +7,7 @@ export class Utils {
     return 0;
   }
 
-  static comparePrices(a, b) {
+  static comparePrices(a, b, cur) {
     if (parseFloat(a.currencies.eur.price) > parseFloat(b.currencies.eur.price))
       return -1;
     if (parseFloat(a.currencies.eur.price) < parseFloat(b.currencies.eur.price))

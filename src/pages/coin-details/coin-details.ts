@@ -1,9 +1,9 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {Coin} from '../../classes/coin';
+import {Coin} from '../../interfaces/coin';
 import {ApiService} from '../../services/api.service';
 import * as moment from "moment";
-import {Currency} from "../../classes/currency";
+import {Currency} from "../../interfaces/currency";
 
 @IonicPage()
 @Component({
@@ -119,9 +119,9 @@ export class CoinDetailsPage {
 
   updatePrice(value) {
     if (!!value) {
-      this.coin.currencies.eur.price = value;
+      this.coin.currencies[this.currency.code].price = value;
     } else {
-      this.coin.currencies.eur.price = this.price;
+      this.coin.currencies[this.currency.code].price = this.price;
     }
   }
 
@@ -131,19 +131,5 @@ export class CoinDetailsPage {
     } else {
       this.priceDate = this.currentDate;
     }
-  }
-
-  getPrice(coin) {
-    if (this.currency) {
-      return coin.currencies[this.currency.code].price;
-    }
-    return '';
-  }
-
-  getChange(coin) {
-    if (this.currency) {
-      return coin.currencies[this.currency.code].change;
-    }
-    return '';
   }
 }

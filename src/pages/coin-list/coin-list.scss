@@ -2,4 +2,19 @@ page-coin-list {
   .price {
     font-size: 2rem;
   }
+
+  .list-header {
+    & .item[no-lines],
+    & .item.item[no-lines] .item-inner,
+    & .select {
+      font-size: 1.4rem;
+    }
+
+    & .select .select-icon {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      top: 4px;
+    }
+  }
 }

@@ -13,8 +13,8 @@
       Preferences
     </ion-list-header>
     <ion-item>
-      <ion-label>Choose your currency</ion-label>
-      <ion-select [(ngModel)]="currentCurrency" (ionChange)="currencyChanged($event)">
+      <ion-label>Currency</ion-label>
+      <ion-select [(ngModel)]="currentCurrency" (ionChange)="currencyChanged($event)" [selectedText]="currentCurrency">
         <ion-option #item *ngFor="let currency of currencies" [value]="currency.code">
           {{currency.name}}
         </ion-option>

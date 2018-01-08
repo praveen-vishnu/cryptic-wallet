@@ -74,7 +74,7 @@ export class ApiService {
   }
 
   private callPriceList(coins) {
-    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=${ApiService.getCurrencieCodes()}&e=CCCAGG`); // TODO: fix currency to dynamic
+    return this.http.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coins}&tsyms=${this.currentCurrency.code}&e=CCCAGG`); // TODO: fix currency to dynamic
   }
 
   getPriceHistoryHour(coin) {
@@ -150,7 +150,6 @@ export class ApiService {
 
       this.coinList.next(coinList);
       this.updateWallets(coinList);
-
     }, err => console.error(err));
   }
 
@@ -158,27 +157,26 @@ export class ApiService {
     this.storage.get('wallets').then((wallets) => {
       if (wallets && wallets.length > 0) {
         wallets.forEach(wallet => {
-          wallet.wallet.forEach(walletItem => {
+          wallet.coins.forEach(walletItem => {
             walletItem.coin = coinList.find(coin => {
               return coin.name === walletItem.coin.name;
             });
           })
         });
-
         this.storage.set('wallets', wallets);
       }
     });
   }
 
-  private mapToCoin(coinListJson: any, coin, baseImageUrl: any) {
+  private mapToCoin(coinListJson: any, coin, baseImageUrl: any): Coin {
     const coinObject = coinListJson[coin];
-    return {
+    const currencies = this.mapCurrencies(coin);
+    return Object.assign({
       name: coinObject['CoinName'],
       code: coinObject['Symbol'],
       imageUrl: baseImageUrl + coinObject['ImageUrl'],
-      currencies: this.mapCurrencies(coin),
-      order: coinObject['SortOrder']
-    };
+      order: coinObject['SortOrder'],
+    }, currencies[this.currentCurrency.code]);
   }
 
   private checkForEmptyCoins(coinListJson: any, coin) {
@@ -186,10 +184,7 @@ export class ApiService {
     const hasName = coinObject.hasOwnProperty('CoinName') && !!coinObject['CoinName'];
     const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
     const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
-    const hasPrice = this.currencyList[coin]
-      && (!!this.currencyList[coin]['USD']
-        && !!this.currencyList[coin]['BTC']
-        && !!this.currencyList[coin]['EUR']);
+    const hasPrice = this.currencyList[coin] && !!this.currencyList[coin][this.currentCurrency.code];
     return hasName && hasUrl && hasImage && hasPrice;
   }
 
@@ -215,10 +210,10 @@ export class ApiService {
   private mapCurrencies(coin): any {
     if (this.currencyList[coin]) {
       const currencies = this.currencyList[coin];
-
       for (let currency in currencies) {
         if (currencies.hasOwnProperty(currency)) {
           currencies[currency] = {
+            currency: this.currentCurrency,
             price: currencies[currency]['PRICE'],
             priceLastUpdated: currencies[currency]['LASTUPDATE'],
             change: currencies[currency]['CHANGEPCT24HOUR'],

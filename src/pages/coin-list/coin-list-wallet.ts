@@ -3,7 +3,8 @@ import {CoinListPage} from "./coin-list";
 import {AlertController, NavController, NavParams, ToastController} from "ionic-angular";
 import {ApiService} from "../../services/api.service";
 import {Storage} from '@ionic/storage';
-import {Wallet, WalletItem} from "../../interfaces/wallet";
+import {CoinAmount, Wallet} from "../../interfaces/wallet";
+import {Coin} from "../../interfaces/coin";
 
 @Component({
   selector: 'page-coin-list-wallet',
@@ -46,10 +47,10 @@ export class CoinListWalletPage extends CoinListPage {
     });
   }
 
-  private filterCoinList(coinList: Array<any>) {
-    if (this.wallets[this.currentWalletIndex].wallet.length > 0) {
+  private filterCoinList(coinList: Array<Coin>) {
+    if (this.wallets[this.currentWalletIndex].coins.length > 0) {
       return coinList.filter(coin => {
-        return !this.wallets[this.currentWalletIndex].wallet.some(item => item.coin.name === coin.name);
+        return !this.wallets[this.currentWalletIndex].coins.some(item => item.coin.name === coin.name);
       });
     }
     return coinList;
@@ -77,13 +78,13 @@ export class CoinListWalletPage extends CoinListPage {
           handler: data => {
             const value = data.amount.trim().replace(',', '.');
             if (value) {
-              const walletCoin: WalletItem = {
+              const walletCoin: CoinAmount = {
                 coin: coin,
                 amount: parseFloat(value),
               };
 
               if (this.wallets.length > 0) {
-                this.wallets[this.currentWalletIndex].wallet.push(walletCoin);
+                this.wallets[this.currentWalletIndex].coins.push(walletCoin);
                 this.storage.set('wallets', this.wallets).then(() => this.navCtrl.pop());
               }
             } else {

@@ -1,18 +1,13 @@
-export interface Coin {
-  name: string,
-  code: string,
-  imageUrl: string,
-  order: string,
-  currencies: {
-    eur: CurrencyData,
-    usd: CurrencyData,
-    btc: CurrencyData,
-  };
-}
+import {Currency} from "./currency";
 
-export interface CurrencyData {
-  price: number,
-  priceLastUpdated: number,
-  change: number,
-  marketcap: number,
+export interface Coin {
+  name: string;
+  code: string;
+  imageUrl: string;
+  order: string;
+  currency: Currency,
+  price: number;
+  priceLastUpdated: number;
+  change: number;
+  marketcap: number;
 }

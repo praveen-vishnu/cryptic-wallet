@@ -2,10 +2,10 @@ import {Coin} from "./coin";
 
 export interface Wallet {
   name: string;
-  wallet: Array<WalletItem>;
+  coins: Array<CoinAmount>;
 }
 
-export interface WalletItem {
+export interface CoinAmount {
   coin: Coin;
   amount: number,
 }

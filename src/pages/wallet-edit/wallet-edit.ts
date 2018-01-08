@@ -106,7 +106,7 @@ export class WalletEditPage {
             this.checkConstraints((value) => {
               const wallet: Wallet = {
                 name: value,
-                wallet: []
+                coins: []
               };
               this.wallets.push(wallet);
               this.storage.set('wallets', this.wallets);

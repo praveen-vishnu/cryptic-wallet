@@ -14,7 +14,7 @@ import {ApiService} from "../../services/api.service";
 })
 export class WalletPage {
   wallets: Array<Wallet> = [];
-  currentWallet?: Wallet;
+  currentWallet: Wallet;
   walletButtonEnabled: boolean = false;
   currency: Currency;
   @ViewChild(Slides) slides: Slides;
@@ -25,9 +25,6 @@ export class WalletPage {
               public toastCtrl: ToastController,
               public apiService: ApiService,
               private storage: Storage) {
-    this.apiService.storedCurrency.subscribe(item => {
-      this.currency = item;
-    })
   }
 
   ionViewWillEnter() {
@@ -67,30 +64,17 @@ export class WalletPage {
     this.navCtrl.push(CoinListWalletPage, {'walletIndex': this.slides.getActiveIndex()});
   }
 
-  getPrice(wallet) {
-    if (this.currency) {
-      return wallet.coin.currencies[this.currency.code].price;
-    }
-    return '';
-  }
-
-  getChange(wallet) {
-    if (this.currency) {
-      return wallet.coin.currencies[this.currency.code].change;
-    }
-    return '';
-  }
-
-  getCoinPrice(wallet): number {
-    return parseFloat(wallet.amount) * this.getPrice(wallet);
+  getCoinPrice(amount): number {
+    return parseFloat(amount.amount) * amount.coin.price;
   }
 
   getTotalPrice() {
-    if (this.currentWallet) {
+    if (this.currentWallet && this.currentWallet.coins) {
       let total: number = 0;
-      this.currentWallet.wallet.forEach(wallet => {
-        total += this.getCoinPrice(wallet);
+      this.currentWallet.coins.forEach(amount => {
+        total += this.getCoinPrice(amount);
       });
+      this.currentWallet['currency'] = this.currentWallet.coins[0].coin.currency;
       return total;
     }
     return 0;
@@ -128,7 +112,7 @@ export class WalletPage {
             const value = data.amount.trim().replace(',', '.');
             if (value) {
               const walletIndex = this.wallets.indexOf(this.currentWallet);
-              this.wallets[walletIndex].wallet[index].amount = parseFloat(value);
+              this.wallets[walletIndex].coins[index].amount = parseFloat(value);
               this.storage.set('wallets', this.wallets);
               slider.close();
             } else {
@@ -165,7 +149,7 @@ export class WalletPage {
               if (!this.checkIfExists(data)) {
                 const wallet: Wallet = {
                   name: data.name,
-                  wallet: []
+                  coins: []
                 };
                 this.wallets.push(wallet);
                 this.storage.set('wallets', this.wallets);
@@ -188,7 +172,7 @@ export class WalletPage {
   }
 
   delete(index) {
-    this.wallets[this.slides.getActiveIndex()].wallet.splice(index, 1);
+    this.wallets[this.slides.getActiveIndex()].coins.splice(index, 1);
     this.storage.set('wallets', this.wallets);
   }
 

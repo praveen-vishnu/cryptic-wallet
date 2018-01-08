@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Coin} from '../../interfaces/coin';
 import {ApiService} from '../../services/api.service';
 import * as moment from "moment";
-import {Currency} from "../../interfaces/currency";
 
 @IonicPage()
 @Component({
@@ -12,13 +11,11 @@ import {Currency} from "../../interfaces/currency";
 })
 export class CoinDetailsPage {
   coin?: Coin;
-  coinInCurrency?: any;
   price: number;
   currentDate: string;
   priceDate: string;
   chartMode: any;
   data: any;
-  currency: Currency;
   @ViewChild('segment') segment: ElementRef;
   @ViewChild('timestamp') timestamp: ElementRef;
 
@@ -28,13 +25,9 @@ export class CoinDetailsPage {
     this.coin = navParams.data;
     // this.overrideCoin();
     if (this.coin) {
-      this.apiService.storedCurrency.subscribe(item => {
-        this.currency = item;
-        this.coinInCurrency = this.coin.currencies[item.code];
-        this.price = this.coinInCurrency.price;
-        //TODO the current date probably doesn't correspond with the last retrieved price date
-        this.priceDate = this.currentDate = moment.unix(this.coinInCurrency.priceLastUpdated).format("DD-MM-YYYY HH:mm");
-      })
+      this.price = this.coin.price;
+      //TODO the current date probably doesn't correspond with the last retrieved price date
+      this.priceDate = this.currentDate = moment.unix(this.coin.price).format("DD-MM-YYYY HH:mm");
     }
   }
 
@@ -60,11 +53,15 @@ export class CoinDetailsPage {
       code: 'BTC',
       imageUrl: 'https://www.cryptocompare.com/media/19633/btc.png',
       order: '1',
-      currencies: {
-        btc: {price: 1, priceLastUpdated: 1514827291, change: -1.189234009752647, marketcap: 16758550},
-        usd: {price: 14809.61, priceLastUpdated: 1514827291, change: 23.051644830863925, marketcap: 248187589665.5},
-        eur: {price: 12965.69, priceLastUpdated: 1514827291, change: 27.148140048699126, marketcap: 217286164149.5}
-      }
+      currency: {
+        name: 'Euro',
+        code: 'EUR',
+        symbol: '€'
+      },
+      price: 12965.69,
+      priceLastUpdated: 1514827291,
+      change: 27.148140048699126,
+      marketcap: 217286164149.5
     };
   }
 
@@ -119,9 +116,9 @@ export class CoinDetailsPage {
 
   updatePrice(value) {
     if (!!value) {
-      this.coin.currencies[this.currency.code].price = value;
+      this.coin.price = value;
     } else {
-      this.coin.currencies[this.currency.code].price = this.price;
+      this.coin.price = this.price;
     }
   }
 

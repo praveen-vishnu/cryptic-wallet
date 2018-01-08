@@ -13,7 +13,6 @@ import {currencies} from "../../classes/currencies";
 export class SettingsPage {
   currentCurrency: any;
   currencies: Array<Currency> = currencies;
-  f
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

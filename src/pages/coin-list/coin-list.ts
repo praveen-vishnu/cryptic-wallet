@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
 import {Storage} from "@ionic/storage";
-import {Currency} from "../../interfaces/currency";
 import {Utils} from "../../classes/utils";
 
 @IonicPage()
@@ -14,7 +13,6 @@ import {Utils} from "../../classes/utils";
 export class CoinListPage {
   search: boolean = false;
   coins: any;
-  currency: Currency;
   sorter: any = 'popular';
   sorters: any;
 
@@ -26,10 +24,6 @@ export class CoinListPage {
       this.coins = coinList;
       this.sortList(this.sorter);
       this.storage.set('coin-list', coinList);
-    });
-
-    this.apiService.storedCurrency.subscribe(item => {
-      this.currency = item;
     });
   }
 
@@ -84,20 +78,6 @@ export class CoinListPage {
 
   selectedCoin(coin): void {
     this.navCtrl.push(CoinDetailsPage, coin);
-  }
-
-  getPrice(coin) {
-    if (this.currency) {
-      return coin.currencies[this.currency.code].price;
-    }
-    return '';
-  }
-
-  getChange(coin) {
-    if (this.currency) {
-      return coin.currencies[this.currency.code].change;
-    }
-    return '';
   }
 
   trackByCoin(index, item): number {

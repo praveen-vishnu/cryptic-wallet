@@ -42,11 +42,11 @@
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(getChange(coin))}">
-          {{getChange(coin) | numberFormatter: 'perc'}}%
+        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.change)}">
+          {{coin.change | numberFormatter: 'perc'}}%
         </small>
         <span item-end class="price">
-          <span>{{currency?.symbol}} {{getPrice(coin)| numberFormatter: 'price'}}</span>
+          <span>{{coin.currency.symbol}} {{coin.price| numberFormatter: 'price'}}</span>
         </span>
       </button>
       <ion-item-options>

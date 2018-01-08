@@ -17,7 +17,7 @@
         <h1 class="page-title" text-center>{{wallet.name}}</h1>
         <div class="wallet-amount" text-center>
           <div class="currency">
-            <span class="currency__symbol">{{currency?.symbol}}</span>
+            <span class="currency__symbol">{{currentWallet?.coins[0]?.coin.currency.symbol}}</span>
             <span class="currency__number">{{getTotalPrice() | numberFormatter: 'price'}}</span>
           </div>
         </div>
@@ -27,25 +27,25 @@
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="currentWallet;else loader">
-    <ion-list *ngIf="currentWallet.wallet.length > 0;else noCoins">
-      <ion-item-sliding #item *ngFor="let wallet of currentWallet.wallet;trackBy: trackByCoin;let index = index;">
+  <ng-container *ngIf="wallets.length > 0;else loader">
+    <ion-list *ngIf="currentWallet?.coins?.length > 0;else noCoins">
+      <ion-item-sliding #item *ngFor="let amount of currentWallet.coins;trackBy: trackByCoin;let index = index;">
         <ion-item detail-none>
           <ion-avatar class="logo" item-start>
             <!--TODO fix ion image-->
-            <img width="36" height="36" [src]="wallet.coin.imageUrl" [alt]="wallet.coin.name"/>
+            <img width="36" height="36" [src]="amount.coin.imageUrl" [alt]="amount.coin.name"/>
           </ion-avatar>
           <ion-label>
-            <p>{{wallet.coin.name}}</p>
-            <div>{{currency?.symbol}} {{getPrice(wallet) | numberFormatter: 'price'}}</div>
+            <p>{{amount.coin.name}}</p>
+            <div>{{amount.coin.currency.symbol}} {{amount.coin.price | numberFormatter: 'price'}}</div>
             <small item-content class="price-change"
-                   [ngClass]="{'negative' : detectChange(getChange(wallet))}">
-              {{getChange(wallet) | numberFormatter: 'perc'}}%
+                   [ngClass]="{'negative' : detectChange(amount.coin.change)}">
+              {{amount.coin.change | numberFormatter: 'perc'}}%
             </small>
           </ion-label>
           <div item-end>
-            <p>{{currency?.symbol}} {{getCoinPrice(wallet) | numberFormatter: 'price'}}</p>
-            <p>{{wallet.amount}}</p>
+            <p>{{amount.coin.currency.symbol}} {{getCoinPrice(amount) | numberFormatter: 'price'}}</p>
+            <p>{{amount.amount}}</p>
           </div>
         </ion-item>
         <ion-item-options>

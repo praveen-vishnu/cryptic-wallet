@@ -41,8 +41,18 @@ export class WalletPage {
 
   private getStoredWallets() {
     this.storage.get('wallets').then(data => {
+      let total: number = 0;
       if (data && data.length > 0) {
         this.wallets = data;
+        this.wallets.forEach(wallet => {
+          wallet.coins.forEach(coin => {
+            total += this.getCoinPrice(coin);
+            this.currency = coin.coin.currency;
+          });
+          wallet.total = total;
+          total = 0;
+        });
+
         this.currentWallet = this.wallets[this.slides.getActiveIndex()];
       } else {
         this.walletButtonEnabled = true;
@@ -66,18 +76,6 @@ export class WalletPage {
 
   getCoinPrice(amount): number {
     return parseFloat(amount.amount) * amount.coin.price;
-  }
-
-  getTotalPrice() {
-    if (this.currentWallet && this.currentWallet.coins) {
-      let total: number = 0;
-      this.currentWallet.coins.forEach(amount => {
-        total += this.getCoinPrice(amount);
-      });
-      this.currentWallet['currency'] = this.currentWallet.coins[0].coin.currency;
-      return total;
-    }
-    return 0;
   }
 
   openToast(text) {

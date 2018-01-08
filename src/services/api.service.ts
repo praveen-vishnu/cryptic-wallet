@@ -67,6 +67,7 @@ export class ApiService {
   saveCurrency(currency) {
     this.storage.set('currency', currency);
     this.storedCurrency.next(currency);
+    this.getCoinList();
   }
 
   private callCoinList() {

@@ -148,7 +148,6 @@ export class ApiService {
         this.refresher.complete();
         this.refresher = null;
       }
-
       this.coinList.next(coinList);
       this.updateWallets(coinList);
     }, err => console.error(err));
@@ -186,7 +185,8 @@ export class ApiService {
     const hasUrl = coinObject.hasOwnProperty('Url') && !!coinObject['Url'];
     const hasImage = coinObject.hasOwnProperty('ImageUrl') && !!coinObject['ImageUrl'];
     const hasPrice = this.currencyList[coin] && !!this.currencyList[coin][this.currentCurrency.code];
-    return hasName && hasUrl && hasImage && hasPrice;
+    const notSponsored = coinObject.hasOwnProperty('Sponsored') && !coinObject['Sponsored'];
+    return hasName && hasUrl && hasImage && hasPrice && notSponsored;
   }
 
   private getPricesPerBatchSize(listOfCoinProperties, batchSize) {

@@ -11,7 +11,10 @@
   </ion-navbar>
   <ion-toolbar class="list-header">
     <ion-item detail-none no-lines>
-      <ion-select item-start [(ngModel)]="sorter" (ionChange)="sorterChanged($event)">
+      <ion-select item-start
+                  [(ngModel)]="sorter"
+                  [interface]="'action-sheet'"
+                  (ionChange)="sorterChanged($event)">
         <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">
           {{sorter.name}}
         </ion-option>

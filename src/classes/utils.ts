@@ -7,10 +7,18 @@ export class Utils {
     return 0;
   }
 
-  static comparePrices(a, b, cur) {
-    if (parseFloat(a.currencies.eur.price) > parseFloat(b.currencies.eur.price))
+  static comparePrices(a, b) {
+    if (parseFloat(a.price) > parseFloat(b.price))
       return -1;
-    if (parseFloat(a.currencies.eur.price) < parseFloat(b.currencies.eur.price))
+    if (parseFloat(a.price) < parseFloat(b.price))
+      return 1;
+    return 0;
+  }
+
+  static compareMarketCap(a, b) {
+    if (parseFloat(a.marketcap) > parseFloat(b.marketcap))
+      return -1;
+    if (parseFloat(a.marketcap) < parseFloat(b.marketcap))
       return 1;
     return 0;
   }

@@ -31,7 +31,10 @@ export class CoinListPage {
     this.storage.get('coin-list').then(list => {
       !list ? this.apiService.getCoinList() : this.coins = list;
     });
+    this.setSorters();
+  }
 
+  setSorters() {
     this.sorters = [
       {
         name: 'Popular',
@@ -58,12 +61,13 @@ export class CoinListPage {
         this.coins.sort(Utils.compareOrder);
         break;
       case 'price':
-        // this.coins.sort(Utils.comparePrices);
+        this.coins.sort(Utils.comparePrices);
         break;
       case 'marketcap':
-
+        this.coins.sort(Utils.compareMarketCap);
         break;
       default:
+        this.coins.sort(Utils.compareOrder);
         break;
     }
   }

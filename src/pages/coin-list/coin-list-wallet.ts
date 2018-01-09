@@ -26,6 +26,7 @@ export class CoinListWalletPage extends CoinListPage {
     this.currentWalletIndex = navParams.data.walletIndex;
     this.apiService.coinList.subscribe((coinList: Array<any>) => {
       const filteredList = this.filterCoinList(coinList);
+      this.sortList(this.sorter);
       return this.coinsSearchList = this.coins = filteredList;
     });
   }
@@ -45,6 +46,7 @@ export class CoinListWalletPage extends CoinListPage {
         });
       }
     });
+    this.setSorters();
   }
 
   private filterCoinList(coinList: Array<Coin>) {

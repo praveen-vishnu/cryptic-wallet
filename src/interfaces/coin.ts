@@ -10,4 +10,5 @@ export interface Coin {
   priceLastUpdated: number;
   change: number;
   marketcap: number;
+  favorite: boolean;
 }

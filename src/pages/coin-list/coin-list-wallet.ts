@@ -13,7 +13,6 @@ import {Coin} from "../../interfaces/coin";
 export class CoinListWalletPage extends CoinListPage {
   wallets: Array<Wallet> = [];
   search: boolean = true;
-  coinsSearchList: any;
   currentWalletIndex: number;
 
   constructor(public navCtrl: NavController,
@@ -27,7 +26,7 @@ export class CoinListWalletPage extends CoinListPage {
     this.apiService.coinList.subscribe((coinList: Array<any>) => {
       const filteredList = this.filterCoinList(coinList);
       this.sortList(this.sorter);
-      return this.coinsSearchList = this.coins = filteredList;
+      this.coins = filteredList;
     });
   }
 
@@ -41,7 +40,7 @@ export class CoinListWalletPage extends CoinListPage {
             this.apiService.getCoinList();
           } else {
             const filteredList = this.filterCoinList(list);
-            this.coinsSearchList = this.coins = filteredList;
+            this.coins = filteredList;
           }
         });
       }
@@ -98,17 +97,6 @@ export class CoinListWalletPage extends CoinListPage {
     });
 
     alert.present();
-  }
-
-  filterCoinsOnSearch(event) {
-    this.coins = this.coinsSearchList;
-    let value = event.target.value;
-
-    if (value && value.trim() != '') {
-      this.coins = this.coins.filter((item) => {
-        return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
-      })
-    }
   }
 
   openToast(text) {

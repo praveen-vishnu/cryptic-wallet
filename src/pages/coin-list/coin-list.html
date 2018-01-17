@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>
       <ng-container *ngIf="!search; else wallet">
-        CryptoMoon
+        Cryptick
       </ng-container>
       <ng-template #wallet>
         Choose your coin
@@ -33,14 +33,13 @@
                            refreshingSpinner="crescent"
                            refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
-  <ng-container *ngIf="search">
-    <ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
-  </ng-container>
-  <ion-list [virtualScroll]="coins" [virtualTrackBy]="trackByCoin" no-lines>
-    <ion-item-sliding *virtualItem="let coin">
-      <button ion-item (click)="selectedCoin(coin)" detail-none>
+  <ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
+  <ion-list [virtualScroll]="allCoins" [approxItemHeight]="'62px'"
+            [approxItemWidth]="'100%'" [virtualTrackBy]="trackByCoin" no-lines>
+    <ion-item-sliding #item *virtualItem="let coin">
+      <button ion-item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
         <ion-avatar class="logo" item-start>
-          <ion-img width="36" height="36" [src]="coin.imageUrl" [alt]="coin.name"></ion-img>
+          <img-loader width="40px" [width]="'50'" [height]="'50'" [src]="coin.imageUrl" useImg></img-loader>
         </ion-avatar>
         <ion-label>
           {{coin.name}}
@@ -53,8 +52,11 @@
         </span>
       </button>
       <ion-item-options>
-        <button ion-button color="primary">
+        <button *ngIf="!coin.favorite" ion-button icon-only color="primary" (click)="addToFavorites(item, coin)">
           <ion-icon name="star" item-start></ion-icon>
+        </button>
+        <button *ngIf="coin.favorite" ion-button icon-only color="primary" (click)="addToFavorites(item, coin)">
+          <ion-icon name="remove" item-start></ion-icon>
         </button>
       </ion-item-options>
     </ion-item-sliding>

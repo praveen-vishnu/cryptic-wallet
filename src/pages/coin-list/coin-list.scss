@@ -17,4 +17,11 @@ page-coin-list {
       top: 3px;
     }
   }
+
+  [no-lines] ion-item-sliding .item {
+    &.favorite {
+      background: #364f65 !important;
+      //color: #041421;
+    }
+  }
 }

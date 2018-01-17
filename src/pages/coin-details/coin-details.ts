@@ -53,6 +53,7 @@ export class CoinDetailsPage {
       code: 'BTC',
       imageUrl: 'https://www.cryptocompare.com/media/19633/btc.png',
       order: '1',
+      favorite: false,
       currency: {
         name: 'Euro',
         code: 'EUR',

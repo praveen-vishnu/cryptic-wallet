@@ -18,6 +18,7 @@ import {IonicStorageModule} from "@ionic/storage";
 import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
+import {IonicImageLoader} from "ionic-image-loader";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {NativePageTransitions} from "@ionic-native/native-page-transitions";
       swipeBackEnabled: false,
     }),
     IonicStorageModule.forRoot(),
+    IonicImageLoader.forRoot(),
     BrowserAnimationsModule,
     HttpClientModule,
     TabsPageModule,

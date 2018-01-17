@@ -141,6 +141,8 @@ export class ApiService {
         return this.checkForEmptyCoins(coinListJson, coin);
       }).map(coin => {
         return this.mapToCoin(coinListJson, coin, baseImageUrl);
+      }).filter(coin => {
+        return !!coin.marketcap && !!coin.change;
       });
       this.isLoading = false;
       this.indexStart = 0;
@@ -176,6 +178,7 @@ export class ApiService {
       code: coinObject['Symbol'],
       imageUrl: baseImageUrl + coinObject['ImageUrl'],
       order: coinObject['SortOrder'],
+      favorite: false,
     }, currencies[this.currentCurrency.code]);
   }
 

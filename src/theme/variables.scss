@@ -93,6 +93,8 @@ $tabs-ios-tab-min-height: 65px;
 
 $toast-ios-background: rgba(228, 107, 32, 1);
 $select-ios-padding-left: 0;
+$item-ios-divider-background: $tabs-background;
+$item-ios-divider-color: $text-color;
 
 @import "ionic.theme.default";
 

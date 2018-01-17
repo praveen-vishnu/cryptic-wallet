@@ -91,4 +91,6 @@
   <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1"/>
   <plugin name="com.telerik.plugins.nativepagetransitions" spec="^0.6.5"/>
   <engine name="ios" spec="4.5.4"/>
+  <plugin name="cordova-plugin-file" spec="^6.0.1"/>
+  <plugin name="cordova-plugin-file-transfer" spec="^1.7.0"/>
 </widget>

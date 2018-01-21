@@ -1,0 +1,8 @@
+.price-change {
+  padding-top: 0;
+  color: #43bd43;
+
+  &.negative {
+    color: #e65757;
+  }
+}

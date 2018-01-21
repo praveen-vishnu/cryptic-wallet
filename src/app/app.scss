@@ -1,5 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -13,91 +12,14 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+@import "segment";
 
-.logo {
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid #0f1c28;
-
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+ion-content {
+  background: $app-background !important;
 }
 
-.logo--header {
-  display: inline-block;
-  width: 5rem;
-  margin-top: 1rem;
+.fixed-content {
+  background: linear-gradient(to bottom, map-get($colors, tertiary) 0%, map-get($colors, dark) 100%);
 }
 
-.big-loader {
-  width: 78px;
-  height: 78px;
-  stroke: #fff;
-  fill: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  z-index: 9999;
-}
-
-ion-refresher {
-  background: #0c1823;
-}
-
-.price-change {
-  padding-top: 0;
-  color: #43bd43;
-
-  &.negative {
-    color: #e65757;
-  }
-}
-
-.segment-ios,
-.segment-md {
-
-  .segment-button {
-    color: $text-color;
-    padding: 0.5rem;
-    height: auto;
-  }
-}
-
-.currency {
-  position: relative;
-  display: inline-block;
-
-  .currency__symbol {
-    position: absolute;
-    left: -2rem;
-    top: 1.4rem;
-    font-size: 2.5rem;
-  }
-
-  .currency__number {
-    font-size: 5rem;
-    font-weight: bold;
-  }
-}
-
-.percentage {
-  position: relative;
-  display: inline-block;
-
-  .percentage__symbol {
-    position: absolute;
-    right: -1.4rem;
-    bottom: 0.5rem;
-    font-size: 1.1rem;
-  }
-
-  .percentage__number {
-  }
-}
 

@@ -36,6 +36,14 @@ $colors: (
   dark: #222
 );
 
+$colors: (
+  primary: #CABDCD,
+  secondary: #533849,
+  tertiary: #734E5F,
+  light: #CABDCD,
+  dark: #2D1F30
+);
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -55,7 +63,7 @@ $item-ios-thumbnail-size: 30px;
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
 // default are overridden.
-$text-color: #95adc1;
+$text-color: map-get($colors, secondary);
 $background-color: #132433;
 $toolbar-background: $background-color;
 $list-border-color: $toolbar-background;
@@ -78,7 +86,7 @@ $toolbar-ios-button-color: $toolbar-ios-title-text-color;
 $font-family-base: 'Oswald', sans-serif;
 
 $toolbar-ios-active-color: $text-color;
-$font-size-base: 1.6rem;
+
 $segment-button-ios-border-radius: 0px;
 $segment-button-ios-background-color-activated: darken($background-color, 3%);
 $segment-button-ios-border-width: 0px;
@@ -95,6 +103,42 @@ $toast-ios-background: rgba(228, 107, 32, 1);
 $select-ios-padding-left: 0;
 $item-ios-divider-background: $tabs-background;
 $item-ios-divider-color: $text-color;
+
+////////////////
+
+$font-size-base: 1.6rem;
+$text-color: map-get($colors, light);
+
+$app-background: linear-gradient(to bottom, map-get($colors, tertiary) 0%, map-get($colors, dark) 100%);
+$background-color: transparent;
+
+$tabs-background: transparent;
+
+$toolbar-background: map-get($colors, secondary);
+$toolbar-ios-title-font-size: 4rem;
+$toolbar-md-title-font-size: 4rem;
+$toolbar-wp-title-font-size: 4rem;
+$toolbar-ios-title-text-color: $text-color;
+$toolbar-md-title-text-color: $text-color;
+$toolbar-wp-title-text-color: $text-color;
+$toolbar-ios-title-font-weight: 100;
+$toolbar-wp-title-font-weight: 100;
+
+$list-background-color: transparent;
+$list-ios-activated-background-color: transparent;
+$list-md-activated-background-color: transparent;
+$list-wp-activated-background-color: transparent;
+
+$item-ios-avatar-size: 26px;
+$item-md-avatar-size: 26px;
+$item-wp-avatar-size: 26px;
+
+@import "list";
+@import "logo";
+@import "symbols";
+@import "change-percentage";
+@import "refresher";
+@import "spinner";
 
 @import "ionic.theme.default";
 

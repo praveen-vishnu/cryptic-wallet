@@ -178,7 +178,6 @@ export class ApiService {
       code: coinObject['Symbol'],
       imageUrl: baseImageUrl + coinObject['ImageUrl'],
       order: coinObject['SortOrder'],
-      favorite: false,
     }, currencies[this.currentCurrency.code]);
   }
 

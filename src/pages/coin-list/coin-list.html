@@ -9,21 +9,25 @@
       </ng-template>
     </ion-title>
   </ion-navbar>
-  <ion-toolbar class="list-header">
-    <ion-item detail-none no-lines>
-      <ion-select item-start
-                  [(ngModel)]="sorter"
-                  [interface]="'action-sheet'"
-                  (ionChange)="sorterChanged($event)">
-        <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">
-          {{sorter.name}}
-        </ion-option>
-      </ion-select>
-      <span item-end>
-        {{coinListLength}} coins
-      </span>
-    </ion-item>
-  </ion-toolbar>
+  <!--<ion-toolbar class="segment-custom&#45;&#45;toolbar">-->
+  <div class="segment-custom">
+    <div class="segment-custom__item">
+      <button ion-button clear class="segment-custom__button--left">Favorites</button>
+    </div>
+    <div class="segment-custom__item segment-custom__item--middle">
+      <ion-item>
+        <ion-select [(ngModel)]="sorter"
+                    [interface]="'action-sheet'"
+                    (ionChange)="sorterChanged($event)">
+          <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">{{sorter.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    <div class="segment-custom__item">
+      <button ion-button clear class="segment-custom__button--right">All coins</button>
+    </div>
+  </div>
+  <!--</ion-toolbar>-->
 </ion-header>
 
 <ion-content>
@@ -33,13 +37,13 @@
                            refreshingSpinner="crescent"
                            refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
-  <ion-list [virtualScroll]="allCoins" [approxItemHeight]="'62px'"
+  <!--<ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>-->
+  <ion-list [virtualScroll]="coins" [approxItemHeight]="'73px'"
             [approxItemWidth]="'100%'" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding #item *virtualItem="let coin">
       <button ion-item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
         <ion-avatar class="logo" item-start>
-          <img-loader width="40px" [width]="'50'" [height]="'50'" [src]="coin.imageUrl" useImg></img-loader>
+          <img-loader [src]="coin.imageUrl" useImg></img-loader>
         </ion-avatar>
         <ion-label>
           {{coin.name}}

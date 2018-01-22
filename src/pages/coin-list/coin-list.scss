@@ -52,6 +52,7 @@ page-coin-list {
 
   .button-skewed {
     clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
+    transition: clip-path, background-color 250ms;
 
     &.active {
       clip-path: polygon(0 0, 90% 0%, 100% 100%, 0% 100%);
@@ -60,6 +61,7 @@ page-coin-list {
 
   .button-skewed--inverse {
     clip-path: polygon(0 0, 100% 0%, 100% 100%, 10% 100%);
+    transition: clip-path, background-color 250ms;
 
     &.active {
       clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%);

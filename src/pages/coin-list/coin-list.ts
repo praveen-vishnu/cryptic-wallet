@@ -35,6 +35,7 @@ export class CoinListPage {
   coinsSearchList: any;
   sorter: any;
   sorters: any = SORTERS;
+  listLoaded: boolean = false;
 
   @ViewChild(VirtualScroll) virtualList: VirtualScroll;
   @ViewChild(Content) content: Content;
@@ -60,6 +61,19 @@ export class CoinListPage {
     this.retrieveSorterFromStorage();
   }
 
+  get listIsEmpty(): boolean {
+    if (this.listLoaded) {
+      console.log('checking');
+      return !this.isCoinsView() && this.list.length === 0;
+    }
+
+    return false;
+  }
+
+  goToAllCoins() {
+    this.listView = 'coins';
+  }
+
   private retrieveSorterFromStorage() {
     this.storage.get('sorter').then(sorter => {
       sorter ? this.sorter = sorter : this.sorter = 'popular';
@@ -83,6 +97,7 @@ export class CoinListPage {
       } else {
         this.apiService.getCoinList();
       }
+      this.listLoaded = true;
     });
   }
 
@@ -195,6 +210,16 @@ export class CoinListPage {
     this.updateVirtualList(() => {
       this.list = this.coins = this.coins.filter(item => item.name !== coin.name);
     });
+    item.close();
+  }
+
+  removeFromFavorites(item, coin) {
+    const index = this.favorites.indexOf(coin);
+    if (index > -1) {
+      this.favorites.splice(index, 1);
+    }
+    this.storage.set('favorites', this.favorites);
+    this.coins.push(coin);
     item.close();
   }
 }

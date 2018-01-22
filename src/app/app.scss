@@ -12,11 +12,12 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-@import "sass/segment";
-@import "sass/list";
-@import "sass/logo";
-@import "sass/symbols";
-@import "sass/change-percentage";
-@import "sass/refresher";
-@import "sass/spinner";
+@import "../theme/sass/font";
+@import "../theme/sass/segment";
+@import "../theme/sass/list";
+@import "../theme/sass/logo";
+@import "../theme/sass/symbols";
+@import "../theme/sass/change-percentage";
+@import "../theme/sass/refresher";
+@import "../theme/sass/spinner";
 

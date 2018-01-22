@@ -19,7 +19,7 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
-  <ion-grid>
+  <ion-grid [style.visibility]="getVisibility()">
     <ion-row>
       <ion-col>
       </ion-col>
@@ -36,8 +36,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-spinner class="big-loader" name="crescent" *ngIf="isLoading"></ion-spinner>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-spinner class="big-loader" name="crescent" *ngIf="isCoinsView() && isLoading"></ion-spinner>
+  <ion-refresher *ngIf="isCoinsView()" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingText="Pull to refresh"
                            refreshingSpinner="crescent"
                            refreshingText="Refreshing..."></ion-refresher-content>
@@ -61,11 +61,11 @@
         </span>
       </button>
       <ion-item-options>
-        <button *ngIf="!coin.favorite" ion-button icon-only color="primary" (click)="addToFavorites(item, coin)">
-          <ion-icon name="star" item-start></ion-icon>
+        <button ion-button color="primary" (click)="addToFavorites(item, coin)">
+          Favorite
         </button>
-        <button *ngIf="coin.favorite" ion-button icon-only color="primary" (click)="addToFavorites(item, coin)">
-          <ion-icon name="remove" item-start></ion-icon>
+        <button ion-button color="primary" (click)="addToFavorites(item, coin)">
+          Remove
         </button>
       </ion-item-options>
     </ion-item-sliding>

@@ -137,7 +137,7 @@ export class CoinListPage {
 
   addToFavorites(item, coin) {
     this.favorites.push(coin);
-    this.list = this.coins.filter(item => item.name !== coin.name);
+    this.list = this.coins = this.coins.filter(item => item.name !== coin.name);
     item.close();
   }
 }

@@ -14,12 +14,23 @@ page-coin-list {
   //  }
   //}
 
+  .sort-custom {
+    min-height: 40px;
+    .toolbar-background-ios {
+      background-color: $list-background-color;
+    }
+  }
+
   .grid, .col {
     padding: 0;
   }
 
   .select-ios {
-    padding: 0.5rem 1.7rem;
+    padding: 1rem 1.7rem 1rem;
+
+    button {
+      padding: 0;
+    }
   }
 
   .select-ios .select-icon .select-icon-inner {

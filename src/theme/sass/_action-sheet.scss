@@ -1,0 +1,4 @@
+.action-sheet-ios .action-sheet-selected {
+  background: map-get($colors, primary);
+  color: map-get($colors, dark);
+}

@@ -19,21 +19,24 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-      </ion-col>
-      <ion-col>
-        <ion-select
-          [style.visibility]="getVisibility()"
-          [(ngModel)]="sorter"
-          [interface]="'action-sheet'"
-          (ionChange)="sorterChanged($event)">
-          <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">{{sorter.name}}</ion-option>
-        </ion-select>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-toolbar class="sort-custom">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+        </ion-col>
+        <ion-col>
+          <ion-select
+            [style.visibility]="getVisibility()"
+            [(ngModel)]="sorter"
+            [interface]="'action-sheet'"
+            (ionChange)="sorterChanged($event)">
+            <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">{{sorter.name}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -43,29 +46,42 @@
                            refreshingSpinner="crescent"
                            refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar *ngIf="isCoinsView()" (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm" *ngIf="isCoinsView()"
+                 (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>
   <ion-list [virtualScroll]="list" [approxItemHeight]="'70px'"
             [approxItemWidth]="'100%'" [virtualTrackBy]="trackByCoin" no-lines>
-    <ion-item-sliding #item *virtualItem="let coin">
-      <button ion-item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
+    <ion-item-sliding #slidingItem *virtualItem="let coin">
+      <button ion-item #item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
         <ion-avatar class="logo" item-start>
           <img-loader [src]="coin.imageUrl" useImg></img-loader>
         </ion-avatar>
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <!--<small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.change)}">-->
-        <!--{{coin.change | numberFormatter: 'perc'}}%-->
-        <!--</small>-->
-        <span item-end class="price">
+        <span item-right class="price">
           <span>{{coin.currency.symbol}} {{coin.price| numberFormatter: 'price'}}</span>
         </span>
+        <div item-end>
+          <svg
+            viewBox="0 0 13 11"
+            class="price-change"
+            [ngClass]="{'negative' : detectChange(coin.change)}"
+            version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <title>Triangle</title>
+            <defs></defs>
+            <g id="Coin-row" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+               transform="translate(-344.000000, -41.000000)">
+              <polygon id="Triangle" stroke="#4EB92E" stroke-width="2" points="350.5 43 355 51 346 51"></polygon>
+            </g>
+          </svg>
+        </div>
       </button>
       <ion-item-options>
-        <button *ngIf="isCoinsView()" ion-button color="primary" (click)="addToFavorites(item, coin)">
+        <button *ngIf="isCoinsView()" ion-button color="primary" (click)="addToFavorites(slidingItem, coin)">
           Favorite
         </button>
-        <button *ngIf="!isCoinsView()" ion-button color="danger" (click)="removeFromFavorites(item, coin)">
+        <button *ngIf="!isCoinsView()" ion-button color="danger" (click)="removeFromFavorites(slidingItem, coin)">
           Remove
         </button>
       </ion-item-options>

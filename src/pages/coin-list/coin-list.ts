@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {Content, IonicPage, NavController, NavParams, VirtualScroll} from 'ionic-angular';
+import {Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Content, IonicPage, Item, ItemSliding, NavController, NavParams, VirtualScroll} from 'ionic-angular';
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
 import {Storage} from "@ionic/storage";
@@ -36,16 +36,18 @@ export class CoinListPage {
   sorter: any;
   sorters: any = SORTERS;
   listLoaded: boolean = false;
+  searchTerm: string = '';
 
   @ViewChild(VirtualScroll) virtualList: VirtualScroll;
   @ViewChild(Content) content: Content;
+  @ViewChildren(ItemSliding) itemSlidings: QueryList<ItemSliding>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public storage: Storage,
               public apiService: ApiService) {
     this.apiService.coinList.subscribe(coinList => {
-      this.coins = this.coinsSearchList = this.removeFavorites(coinList);
+      this.coins = this.removeFavorites(coinList);
       if (this.isCoinsView()) {
         this.list = this.coins;
       }
@@ -63,15 +65,16 @@ export class CoinListPage {
 
   get listIsEmpty(): boolean {
     if (this.listLoaded) {
-      console.log('checking');
       return !this.isCoinsView() && this.list.length === 0;
     }
-
     return false;
   }
 
   goToAllCoins() {
     this.listView = 'coins';
+    setTimeout(() => {
+      this.openItem(this.itemSlidings.first, this.itemSlidings.first.item);
+    }, 1500);
   }
 
   private retrieveSorterFromStorage() {
@@ -92,7 +95,7 @@ export class CoinListPage {
     this.storage.get('coin-list').then(list => {
       if (list) {
         list = this.removeFavorites(list);
-        this.coins = this.coinsSearchList = list;
+        this.coins = list;
         this.sortList(this.sorter);
       } else {
         this.apiService.getCoinList();
@@ -120,9 +123,11 @@ export class CoinListPage {
     let value = event.target.value;
 
     if (value && value.trim() != '') {
-      this.coinsSearchList = this.coinsSearchList.filter((item) => {
+      this.list = this.coinsSearchList.filter((item) => {
         return (item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
-      })
+      });
+    } else {
+      this.list = this.coins;
     }
   }
 
@@ -152,6 +157,7 @@ export class CoinListPage {
     });
     this.sortList(this.sorter);
     this.content.scrollToTop();
+    // console.log()
   }
 
   updateVirtualList(callBack) {
@@ -160,6 +166,16 @@ export class CoinListPage {
     this.virtualList.renderVirtual(true);
     this.virtualList.readUpdate(true);
     this.virtualList.resize();
+  }
+
+  openItem(itemSlide: ItemSliding, item: Item) {
+    itemSlide.setElementClass("active-sliding", true);
+    itemSlide.setElementClass("active-slide", true);
+    itemSlide.setElementClass("active-options-right", true);
+    item.setElementStyle("transform", "translate3d(-80px, 0px, 0px)");
+    setTimeout(() => {
+      itemSlide.close();
+    }, 1000);
   }
 
   sortList(sorter) {
@@ -211,6 +227,7 @@ export class CoinListPage {
       this.list = this.coins = this.coins.filter(item => item.name !== coin.name);
     });
     item.close();
+    this.searchTerm = '';
   }
 
   removeFromFavorites(item, coin) {

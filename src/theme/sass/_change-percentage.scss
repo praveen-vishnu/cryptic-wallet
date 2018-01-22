@@ -1,8 +1,20 @@
 .price-change {
-  padding-top: 0;
-  color: #43bd43;
+  transform-origin: center;
+  width: 13px;
+  height: auto;
+  position: relative;
+  top: -1px;
+
+  polygon {
+    stroke: map-get($colors, success);
+    fill: map-get($colors, success);
+  }
 
   &.negative {
-    color: #e65757;
+    transform: rotate(180deg);
+    polygon {
+      stroke: map-get($colors, danger);
+      fill: map-get($colors, danger);
+    }
   }
 }

@@ -45,7 +45,6 @@ export class CoinListWalletPage extends CoinListPage {
         });
       }
     });
-    this.setSorters();
   }
 
   private filterCoinList(coinList: Array<Coin>) {

@@ -52,6 +52,7 @@ $colors: (
   secondary-light: #4E698D,
   secondary-dark: #1F3A5E,
   danger: #c15c5c,
+  success: #2ac855,
   light: #97B2D6,
   dark: #1F3A5E
 );
@@ -163,6 +164,20 @@ $segment-button-ios-toolbar-font-size: 1.5rem;
 
 $tabs-ios-tab-icon-color: rgba($text-color, 0.4);
 $tabs-ios-tab-icon-color-active: $text-color;
+
+$searchbar-ios-background-color: transparent;
+$searchbar-ios-padding-horizontal: 1.7rem;
+$searchbar-ios-input-background-color: $text-color;
+$searchbar-ios-input-text-color: map-get($colors, dark);
+$searchbar-ios-input-search-icon-color: map-get($colors, dark);
+$searchbar-ios-input-clear-icon-color: map-get($colors, dark);
+$searchbar-ios-input-placeholder-color: rgba($searchbar-ios-input-text-color, 0.8);
+//$searchbar-ios-input-height: 4rem;
+//$searchbar-ios-input-search-icon-size: 22px;
+
+@import "variables/action-sheet";
+
+
 
 @import "ionic.theme.default";
 

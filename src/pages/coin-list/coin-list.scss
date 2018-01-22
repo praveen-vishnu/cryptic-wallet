@@ -14,5 +14,55 @@ page-coin-list {
   //  }
   //}
 
+  .grid, .col {
+    padding: 0;
+  }
 
+  .select-ios {
+    padding: 0.5rem 1.7rem;
+  }
+
+  .select-ios .select-icon .select-icon-inner {
+    top: 65%;
+    color: $text-color-dark;
+  }
+
+  ion-select {
+    position: relative;
+    max-width: 100%;
+    text-align: right;
+    color: $text-color-dark;
+  }
+
+  .select-custom {
+    text-align: right;
+  }
+
+  .select-custom-wrapper {
+    display: inline-block;
+  }
+
+  .segment .segment-button:first-of-type {
+    margin-right: -2.5%;
+  }
+
+  .segment .segment-button:last-of-type {
+    margin-left: -2.5%;
+  }
+
+  .button-skewed {
+    clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
+
+    &.active {
+      clip-path: polygon(0 0, 90% 0%, 100% 100%, 0% 100%);
+    }
+  }
+
+  .button-skewed--inverse {
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 10% 100%);
+
+    &.active {
+      clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%);
+    }
+  }
 }

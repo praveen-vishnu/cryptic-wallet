@@ -9,25 +9,30 @@
       </ng-template>
     </ion-title>
   </ion-navbar>
-  <!--<ion-toolbar class="segment-custom&#45;&#45;toolbar">-->
-  <div class="segment-custom">
-    <div class="segment-custom__item">
-      <button ion-button clear class="segment-custom__button--left">Favorites</button>
-    </div>
-    <div class="segment-custom__item segment-custom__item--middle">
-      <ion-item>
-        <ion-select [(ngModel)]="sorter"
-                    [interface]="'action-sheet'"
-                    (ionChange)="sorterChanged($event)">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="listView" (ionChange)="listChanged($event)">
+      <ion-segment-button class="button-skewed" value="favorites" [ngClass]="{'active': listView === 'favorites'}">
+        Favorites
+      </ion-segment-button>
+      <ion-segment-button class="button-skewed--inverse" value="coins" [ngClass]="{'active': listView === 'coins'}">
+        All coins
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+      </ion-col>
+      <ion-col>
+        <ion-select
+          [(ngModel)]="sorter"
+          [interface]="'action-sheet'"
+          (ionChange)="sorterChanged($event)">
           <ion-option #item *ngFor="let sorter of sorters" [value]="sorter.value">{{sorter.name}}</ion-option>
         </ion-select>
-      </ion-item>
-    </div>
-    <div class="segment-custom__item">
-      <button ion-button clear class="segment-custom__button--right">All coins</button>
-    </div>
-  </div>
-  <!--</ion-toolbar>-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content>
@@ -38,7 +43,7 @@
                            refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
   <!--<ion-searchbar (ionInput)="filterCoinsOnSearch($event)"></ion-searchbar>-->
-  <ion-list [virtualScroll]="coins" [approxItemHeight]="'73px'"
+  <ion-list [virtualScroll]="list" [approxItemHeight]="'70px'"
             [approxItemWidth]="'100%'" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding #item *virtualItem="let coin">
       <button ion-item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
@@ -48,9 +53,9 @@
         <ion-label>
           {{coin.name}}
         </ion-label>
-        <small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.change)}">
-          {{coin.change | numberFormatter: 'perc'}}%
-        </small>
+        <!--<small item-content class="price-change" [ngClass]="{'negative' : detectChange(coin.change)}">-->
+        <!--{{coin.change | numberFormatter: 'perc'}}%-->
+        <!--</small>-->
         <span item-end class="price">
           <span>{{coin.currency.symbol}} {{coin.price| numberFormatter: 'price'}}</span>
         </span>

@@ -14,8 +14,9 @@ import {Coin} from "../../interfaces/coin";
 export class CoinListPage {
   search: boolean = false;
   coins: Array<Coin> = [];
-  coinsView: any;
   favorites: Array<Coin> = [];
+  list: Array<Coin> = [];
+  listView: any;
   coinsSearchList: any;
   sorter: any = 'popular';
   sorters: any;
@@ -34,6 +35,8 @@ export class CoinListPage {
   }
 
   ionViewDidLoad() {
+    this.listView = 'favorites';
+    this.list = this.favorites;
     this.storage.get('coin-list').then(list => {
       list ? this.coins = this.coinsSearchList = list : this.apiService.getCoinList();
     });
@@ -74,6 +77,21 @@ export class CoinListPage {
 
   sorterChanged(event) {
     this.sortList(event);
+  }
+
+  listChanged(event) {
+    this.list = [];
+    switch (event.value) {
+      case 'favorites':
+        this.list = this.favorites;
+        break;
+      case 'coins':
+        this.list = this.coins;
+        break;
+      default:
+        this.list = this.coins;
+        break;
+    }
   }
 
   sortList(sorter) {
@@ -118,6 +136,8 @@ export class CoinListPage {
   }
 
   addToFavorites(item, coin) {
+    this.favorites.push(coin);
+    this.list = this.coins.filter(item => item.name !== coin.name);
     item.close();
   }
 }

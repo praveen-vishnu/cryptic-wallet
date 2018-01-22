@@ -12,14 +12,11 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-@import "segment";
-
-ion-content {
-  background: $app-background !important;
-}
-
-.fixed-content {
-  background: linear-gradient(to bottom, map-get($colors, tertiary) 0%, map-get($colors, dark) 100%);
-}
-
+@import "sass/segment";
+@import "sass/list";
+@import "sass/logo";
+@import "sass/symbols";
+@import "sass/change-percentage";
+@import "sass/refresher";
+@import "sass/spinner";
 

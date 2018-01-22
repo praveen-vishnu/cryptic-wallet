@@ -37,17 +37,17 @@ $colors: (
 );
 
 $colors: (
-  primary: #CABDCD,
-  secondary: #533849,
-  tertiary: #734E5F,
-  light: #CABDCD,
-  dark: #2D1F30
+  primary: #97B2D6,
+  secondary: #2C466B,
+  secondary-light: #4E698D,
+  secondary-dark: #1F3A5E,
+  light: #97B2D6,
+  dark: #1F3A5E
 );
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-$item-ios-thumbnail-size: 30px;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -68,11 +68,6 @@ $background-color: #132433;
 $toolbar-background: $background-color;
 $list-border-color: $toolbar-background;
 $tabs-background: darken($background-color, 3%);
-$refresher-border-color: $background-color;
-$refresher-icon-color: $text-color;
-$refresher-icon-font-size: 20px;
-$refresher-text-color: $text-color;
-$refresher-text-font-size: 12px;
 $button-ios-text-color: #132433;
 
 $toolbar-ios-height: 60px;
@@ -87,10 +82,6 @@ $font-family-base: 'Oswald', sans-serif;
 
 $toolbar-ios-active-color: $text-color;
 
-$segment-button-ios-border-radius: 0px;
-$segment-button-ios-background-color-activated: darken($background-color, 3%);
-$segment-button-ios-border-width: 0px;
-$segment-button-ios-text-color: $text-color;
 $loading-ios-spinner-color: $text-color;
 
 $tabs-tab-color-active: $text-color;
@@ -108,37 +99,56 @@ $item-ios-divider-color: $text-color;
 
 $font-size-base: 1.6rem;
 $text-color: map-get($colors, light);
+$text-color-dark: map-get($colors, dark);
 
-$app-background: linear-gradient(to bottom, map-get($colors, tertiary) 0%, map-get($colors, dark) 100%);
-$background-color: transparent;
-
-$tabs-background: transparent;
+$background-color: map-get($colors, secondary-light);
+$tabs-background: map-get($colors, secondary);
 
 $toolbar-background: map-get($colors, secondary);
-$toolbar-ios-title-font-size: 4rem;
-$toolbar-md-title-font-size: 4rem;
-$toolbar-wp-title-font-size: 4rem;
+$toolbar-ios-title-font-size: 2rem;
+$toolbar-md-title-font-size: 2rem;
+$toolbar-wp-title-font-size: 2rem;
 $toolbar-ios-title-text-color: $text-color;
 $toolbar-md-title-text-color: $text-color;
 $toolbar-wp-title-text-color: $text-color;
 $toolbar-ios-title-font-weight: 100;
 $toolbar-wp-title-font-weight: 100;
 
-$list-background-color: transparent;
+$list-background-color: map-get($colors, secondary-light);
 $list-ios-activated-background-color: transparent;
 $list-md-activated-background-color: transparent;
 $list-wp-activated-background-color: transparent;
 
-$item-ios-avatar-size: 26px;
-$item-md-avatar-size: 26px;
-$item-wp-avatar-size: 26px;
+$item-ios-avatar-size: 30px;
+$item-md-avatar-size: 30px;
+$item-wp-avatar-size: 30px;
 
-@import "list";
-@import "logo";
-@import "symbols";
-@import "change-percentage";
-@import "refresher";
-@import "spinner";
+$refresher-border-color: transparent;
+$refresher-icon-color: $text-color;
+$refresher-icon-font-size: 20px;
+$refresher-text-color: $text-color;
+$refresher-text-font-size: 12px;
+
+$toolbar-ios-padding: 0;
+$toolbar-md-padding: 0;
+$toolbar-wp-padding: 0;
+
+$segment-button-ios-background-color: map-get($colors, secondary);
+$segment-button-ios-background-color-activated: map-get($colors, secondary-light);
+$segment-button-ios-text-color: $text-color;
+$segment-button-ios-transition-activated: 100ms all linear;
+$segment-button-ios-transition-hover: 100ms all linear;
+$segment-button-ios-transition-active: 100ms all linear;
+//$segment-button-ios-opacity-hover: .1;
+//$segment-button-ios-opacity-active: .16;
+//$segment-button-ios-opacity-activated: 1;
+//$segment-button-ios-opacity-disabled: .3;
+$segment-button-ios-border-width: 0;
+$segment-button-ios-border-radius: 0;
+$segment-button-ios-toolbar-button-max-width: 100%;
+$segment-button-ios-toolbar-button-height: 100%;
+$segment-button-ios-toolbar-line-height: 400%;
+$segment-button-ios-toolbar-font-size: 1.5rem;
 
 @import "ionic.theme.default";
 

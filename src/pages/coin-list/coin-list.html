@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>
       <ng-container *ngIf="!search; else wallet">
-        Cryptick
+        Cryptic
       </ng-container>
       <ng-template #wallet>
         Choose your coin
@@ -61,7 +61,7 @@
         <span item-right class="price">
           <span>{{coin.currency.symbol}} {{coin.price| numberFormatter: 'price'}}</span>
         </span>
-        <div item-end>
+        <div class="change-icon" item-end>
           <svg
             viewBox="0 0 13 11"
             class="price-change"

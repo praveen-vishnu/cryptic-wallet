@@ -78,4 +78,20 @@ page-coin-list {
       clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%);
     }
   }
+
+  .item {
+    transition: all 200ms;
+
+    .change-icon {
+      transition: all 200ms;
+    }
+
+    &.ping {
+      color: map-get($colors, dark);
+
+      .change-icon {
+        transform: translateY(-5px);
+      }
+    }
+  }
 }

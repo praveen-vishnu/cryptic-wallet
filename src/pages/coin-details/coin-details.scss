@@ -1,29 +1,42 @@
 page-coin-details {
   color: $text-color;
-
   .scroll-content {
     overflow: hidden;
   }
 
-  .coin-title {
-    font-size: 2.5rem;
-    padding: 1rem;
-    padding-bottom: 0.2rem;
-  }
-
   .coin-market-cap {
-    padding: 0 0 0.5rem;
-    display: block;
+    background: $toolbar-background;
+    padding: 0rem 1.7rem 0.4rem;
   }
 
   .coin-price {
-    padding: 1rem;
-    padding-bottom: 0;
-    margin: 0;
+    min-height: 30vh;
+    position: relative;
+
+    .price {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      height: 8rem;
+    }
+  }
+
+  .price-change {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 2rem;
   }
 
   .chart-timestamp {
-    //background: darken($background-color, 3%);
+    background: map-get($colors, secondary-dark);
     color: $text-color;
     font-size: 1rem;
     padding: 0.6rem;
@@ -31,13 +44,17 @@ page-coin-details {
   }
 
   .date {
-    background: #132534;
+    background: $toolbar-background;
     padding: 0.1rem 0.7rem 0.2rem;
     border-radius: 10px;
-    color: #95adc1;
+    color: $text-color;
   }
 
-  .segment-ios .segment-button.segment-activated {
-    color: rgba(32, 162, 228, 1);
+  .segment .segment-button {
+    color: $text-color;
+  }
+
+  .segment .segment-button.segment-activated {
+    background: map-get($colors, secondary-dark);
   }
 }

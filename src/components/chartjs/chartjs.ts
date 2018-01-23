@@ -60,7 +60,7 @@ export class ChartjsComponent implements OnInit, OnChanges, OnDestroy {
           ],
           borderColor: [
             // TODO Different theme colors
-            'rgba(32, 162, 228, 1)',
+            'rgba(78, 105, 141, 1)',
             'rgba(159, 228, 32, 1)',
             'rgba(228, 107, 32, 1)',
             'rgba(228, 32, 110, 1)',

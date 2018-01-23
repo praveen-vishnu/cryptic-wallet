@@ -52,9 +52,9 @@
             [approxItemWidth]="'100%'" [virtualTrackBy]="trackByCoin" no-lines>
     <ion-item-sliding #slidingItem *virtualItem="let coin">
       <button ion-item #item (click)="selectedCoin(coin)" [ngClass]="{'favorite': coin.favorite}" detail-none>
-        <!--<ion-avatar class="logo" item-start>-->
-        <img-loader item-start [src]="coin.imageUrl" [spinner]="false" useImg></img-loader>
-        <!--</ion-avatar>-->
+        <ion-avatar class="logo" item-start>
+          <img-loader [src]="coin.imageUrl" useImg></img-loader>
+        </ion-avatar>
         <ion-label>
           {{coin.name}}
         </ion-label>
@@ -64,7 +64,7 @@
         <div class="change-icon" item-end>
           <svg
             viewBox="0 0 13 11"
-            class="price-change"
+            class="delta"
             [ngClass]="{'negative' : detectChange(coin.change)}"
             version="1.1" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">

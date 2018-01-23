@@ -1,0 +1,6 @@
+$list-background-color: map-get($colors, secondary-light);
+$list-ios-activated-background-color: map-get($colors, secondary-dark);
+$list-md-activated-background-color: transparent;
+$list-wp-activated-background-color: transparent;
+$list-ios-header-border-bottom: $hairlines-width solid $list-background-color;
+

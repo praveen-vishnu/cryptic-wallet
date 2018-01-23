@@ -25,15 +25,16 @@ page-coin-list {
     padding: 0;
   }
 
-  .select-ios {
+  .select {
     padding: 1rem 1.7rem 1rem;
+    font-size: 1.5rem;
 
     button {
       padding: 0;
     }
   }
 
-  .select-ios .select-icon .select-icon-inner {
+  .select .select-icon .select-icon-inner {
     top: 65%;
     color: $text-color-dark;
   }

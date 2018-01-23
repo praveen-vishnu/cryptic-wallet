@@ -7,7 +7,7 @@ chartjs {
     display: block;
     height: 100%;
     overflow: hidden;
-    background: #0f1d29;
+    background: map-get($colors, secondary-dark);
 
     .scrubberX {
       position: absolute;

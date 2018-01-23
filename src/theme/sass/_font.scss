@@ -20,6 +20,7 @@
   .ion-ios-fi-#{$arg}-fill-outline:before,
   .ion-md-fi-#{$arg}-fill-outline:before {
     content: $val;
+    font-size: 27px;
   }
 }
 
@@ -28,6 +29,7 @@
   .ion-ios-fi-#{$arg}-fill:before,
   .ion-md-fi-#{$arg}-fill:before {
     content: $val;
+    font-size: 27px;
   }
 }
 

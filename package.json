@@ -9,7 +9,9 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "emulateios5": "ionic cordova emulate ios --target=\"iPhone-5s, 11.2\";",
+    "emulateios7": "ionic cordova emulate ios --target=\"iPhone-7, 11.2\";"
   },
   "dependencies": {
     "@angular/animations": "5.0.3",

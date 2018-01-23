@@ -1,4 +1,4 @@
-export class Utils {
+export class ComparisonUtils {
   static compareNames(a, b) {
     if (a.name < b.name)
       return -1;

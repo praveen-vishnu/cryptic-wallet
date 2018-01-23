@@ -3,18 +3,10 @@ import {Content, IonicPage, Item, ItemSliding, NavController, NavParams, Virtual
 import {ApiService} from "../../services/api.service";
 import {CoinDetailsPage} from "../coin-details/coin-details";
 import {Storage} from "@ionic/storage";
-import {Utils} from "../../classes/utils";
+import {ComparisonUtils} from "../../classes/comparison.utils";
 import {Coin} from "../../interfaces/coin";
-import {Socket} from 'ng-socket-io';
+import {WebsocketService} from "../../services/websocket.service";
 
-const subType = {
-  trade: 0,
-  current: 2,
-  currentAgg: 5
-};
-const TYPE = subType.currentAgg;
-const EXCHANGE = 'CCCAGG';
-// const EXCHANGE = 'Coinbase';
 const SORTERS = [
   {
     name: 'Popular',
@@ -46,6 +38,8 @@ export class CoinListPage {
   sorters: any = SORTERS;
   listLoaded: boolean = false;
   searchTerm: string = '';
+  subscriptionToSocket: boolean = false;
+  delayedAnimation: any;
 
   @ViewChild(VirtualScroll) virtualList: VirtualScroll;
   @ViewChild(Content) content: Content;
@@ -54,7 +48,7 @@ export class CoinListPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public storage: Storage,
-              public socket: Socket,
+              public websocketService: WebsocketService,
               public apiService: ApiService) {
     this.apiService.coinList.subscribe(coinList => {
       this.coins = this.removeFavorites(coinList);
@@ -73,6 +67,18 @@ export class CoinListPage {
     this.retrieveSorterFromStorage();
   }
 
+  ionViewDidEnter() {
+    if (this.subscriptionToSocket) {
+      this.websocketService.watchEvent(updatedCoin => {
+        this.watchCoinUpdate(updatedCoin);
+      });
+    }
+  }
+
+  ionViewDidLeave() {
+    this.websocketService.stopWatchEvent();
+  }
+
   get listIsEmpty(): boolean {
     if (this.listLoaded) {
       return !this.isCoinsView() && this.list.length === 0;
@@ -82,7 +88,7 @@ export class CoinListPage {
 
   goToAllCoins() {
     this.listView = 'coins';
-    setTimeout(() => {
+    this.delayedAnimation = setTimeout(() => {
       this.openItemAnimated(this.itemSlidings.first, this.itemSlidings.first.item);
     }, 1500);
   }
@@ -97,9 +103,33 @@ export class CoinListPage {
     this.storage.get('favorites').then(list => {
       list ? this.list = this.favorites = list : [];
       this.sortList(this.sorter);
-      this.subscribeAllCoinsToSocket(this.favorites);
+      this.subscribeFavoritesToSocket();
       this.retrieveCoinsFromStorage();
     });
+  }
+
+  private subscribeFavoritesToSocket() {
+    this.subscriptionToSocket = this.websocketService.subscribeToSocket(this.favorites);
+    this.websocketService.watchEvent(updatedCoin => {
+      this.watchCoinUpdate(updatedCoin);
+    });
+  }
+
+  private watchCoinUpdate(updatedCoin) {
+    const listItem = this.itemSlidings.find(item => {
+      if (item.item.getLabelText().trim()) {
+        const name = item.item.getLabelText().trim();
+        return name === updatedCoin.name;
+      }
+      return false;
+    });
+    if (listItem) {
+      listItem.item.getNativeElement().classList.add('ping');
+      setTimeout(() => {
+        listItem.item.getNativeElement().classList.remove('ping');
+      }, 750);
+    }
+    this.sortList(this.sorter);
   }
 
   private retrieveCoinsFromStorage() {
@@ -153,12 +183,20 @@ export class CoinListPage {
       switch (event.value) {
         case 'favorites':
           this.list = this.favorites;
+          if (this.delayedAnimation) {
+            clearTimeout(this.delayedAnimation);
+          }
+          this.websocketService.watchEvent(updatedCoin => {
+            this.watchCoinUpdate(updatedCoin);
+          });
           break;
         case 'coins':
           this.list = this.coins;
+          this.websocketService.stopWatchEvent();
           break;
         default:
           this.list = this.coins;
+          this.websocketService.stopWatchEvent();
           break;
       }
     });
@@ -187,16 +225,16 @@ export class CoinListPage {
   sortList(sorter) {
     switch (sorter) {
       case 'popular':
-        this.list.sort(Utils.compareOrder);
+        this.list.sort(ComparisonUtils.compareOrder);
         break;
       case 'price':
-        this.list.sort(Utils.comparePrices);
+        this.list.sort(ComparisonUtils.comparePrices);
         break;
       case 'marketcap':
-        this.list.sort(Utils.compareMarketCap);
+        this.list.sort(ComparisonUtils.compareMarketCap);
         break;
       default:
-        this.list.sort(Utils.compareOrder);
+        this.list.sort(ComparisonUtils.compareOrder);
         break;
     }
   }
@@ -227,7 +265,7 @@ export class CoinListPage {
 
   addToFavorites(item, coin) {
     this.favorites.push(coin);
-    this.subscribeCoinToSocket(coin);
+    this.websocketService.subscribeCoinToSocket(coin);
     this.storage.set('favorites', this.favorites);
     this.list = [];
     this.updateVirtualList(() => {
@@ -244,55 +282,12 @@ export class CoinListPage {
     }
     this.storage.set('favorites', this.favorites);
     this.coins.push(coin);
+
+    if (this.favorites.length > 0) {
+      this.websocketService.unsubscribeCoinToSocket(coin);
+    } else {
+      this.websocketService.stopWatchEvent();
+    }
     item.close();
-  }
-
-
-  private subscribeAllCoinsToSocket(array) {
-    const subscriptions: Array<any> = [];
-    array.forEach(coin => {
-      subscriptions.push(`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`);
-    });
-    this.socket.emit('SubAdd', {subs: subscriptions});
-    this.subscribeToEvent();
-  }
-
-  private subscribeCoinToSocket(coin) {
-    this.socket.emit('SubAdd', {subs: [`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`]});
-    this.subscribeToEvent();
-  }
-
-  private subscribeToEvent() {
-    this.socket.fromEvent('m').subscribe((message: string) => {
-      const messageType = message.split('~');
-      const coinCode = messageType[2];
-      const coinPrice = messageType[5];
-      const coin = this.favorites.find(item => item.code === coinCode);
-      if (coin) {
-        const index = this.favorites.indexOf(coin);
-        if (index > -1) {
-          this.favorites[index].price = Number(coinPrice);
-        }
-
-        const listItem = this.itemSlidings.find(item => {
-          if (item.item.getLabelText().trim()) {
-            const name = item.item.getLabelText().trim();
-            return name === coin.name;
-          }
-          return false;
-        });
-        if (listItem) {
-          listItem.item.getNativeElement().classList.add('ping');
-          setTimeout(() => {
-            listItem.item.getNativeElement().classList.remove('ping');
-          }, 200);
-        }
-
-        this.sortList(this.sorter);
-      }
-
-    }, data => {
-      console.log('error: ', data);
-    });
   }
 }

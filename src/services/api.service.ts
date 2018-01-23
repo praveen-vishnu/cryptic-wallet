@@ -219,7 +219,7 @@ export class ApiService {
             currency: this.currentCurrency,
             price: currencies[currency]['PRICE'],
             priceLastUpdated: currencies[currency]['LASTUPDATE'],
-            change: currencies[currency]['CHANGEPCT24HOUR'],
+            change: currencies[currency]['CHANGEPCT24HOUR'], //TODO Check if i get the correct change. Check websocket!
             marketcap: currencies[currency]['MKTCAP'],
           };
         }

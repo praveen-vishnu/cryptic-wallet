@@ -1,4 +1,6 @@
-var CCC = CCC || {};
+export let CCC;
+
+CCC = CCC || {};
 
 CCC.STATIC = CCC.STATIC || {};
 

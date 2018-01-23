@@ -5,7 +5,7 @@ import {ApiService} from "../../services/api.service";
 import {Storage} from '@ionic/storage';
 import {CoinAmount, Wallet} from "../../interfaces/wallet";
 import {Coin} from "../../interfaces/coin";
-import {Socket} from "ng-socket-io";
+import {WebsocketService} from "../../services/websocket.service";
 
 @Component({
   selector: 'page-coin-list-wallet',
@@ -19,11 +19,11 @@ export class CoinListWalletPage extends CoinListPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public storage: Storage,
-              public socket: Socket,
+              public websocketService: WebsocketService,
               public apiService: ApiService,
               public toastCtrl: ToastController,
               private alertCtrl: AlertController) {
-    super(navCtrl, navParams, storage, socket, apiService);
+    super(navCtrl, navParams, storage, websocketService, apiService);
     this.currentWalletIndex = navParams.data.walletIndex;
     this.apiService.coinList.subscribe((coinList: Array<any>) => {
       const filteredList = this.filterCoinList(coinList);

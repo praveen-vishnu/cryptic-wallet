@@ -80,18 +80,12 @@ page-coin-list {
   }
 
   .item {
-    transition: all 200ms;
-
-    .change-icon {
-      transition: all 200ms;
+    .logo:after {
+      transition: all 250ms;
     }
 
-    &.ping {
-      color: map-get($colors, dark);
-
-      .change-icon {
-        transform: translateY(-5px);
-      }
+    &.ping .logo:after {
+      background: rgba(44, 70, 107, 0);
     }
   }
 }

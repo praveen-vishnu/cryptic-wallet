@@ -19,6 +19,7 @@ import {WalletEditPageModule} from "../pages/wallet-edit/wallet-edit.module";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {NativePageTransitions} from "@ionic-native/native-page-transitions";
 import {IonicImageLoader} from "ionic-image-loader";
+import {WebsocketService} from "../services/websocket.service";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {IonicImageLoader} from "ionic-image-loader";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiService,
+    WebsocketService,
     InAppBrowser,
     ScreenOrientation,
     NativePageTransitions

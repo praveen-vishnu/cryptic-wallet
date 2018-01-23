@@ -26,7 +26,7 @@
         </ion-col>
         <ion-col>
           <ion-select
-            [style.visibility]="getVisibility()"
+            [style.visibility]="listHasCoins()"
             [(ngModel)]="sorter"
             [interface]="'action-sheet'"
             (ionChange)="sorterChanged($event)">

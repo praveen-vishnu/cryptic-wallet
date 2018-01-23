@@ -83,7 +83,7 @@ export class CoinListPage {
   goToAllCoins() {
     this.listView = 'coins';
     setTimeout(() => {
-      this.openItem(this.itemSlidings.first, this.itemSlidings.first.item);
+      this.openItemAnimated(this.itemSlidings.first, this.itemSlidings.first.item);
     }, 1500);
   }
 
@@ -115,54 +115,6 @@ export class CoinListPage {
     });
   }
 
-  private subscribeAllCoinsToSocket(array) {
-    const subscriptions: Array<any> = [];
-    array.forEach(coin => {
-      subscriptions.push(`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`);
-    });
-    this.socket.emit('SubAdd', {subs: subscriptions});
-    this.subscribeToEvent();
-  }
-
-  private subscribeCoinToSocket(coin) {
-    this.socket.emit('SubAdd', {subs: [`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`]});
-    this.subscribeToEvent();
-  }
-
-  private subscribeToEvent() {
-    this.socket.fromEvent('m').subscribe((message: string) => {
-      const messageType = message.split('~');
-      const coinCode = messageType[2];
-      const coinPrice = messageType[5];
-      const coin = this.favorites.find(item => item.code === coinCode);
-      if (coin) {
-        const index = this.favorites.indexOf(coin);
-        if (index > -1) {
-          this.favorites[index].price = Number(coinPrice);
-        }
-
-        const listItem = this.itemSlidings.find(item => {
-          if (item.item.getLabelText().trim()) {
-            const name = item.item.getLabelText().trim();
-            return name === coin.name;
-          }
-          return false;
-        });
-        if (listItem) {
-          listItem.item.getNativeElement().classList.add('ping');
-          setTimeout(() => {
-            listItem.item.getNativeElement().classList.remove('ping');
-          }, 200);
-        }
-
-        this.sortList(this.sorter);
-      }
-
-    }, data => {
-      console.log('error: ', data);
-    });
-  }
-
   private removeFavorites(list) {
     return list.filter(coin => {
       return !this.favorites.some(favorite => favorite.name === coin.name);
@@ -171,10 +123,6 @@ export class CoinListPage {
 
   private isCoinsView(): boolean {
     return this.listView === 'coins';
-  }
-
-  coinsViewChanged(event) {
-
   }
 
   filterCoinsOnSearch(event) {
@@ -190,7 +138,7 @@ export class CoinListPage {
     }
   }
 
-  getVisibility(): string {
+  listHasCoins(): string {
     return this.list.length > 0 ? 'visible' : 'hidden';
   }
 
@@ -216,7 +164,6 @@ export class CoinListPage {
     });
     this.sortList(this.sorter);
     this.content.scrollToTop();
-    // console.log()
   }
 
   updateVirtualList(callBack) {
@@ -227,7 +174,7 @@ export class CoinListPage {
     this.virtualList.resize();
   }
 
-  openItem(itemSlide: ItemSliding, item: Item) {
+  openItemAnimated(itemSlide: ItemSliding, item: Item) {
     itemSlide.setElementClass("active-sliding", true);
     itemSlide.setElementClass("active-slide", true);
     itemSlide.setElementClass("active-options-right", true);
@@ -298,5 +245,54 @@ export class CoinListPage {
     this.storage.set('favorites', this.favorites);
     this.coins.push(coin);
     item.close();
+  }
+
+
+  private subscribeAllCoinsToSocket(array) {
+    const subscriptions: Array<any> = [];
+    array.forEach(coin => {
+      subscriptions.push(`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`);
+    });
+    this.socket.emit('SubAdd', {subs: subscriptions});
+    this.subscribeToEvent();
+  }
+
+  private subscribeCoinToSocket(coin) {
+    this.socket.emit('SubAdd', {subs: [`${TYPE}~${EXCHANGE}~${coin.code}~${coin.currency.code}`]});
+    this.subscribeToEvent();
+  }
+
+  private subscribeToEvent() {
+    this.socket.fromEvent('m').subscribe((message: string) => {
+      const messageType = message.split('~');
+      const coinCode = messageType[2];
+      const coinPrice = messageType[5];
+      const coin = this.favorites.find(item => item.code === coinCode);
+      if (coin) {
+        const index = this.favorites.indexOf(coin);
+        if (index > -1) {
+          this.favorites[index].price = Number(coinPrice);
+        }
+
+        const listItem = this.itemSlidings.find(item => {
+          if (item.item.getLabelText().trim()) {
+            const name = item.item.getLabelText().trim();
+            return name === coin.name;
+          }
+          return false;
+        });
+        if (listItem) {
+          listItem.item.getNativeElement().classList.add('ping');
+          setTimeout(() => {
+            listItem.item.getNativeElement().classList.remove('ping');
+          }, 200);
+        }
+
+        this.sortList(this.sorter);
+      }
+
+    }, data => {
+      console.log('error: ', data);
+    });
   }
 }

@@ -54,28 +54,32 @@ page-coin-list {
     display: inline-block;
   }
 
-  .segment .segment-button:first-of-type {
-    margin-right: -2.5%;
-  }
-
-  .segment .segment-button:last-of-type {
-    margin-left: -2.5%;
+  .segment-ios .segment-button,
+  .segment-ios .segment-button.segment-activated,
+  .segment-ios .segment-button .button-effect {
+    transition: unset;
   }
 
   .button-skewed {
     clip-path: polygon(0 0, 100% 0%, 90% 100%, 0% 100%);
-    transition: clip-path, background-color 250ms;
+    transition: background-color 2000ms linear;
+    //transition: unset;
 
     &.active {
+      //transition: unset;
+
       clip-path: polygon(0 0, 90% 0%, 100% 100%, 0% 100%);
     }
   }
 
   .button-skewed--inverse {
     clip-path: polygon(0 0, 100% 0%, 100% 100%, 10% 100%);
-    transition: clip-path, background-color 250ms;
+    transition: background-color 2000ms linear;
+    //transition: unset;
 
     &.active {
+      //transition: unset;
+
       clip-path: polygon(10% 0, 100% 0%, 100% 100%, 0 100%);
     }
   }

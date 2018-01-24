@@ -22,7 +22,7 @@ $action-sheet-ios-group-margin-top: 0;
 $action-sheet-ios-group-margin-bottom: 0;
 
 /// @prop - Background color of the action sheet
-$action-sheet-ios-background: map-get($colors, dark);
+$action-sheet-ios-background: map-get($colors, secondary-light);
 
 /// @prop - Border color of the action sheet
 $action-sheet-ios-border-color: transparent;
@@ -52,7 +52,7 @@ $action-sheet-ios-button-min-height: 2.6rem;
 $action-sheet-ios-button-padding: 18px;
 
 /// @prop - Text color of the action sheet button
-$action-sheet-ios-button-text-color: $text-color;
+$action-sheet-ios-button-text-color: $text-color-dark;
 
 /// @prop - Font size of the action sheet button
 $action-sheet-ios-button-font-size: 2rem;
@@ -67,7 +67,7 @@ $action-sheet-ios-button-border-style: solid;
 $action-sheet-ios-button-border-color: transparent;
 
 /// @prop - Background color of the action sheet button
-$action-sheet-ios-button-background: transparent;
+$action-sheet-ios-button-background: map-get($colors, secondary-light);
 
 /// @prop - Background color of the activated action sheet button
 $action-sheet-ios-button-background-activated: map-get($colors, secondary);

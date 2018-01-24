@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="209px" height="209px" viewBox="0 0 209 209" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+  <title>wallet</title>
+  <desc>Created with Sketch.</desc>
+  <defs>
+    <circle id="path-1" cx="104.5" cy="104.5" r="104.5"></circle>
+  </defs>
+  <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="wallet">
+      <mask id="mask-2" fill="white">
+        <use xlink:href="#path-1"></use>
+      </mask>
+      <use id="Oval" fill="#676A8B" xlink:href="#path-1"></use>
+      <polygon id="Shadow" fill="#324D71" mask="url(#mask-2)"
+               points="154.399183 65.6672537 384.132182 259.244962 310.97918 347.515669 56.4124468 145.259612"></polygon>
+      <path
+        d="M149.290977,146 L59.7092319,146 C54.9069705,146 51,142.098567 51,137.303113 L51,72.6968875 C51,67.9014328 54.9069705,64 59.7092319,64 L149.290768,64 C154.093029,64 158,67.9014328 158,72.6968875 L158,137.302904 C158.000209,142.098567 154.093238,146 149.290977,146 Z"
+        id="Shape" fill="#FFD76E" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <path
+        d="M51,104.491639 L51,137.106465 C51,141.948194 54.9069629,145.887274 59.7092148,145.887274 L149.290576,145.887274 C154.092828,145.887274 157.999791,141.948194 157.999791,137.106465 L157.999791,104.491639 L51,104.491639 Z"
+        id="Shape" fill="#F5AA2C" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <path
+        d="M158,125.816612 L112.716012,125.816612 C107.90352,125.816612 104.002199,121.883221 104.002199,117.031167 L104.002199,91.951689 C104.002199,87.0996355 107.90352,83.1662441 112.716012,83.1662441 L158,83.1662441 L158,125.816612 Z"
+        id="Shape" fill="#F5AA2C" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <path d="M104,105 L104,117.348437 C104,122.12655 107.829244,126 112.552827,126 L157,126 L157,105 L104,105 Z"
+            id="Shape" fill="#EB9A2A" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <path
+        d="M131,114 C125.486017,114 121,109.738284 121,104.5 C121,99.2617158 125.486017,95 131,95 C136.513983,95 141,99.2617158 141,104.5 C141,109.738284 136.513983,114 131,114 Z"
+        id="Shape" fill="#FFD76E" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <path
+        d="M121,105 C121.133619,109.983268 125.566368,114 131,114 C136.433632,114 140.866171,109.983268 141,105 L121,105 Z"
+        id="Shape" fill="#F5AA2C" fill-rule="nonzero" mask="url(#mask-2)"></path>
+      <polygon id="overlay" fill="#1A3459" style="mix-blend-mode: color;" mask="url(#mask-2)"
+               points="-75 -62 318 -62 318 289 -75 289"></polygon>
+    </g>
+  </g>
+</svg>

@@ -3,6 +3,7 @@ import {IonicPageModule} from 'ionic-angular';
 import {WalletPage} from './wallet';
 import {PipesModule} from "../../pipes/pipes.module";
 import {ComponentsModule} from "../../components/components.module";
+import {IonicImageLoader} from "ionic-image-loader";
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import {ComponentsModule} from "../../components/components.module";
   imports: [
     IonicPageModule.forChild(WalletPage),
     PipesModule,
+    IonicImageLoader,
     ComponentsModule,
   ],
 })

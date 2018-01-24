@@ -68,7 +68,7 @@ export class CoinListPage {
   }
 
   ionViewDidEnter() {
-    if (this.subscriptionToSocket) {
+    if (this.subscriptionToSocket && !this.isCoinsView()) {
       this.websocketService.watchEvent(updatedCoin => {
         this.watchCoinUpdate(updatedCoin);
       });

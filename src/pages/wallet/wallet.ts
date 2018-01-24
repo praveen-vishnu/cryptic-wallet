@@ -17,6 +17,8 @@ export class WalletPage {
   currentWallet: Wallet;
   walletButtonEnabled: boolean = false;
   currency: Currency;
+  buttonPressed: boolean = false;
+  currentWalletName: string = '';
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
@@ -35,34 +37,48 @@ export class WalletPage {
     return index; // or item.id
   }
 
-  detectChange(priceChange): boolean {
-    return priceChange < 0;
+  currentTotal(wallet) {
+    return !!wallet.total ? wallet.total : '0';
   }
 
   private getStoredWallets() {
     this.storage.get('wallets').then(data => {
-      let total: number = 0;
       if (data && data.length > 0) {
         this.wallets = data;
-        this.wallets.forEach(wallet => {
-          wallet.coins.forEach(coin => {
-            total += this.getCoinPrice(coin);
-            this.currency = coin.coin.currency;
-          });
-          wallet.total = total;
-          total = 0;
-        });
+        this.calculateTotal();
 
         this.currentWallet = this.wallets[this.slides.getActiveIndex()];
+        this.currentWalletName = this.wallets[this.slides.getActiveIndex()].name;
       } else {
         this.walletButtonEnabled = true;
       }
     });
   }
 
+  private calculateTotal() {
+    let total: number = 0;
+    this.wallets.forEach(wallet => {
+      wallet.coins.forEach(coin => {
+        total += this.getCoinPrice(coin);
+        this.currency = coin.coin.currency;
+      });
+      wallet.total = total;
+      total = 0;
+    });
+  }
+
+  buttonPress(event) {
+    this.buttonPressed = true;
+  }
+
+  buttonRelease(event) {
+    this.buttonPressed = false;
+  }
+
   slideChanged(event) {
     if (event.realIndex || event.realIndex === 0) {
       this.currentWallet = this.wallets[event.realIndex];
+      this.currentWalletName = this.wallets[event.realIndex].name;
     }
   }
 
@@ -112,6 +128,7 @@ export class WalletPage {
               const walletIndex = this.wallets.indexOf(this.currentWallet);
               this.wallets[walletIndex].coins[index].amount = parseFloat(value);
               this.storage.set('wallets', this.wallets);
+              this.calculateTotal();
               slider.close();
             } else {
               this.openToast('Name cannot be empty');
@@ -169,9 +186,11 @@ export class WalletPage {
     return !!this.wallets ? this.wallets.some(item => data.name.toLowerCase() === item.name.toLowerCase()) : false;
   }
 
-  delete(index) {
+  delete(item, index) {
     this.wallets[this.slides.getActiveIndex()].coins.splice(index, 1);
     this.storage.set('wallets', this.wallets);
+    this.calculateTotal();
+    item.close();
   }
 
   checkWallet() {

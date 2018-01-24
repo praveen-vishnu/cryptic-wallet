@@ -1,7 +1,7 @@
 .logo {
   border-radius: 50%;
   overflow: hidden;
-  background: map-get($colors, secondary);
+  background: map-get($colors, secondary-dark);
   position: relative;
 
   &:after {

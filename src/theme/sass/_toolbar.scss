@@ -4,6 +4,7 @@
 }
 
 .toolbar-header {
+  min-height: 0;
   .toolbar-background {
     background: map-get($colors, secondary-light);
   }

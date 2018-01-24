@@ -3,25 +3,63 @@ page-wallet {
     align-items: flex-start;
   }
 
-  .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
-    bottom: 0;
+  .scroll-content, ion-list, ion-list .item {
+    background: map-get($colors, secondary);
   }
 
-  .swiper-container {
-    padding-bottom: 2rem;
-    color: $text-color;
+  .edit-list-button {
+    margin-right: 1rem;
+    svg {
+      width: 2rem;
+      height: 2rem;
+      #signs {
+        fill: $text-color;
+      }
+    }
+  }
+
+  .empty-coins {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wallet-price {
     min-height: 30vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .wallet-title {
-    font-size: 2.5rem;
-    padding: 1rem;
-    padding-bottom: 0.2rem;
+  .price {
+    max-width: 80%;
+    word-break: break-all;
+    line-height: 1;
   }
 
-  .wallet-amount {
-    padding: 1rem;
-    padding-bottom: 0;
-    margin: 0;
+  .grid-skewed {
+    background: map-get($colors, tertiary);
+
+    &.active {
+      background: map-get($colors, secondary-dark);
+    }
+
+    ion-label {
+      padding: 1.5rem 1.7rem;
+    }
+
+    button {
+      padding: 1.5rem 1.7rem;
+      background: transparent;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+
+      &.activated {
+        background: transparent;
+      }
+    }
   }
 }

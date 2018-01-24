@@ -54,7 +54,8 @@ $colors: (
   secondary: #533848,
   secondary-light: #724E5E,
   secondary-dark: #41303A,
-  danger: #c15c5c,
+  tertiary: #9A4B5E,
+  danger: #c35757,
   success: #2ac855,
   light: #CEC6CA,
   dark: #41303A
@@ -80,6 +81,7 @@ $colors: (
 // default are overridden.
 
 @import "variables/generic";
+@import "variables/buttons";
 @import "variables/grid";
 @import "variables/action-sheet";
 @import "variables/searchbar";

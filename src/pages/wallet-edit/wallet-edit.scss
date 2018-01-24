@@ -1,3 +1,28 @@
 page-wallet-edit {
+  .add-button {
+    margin-right: 1rem;
+    vertical-align: text-bottom;
 
+    svg {
+      width: 2rem;
+      height: 2rem;
+      #plus {
+        fill: $text-color;
+        stroke-width: 3px;
+        stroke: #CEC6CA;
+      }
+    }
+  }
+
+  .reorder-enabled ion-reorder {
+    opacity: 1;
+  }
+
+  .ion-ios-reorder {
+    font-weight: bold;
+  }
+
+  .item-wrapper.reorder-active, .reorder-active {
+    box-shadow: 0 2px 0px 3px rgba(black, 0.3);
+  }
 }

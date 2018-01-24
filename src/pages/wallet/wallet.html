@@ -3,8 +3,7 @@
     <ion-title>Wallets</ion-title>
     <ion-buttons end>
       <button class="edit-list-button" ion-button color='tertiary' (click)="goToEditWallets()">
-        <svg width="27px" height="27px" viewBox="0 0 43 43" version="1.1" xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="27px" height="27px" viewBox="0 0 43 43" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <title>signs</title>
           <defs></defs>
           <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -64,7 +63,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!checkWallet()">
   <ng-container *ngIf="wallets.length > 0;else loader">
     <ion-list *ngIf="currentWallet?.coins?.length > 0;else noCoins">
       <ion-item-sliding #item *ngFor="let amount of currentWallet.coins;trackBy: trackByCoin;let index = index;">
@@ -97,9 +96,12 @@
   <ng-template #loader>
     <!--spinner-->
   </ng-template>
+</ion-content>
 
-  <div *ngIf="checkWallet()" class="empty-list" text-center padding>
+<ion-content *ngIf="checkWallet()">
+  <div class="empty-list" text-center padding>
     <img src="./assets/imgs/wallet.svg" alt="pin">
     <button ion-button full color="tertiary" (click)="addNewWallet()">Add new wallet</button>
   </div>
 </ion-content>
+
